@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "dotenv": "^16.0.0",
-    "expressjs": "^1.0.1"
+    "express": "^4.17.3"
   },
   "type": "module",
   "devDependencies": {

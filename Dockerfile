@@ -6,7 +6,9 @@ COPY ./package.json .
 
 RUN yarn
 
-COPY ./src .
+RUN mkdir src
+
+COPY ./src ./src
 
 EXPOSE 8091
 

@@ -35,7 +35,7 @@ pipeline{
                     sh 'ssh -o StrictHostKeyChecking=no -l long 13.70.60.235 "docker stop $(docker ps -a -q) || true && docker rm $(docker ps -a -q) || true"' 
                     sh 'ssh -o StrictHostKeyChecking=no -l long 13.70.60.235 "git clone https://github.com/tdd75/learning-app"'
                     sh 'ssh -o StrictHostKeyChecking=no -l long 13.70.60.235 "mv ./learning-app/docker-compose.deploy.yml ./docker-compose.deploy.yml && rm -rf learning-app"'
-                    sh 'ssh -o StrictHostKeyChecking=no -l long 13.70.60.235 "docker-compose -f docker-compose.deploy.yml up"'
+                    sh 'ssh -o StrictHostKeyChecking=no -l long 13.70.60.235 "docker-compose -f docker-compose.deploy.yml up -d"'
                 }
             }
         }

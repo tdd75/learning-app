@@ -17,9 +17,12 @@ pipeline{
         stage('Build'){
             steps{
                 withDockerRegistry(credentialsId: 'docker-hub-duytd', url: 'https://index.docker.io/v1/') {
+                    
                     echo 'start build ...'
-                    sh 'docker build -t tdd75/app-image:1.0.1 .'
-                    sh 'docker push tdd75/app-image:1.0.1'
+
+                    sh 'docker-compose build'
+                    sh 'docker-compose push'
+
                 }
             }
         }
@@ -29,8 +32,9 @@ pipeline{
                 echo 'start deploy ...'
                 
                 sshagent(['ssh-remote']){
-                    sh 'ssh -o StrictHostKeyChecking=no -l long 13.70.60.235 "docker stop app-container || true && docker rm app-container || true"'
-                    sh 'ssh -o StrictHostKeyChecking=no -l long 13.70.60.235 "docker run -d -p 8091:8091 --name app-container tdd75/app-image:1.0.1"'
+                    sh 'ssh -o StrictHostKeyChecking=no -l long 13.70.60.235 "docker stop $(docker ps -a -q) || true && docker rm $(docker ps -a -q) || true"' 
+                    sh 'ssh -o StrictHostKeyChecking=no -l long 13.70.60.235 "rm -rf learning-app"'
+                    sh 'ssh -o StrictHostKeyChecking=no -l long 13.70.60.235 "git clone https://github.com/tdd75/learning-app && cd learning-app && docker-compose up"'
                 }
             }
         }

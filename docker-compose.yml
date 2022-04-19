@@ -1,16 +1,16 @@
 version: '3.7'
 services:
-    server-client:
+    server:
         image: tdd75/app-image-server:1.0.1
-        build: 
+        build:
             context: ./server
         container_name: app-container-server-name
         ports:
             - "8091:8091"
 
-    server-client:
+    client:
         image: tdd75/app-image-client:1.0.1
-        build: 
+        build:
             context: ./client
         container_name: app-container-client-name
         ports:

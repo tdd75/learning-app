@@ -33,8 +33,7 @@ pipeline{
                 
                 sshagent(['ssh-remote']){
                     sh 'ssh -o StrictHostKeyChecking=no -l long 13.70.60.235 "docker stop $(docker ps -a -q) || true && docker rm $(docker ps -a -q) || true"' 
-                    sh 'ssh -o StrictHostKeyChecking=no -l long 13.70.60.235 "rm -rf learning-app"'
-                    sh 'ssh -o StrictHostKeyChecking=no -l long 13.70.60.235 "git clone https://github.com/tdd75/learning-app && cd learning-app && docker-compose up"'
+                    sh 'ssh -o StrictHostKeyChecking=no -l long 13.70.60.235 "wget -O docker-compose.yml https://github.com/tdd75/learning-app/blob/main/docker-compose.yml && docker-compose up"'
                 }
             }
         }

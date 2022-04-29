@@ -1,9 +1,9 @@
-import { User, Role } from '../models/index.js';
-import { httpStatus, apiStatus } from '../constants/index.js';
+import { User, Role, Otp } from '../models/index.js';
+import { httpStatus, apiStatus, Roles } from '../constants/index.js';
 import { validationResult } from 'express-validator';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { generateNewPassword } from '../utils/stringUtils.js';
+import { generateOtp } from '../utils/stringUtils.js';
 import { transporter } from '../config/mail.js';
 
 const { hashSync, compareSync } = bcrypt;
@@ -43,7 +43,7 @@ export const register = (req, res) => {
         });
       }
 
-      Role.findOne({ name: 'USER' }, (err, role) => {
+      Role.findOne({ name: Roles.USER }, (err, role) => {
         if (err) {
           return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
             status: apiStatus.DATABASE_ERROR,
@@ -59,8 +59,6 @@ export const register = (req, res) => {
               message: 'Error when save user: ' + err,
             });
           }
-
-          console.log('registration info: ', newUser);
           return res.status(httpStatus.OK).send({
             status: apiStatus.SUCCESS,
             message: 'User was registered successfully',
@@ -104,7 +102,7 @@ export const signin = (req, res) => {
           message: 'Incorrect password!',
         });
       }
-      if (user.role.name === 'ADMIN') {
+      if (user.role.name === Roles.ADMIN) {
         return res.status(httpStatus.FORBIDDEN).send({
           status: apiStatus.AUTH_ERROR,
           message: 'USER role is allowed only!',
@@ -175,7 +173,7 @@ export const signinAdmin = (req, res) => {
           message: 'Incorrect password!',
         });
       }
-      if (user.role.name === 'USER') {
+      if (user.role.name === Roles.USER) {
         return res.status(httpStatus.FORBIDDEN).send({
           status: apiStatus.AUTH_ERROR,
           message: 'ADMIN role is allowed only!',
@@ -204,11 +202,9 @@ export const signinAdmin = (req, res) => {
         message: 'Login successfully',
         data: {
           token: token,
-          tokenExpire: parseInt(process.env.TOKEN_EXPIRATION.replace('s', '')),
+          tokenExpire: parseInt(process.env.TOKEN_EXPIRATION),
           refreshToken: refreshToken,
-          refreshTokenExpire: parseInt(
-            process.env.REFRESH_TOKEN_EXPIRATION.replace('s', ''),
-          ),
+          refreshTokenExpire: parseInt(process.env.REFRESH_TOKEN_EXPIRATION),
         },
       });
     });
@@ -232,11 +228,9 @@ export const refreshToken = (req, res) => {
       message: 'refresh token successfully',
       data: {
         token: token,
-        tokenExpire: parseInt(process.env.TOKEN_EXPIRATION.replace('s', '')),
+        tokenExpire: parseInt(process.env.TOKEN_EXPIRATION),
         refreshToken: refreshToken,
-        refreshTokenExpire: parseInt(
-          process.env.REFRESH_TOKEN_EXPIRATION.replace('s', ''),
-        ),
+        refreshTokenExpire: parseInt(process.env.REFRESH_TOKEN_EXPIRATION),
       },
     });
   } else {
@@ -253,18 +247,18 @@ export const forgotPassword = async (req, res) => {
     const user = await User.findOne({
       email: to,
     });
-    if (!user) {
+    if (!user || user.role.name === Roles.ADMIN) {
       return res.status(httpStatus.NOT_FOUND).send({
         status: apiStatus.INVALID_PARAM,
         message: 'Email is not existed!',
       });
     }
-    const newPassword = generateNewPassword();
+    const otpValue = generateOtp();
     const mailData = {
       from: process.env.MAIL_USERNAME,
       to: to,
-      subject: 'English Learning App Reset Password',
-      html: `<div><span>Your new password is </span><strong>${newPassword}</strong><span>. Please change password after logging in</span></div>`,
+      subject: 'English Learning App Verify Forgot Password',
+      html: `<div><span>Your verification code is </span><strong> E - ${otpValue}</strong><span>. Please do not share this code with anyone.</span></div>`,
     };
     transporter.sendMail(mailData, async (error, info) => {
       if (error) {
@@ -273,18 +267,23 @@ export const forgotPassword = async (req, res) => {
           message: `Error when send email: ${error.message}`,
         });
       }
-      await User.findOneAndUpdate(
-        {
-          email: user.email,
-        },
-        {
-          password: hashSync(newPassword),
-        },
-      );
+      let otp = {
+        createAt: Date.now(),
+        updateAt: Date.now(),
+        otpValue: otpValue,
+        usedOk: 0,
+        timeStart: Date.now(),
+        timeEnd: Date.now() + 120000,
+        userId: user.id,
+      };
+      await Otp.insertMany(otp);
       return res.status(httpStatus.OK).send({
         status: apiStatus.SUCCESS,
         message: 'update password and send email to user successfully',
-        data: info,
+        data: {
+          userId: user.id,
+          mailId: info.messageId,
+        },
       });
     });
   } catch (err) {
@@ -309,18 +308,18 @@ export const forgotPasswordAdmin = async (req, res) => {
             message: err.message,
           });
         }
-        if (!user || user.role.name === 'USER') {
+        if (!user || user.role.name === Roles.USER) {
           return res.status(httpStatus.NOT_FOUND).send({
             status: apiStatus.INVALID_PARAM,
             message: 'Email is not existed!',
           });
         }
-        const newPassword = generateNewPassword();
+        const otpValue = generateOtp();
         const mailData = {
           from: process.env.MAIL_USERNAME,
           to: to,
-          subject: 'English Learning App Reset Password For Admin User',
-          html: `<div><span>Your new password is </span><strong>${newPassword}</strong><span>. Please change password after logging in</span></div>`,
+          subject: 'English Learning App Verify Forgot Password',
+          html: `<div><span>Your verification code is </span><strong> E - ${otpValue}</strong><span>. Please do not share this code with anyone.</span></div>`,
         };
         transporter.sendMail(mailData, async (error, info) => {
           if (error) {
@@ -329,21 +328,66 @@ export const forgotPasswordAdmin = async (req, res) => {
               message: `Error when send email: ${error.message}`,
             });
           }
-          await User.findOneAndUpdate(
-            {
-              email: user.email,
-            },
-            {
-              password: hashSync(newPassword),
-            },
-          );
+          let otp = {
+            createAt: Date.now(),
+            updateAt: Date.now(),
+            otpValue: otpValue,
+            usedOk: 0,
+            timeStart: Date.now(),
+            timeEnd: Date.now() + 120000,
+            userId: user.id,
+          };
+          await Otp.insertMany(otp);
           return res.status(httpStatus.OK).send({
             status: apiStatus.SUCCESS,
             message: 'update password and send email to user successfully',
-            data: info,
+            data: {
+              userId: user.id,
+              mailId: info.messageId,
+            },
           });
         });
       });
+  } catch (err) {
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+};
+
+export const verifyOtp = async (req, res) => {
+  try {
+    const otpValue = req.body.otpValue;
+    const userId = req.body.userId;
+
+    const user = await User.findOne({ _id: userId });
+    if (user === null) {
+      return res.status(httpStatus.BAD_REQUEST).send({
+        status: apiStatus.DATABASE_ERROR,
+        message: 'User not found!',
+      });
+    }
+
+    const otp = await Otp.findOne({ userId: userId, otpValue: otpValue, usedOk: 0 });
+    if (otp === null) {
+      return res.status(httpStatus.UNAUTHORIZED).send({
+        status: apiStatus.AUTH_ERROR,
+        message: 'Incorrect Otp value!',
+      });
+    }
+    if (Date.now() < otp.timeEnd) {
+      await Otp.findOneAndUpdate({ _id: otp.id }, { usedOk: 1 });
+      return res.status(httpStatus.OK).send({
+        status: apiStatus.SUCCESS,
+        message: 'verify otp success!',
+        data: user,
+      });
+    }
+    return res.status(httpStatus.UNAUTHORIZED).send({
+      status: apiStatus.INVALID_PARAM,
+      message: 'Otp is expired!',
+    });
   } catch (err) {
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
       status: apiStatus.OTHER_ERROR,

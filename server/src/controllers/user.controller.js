@@ -10,7 +10,7 @@ export const getUserProfile = async (req, res) => {
   try {
     let userId = req.userId;
     let user = await User.findById(userId);
-    if (user == null) {
+    if (user === null) {
       return res.status(httpStatus.UNAUTHORIZED).send({
         status: apiStatus.AUTH_ERROR,
         message: 'Unauthorize!',

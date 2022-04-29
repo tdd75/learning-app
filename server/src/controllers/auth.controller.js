@@ -275,7 +275,7 @@ export const forgotPassword = async (req, res) => {
       }
       await User.findOneAndUpdate(
         {
-          id: user.id,
+          email: user.email,
         },
         {
           password: hashSync(newPassword),
@@ -331,7 +331,7 @@ export const forgotPasswordAdmin = async (req, res) => {
           }
           await User.findOneAndUpdate(
             {
-              id: user.id,
+              email: user.email,
             },
             {
               password: hashSync(newPassword),

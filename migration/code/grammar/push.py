@@ -17,14 +17,13 @@ df = pd.read_csv('Grammar_Speaks_Understanding_and_Using_English_Grammar.csv')
 df = df.reset_index()  
 
 for index, row in df.iterrows():
-  # if(index >4):
-  #   break
+
   print(index)
   Chapter = BeautifulSoup(row['Chapter']).text
   Title = BeautifulSoup(row['Title']).text  
   
   image = BeautifulSoup(row['Picture']).img['src']    # 4000B1_001.jpg
-  image = image.replace(".jpg","")
+  image = image.replace(".png","")
   image_local = index*2+1
   cloudinary.uploader.upload("./Grammar_Speaks_Understanding_and_Using_English_Grammar/"+ str(image_local),
                             folder= "grammar/image",

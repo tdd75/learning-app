@@ -31,3 +31,20 @@ Full Vietnamese
 
 
 ## Dữ liệu ngữ pháp - bài tập
+
+- [bai tap](https://ankiweb.net/shared/info/1354058576)
+
+```
+"Task" 
+"Answer" : dap an dung
+
+"a"    
+"b"   
+"c"   
+"d"    
+
+"comment" 
+"topic" 
+
+"level": 1-2
+```

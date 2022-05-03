@@ -16,22 +16,27 @@ collection = db['grammar-task-collection']
 df = pd.read_csv('1200_English_Grammar_Tasks_with_answer_and_explains.csv')
 df = df.reset_index()  
 
-print(df)
 
 for index, row in df.iterrows():
-  # if(index >4):
-  #   break
+
   print(index)
-  Task = BeautifulSoup(row['Task']).text
-  Title = BeautifulSoup(row['Title']).text  
 
+  ex_json = {
+        "Task" : row['Task'], 
+        "Answer" : row['Answer'],    
 
-  gm_json = {
-        "Chapter" : Chapter, 
-        "Title" : Title,    
+        "a" : row['a'],    
+        "b" : row['b'],    
+        "c" : row['c'],    
+        "d" : row['d'],    
+
+        "comment" : row['comment'],
+        "topic" : row['topic'],
+
+        "level" : row['level']
         
     }
-  collection.insert_one(gm_json)
+  collection.insert_one(ex_json)
 
 
 myclient_need_close.close()

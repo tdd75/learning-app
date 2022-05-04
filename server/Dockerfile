@@ -8,6 +8,8 @@ RUN yarn
 
 RUN mkdir src
 
+COPY ./.env ./.env
+
 COPY ./src ./src
 
 EXPOSE 8091

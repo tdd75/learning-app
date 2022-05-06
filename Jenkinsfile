@@ -16,7 +16,7 @@ pipeline{
             
         stage('Build'){
             steps{
-                docker.withRegistry('', 'tdd75-dockerhub') {
+                withDockerRegistry(credentialsId: 'tdd75-dockerhub') {
                     
                     echo 'start build ...'
 

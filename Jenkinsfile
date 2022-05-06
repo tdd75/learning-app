@@ -16,10 +16,14 @@ pipeline{
             
         stage('Build'){
             steps{
+                docker.withRegistry('', 'tdd75-dockerhub') {
                     
                     echo 'start build ...'
 
                     sh 'docker-compose build'
+                    sh 'docker-compose push'
+
+                }
             }
         }
             

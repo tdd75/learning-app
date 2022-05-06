@@ -16,10 +16,13 @@ pipeline{
             
         stage('Build'){
             steps{
-                echo 'start build ...'
+                withDockerRegistry(credentialsId: 'tdd75-dockerhub', url: 'https://index.docker.io/v1/') {
+                    
+                    echo 'start build ...'
 
-                sh 'docker-compose build'
-                sh 'docker-compose push'
+                    sh 'docker-compose build'
+                    sh 'docker-compose push'
+                }
             }
         }
             

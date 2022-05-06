@@ -18,9 +18,8 @@ pipeline{
             steps{
                     
                     echo 'start build ...'
-                    sh 'docker login'
+
                     sh 'docker-compose build'
-                    sh 'docker-compose push'
             }
         }
             

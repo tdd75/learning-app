@@ -15,5 +15,7 @@
 # vendor/
 
 **/node_modules
-
+**/chatbot/actions/__pycache__
+**/chatbot/.rasa
+**/chatbot/models
 **/migration/data/

@@ -35,11 +35,11 @@ export const generateNewPassword = () => {
 };
 
 export const generateOtp = () => {
-  let otpValue = "";
+  let otpValue = '';
   const otpLength = 6;
-  for(let i = 0; i < otpLength; i++){
-    const rand = Math.floor(Math.random()*numberCharSet.length);
+  for (let i = 0; i < otpLength; i++) {
+    const rand = Math.floor(Math.random() * numberCharSet.length);
     otpValue = otpValue.concat(numberCharSet.charAt(rand));
   }
   return otpValue;
-}
+};

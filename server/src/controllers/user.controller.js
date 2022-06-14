@@ -1,6 +1,7 @@
 import { httpStatus, apiStatus } from '../constants/index.js';
 import CustomError from '../error/custom.error.js';
 import UserService from '../service/user.service.js';
+
 /**
  * Get User Profile for user with ADMIN and USER role
  * @param {Header: Authorization} req

@@ -41,7 +41,7 @@ export const register = async (req, res) => {
           password: hashSync(req.body.password),
           firstName: req.body.firstName,
           lastName: req.body.lastName,
-          role: userRole._id,
+          roleId: userRole._id,
         });
 
         //add user to database

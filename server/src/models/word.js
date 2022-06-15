@@ -35,6 +35,16 @@ const WordSchema = new mongoose.Schema(
     fullVietnamese: {
       type: String,
     },
+    createdAt: {
+      type: Date,
+      default: Date.now(),
+      required: true,
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now(),
+      required: true,
+    },
   },
   {
     versionKey: false,

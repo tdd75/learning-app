@@ -16,6 +16,16 @@ const GrammarSchema = new mongoose.Schema(
     image: {
       type: String,
     },
+    createdAt: {
+      type: Date,
+      default: Date.now(),
+      required: true,
+    },
+    updatedAt: {
+        type: Date,
+        default: Date.now(),
+        required: true,
+    }
   },
   {
     versionKey: false,

@@ -6,12 +6,12 @@ const OtpSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    createAt: {
+    createdAt: {
       type: Date,
       default: Date.now(),
       required: true,
     },
-    updateAt: {
+    updatedAt: {
       type: Date,
       default: Date.now(),
       required: true,

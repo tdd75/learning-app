@@ -44,7 +44,7 @@ export const isAdmin = async (req, res, next) => {
         message: err,
       });
     }
-    Role.findById(user.role).exec((err, role) => {
+    Role.findById(user.roleId).exec((err, role) => {
       if (err) {
         return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
           status: apiStatus.OTHER_ERROR,

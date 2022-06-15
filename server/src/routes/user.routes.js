@@ -17,5 +17,5 @@ userRoutes.post('/api/v1/user/login', validateLogin, signin);
 userRoutes.post('/api/v1/user/refresh-token', refreshToken);
 userRoutes.get('/api/v1/user/auth/profile', [verifyToken], getUserProfile);
 userRoutes.post('/api/v1/user/forgot-password', forgotPassword);
-userRoutes.post("/api/v1/user/verify-otp",verifyOtp)
+userRoutes.post('/api/v1/user/verify-otp', verifyOtp);
 export default userRoutes;

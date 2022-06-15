@@ -22,12 +22,39 @@ const UserSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    role: {
+    roleId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Role',
+      required: true
     },
     avatarUrl: {
       type: String,
+      default: 'avt_default.png',
+    },
+    progressVocabulary: {
+      type: mongoose.Schema.Types.Array,
+      required: true,
+      default: []
+    },
+    progressGrammar: {
+      type: mongoose.Schema.Types.Array,
+      required: true,
+      default: []
+    },
+    progressGrammarTask: {
+      type: mongoose.Schema.Types.Array,
+      required: true,
+      default: []
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now(),
+      required: true,
+    },
+    updatedAt: {
+      type: Date,
+      default: Date.now(),
+      required: true,
     },
   },
   {

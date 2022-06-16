@@ -90,7 +90,7 @@ export const signin = async (req, res) => {
     }
 
     //check role existed
-    if (user.role.name === Roles.ADMIN) {
+    if (user.roleId.name === Roles.ADMIN) {
       return res.status(httpStatus.FORBIDDEN).send({
         status: apiStatus.AUTH_ERROR,
         message: 'USER role is allowed only!',

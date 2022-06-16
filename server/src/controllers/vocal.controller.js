@@ -9,7 +9,6 @@ import UserService from '../service/word.service.js';
  */
 export const getAllVol = async (req, res) => {
   try {
-
     let limit = req.query.limit;
     let offset = req.query.offset;
 

@@ -31,14 +31,14 @@ const GrammarTaskSchema = new mongoose.Schema(
       required: true,
     },
     updatedAt: {
-        type: Date,
-        default: Date.now(),
-        required: true,
-    }
+      type: Date,
+      default: Date.now(),
+      required: true,
+    },
   },
   {
     versionKey: false,
-    collection: 'grammar_tasks'
+    collection: 'grammar_tasks',
   },
 );
 

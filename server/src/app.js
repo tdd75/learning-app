@@ -4,6 +4,8 @@ import 'dotenv/config';
 import userRoutes from './routes/user.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import vocalRouter from './routes/vocal.routes.js';
+import grammarRoutes from './routes/grammar.routes.js';
+import grammarTaskRoutes from './routes/grammarTask.routes.js';
 const app = express();
 
 app.use(express.json());
@@ -11,7 +13,9 @@ app.use(express.json());
 //routes
 app.use(userRoutes);
 app.use(adminRoutes);
-app.use(vocalRouter)
+app.use(vocalRouter);
+app.use(grammarRoutes);
+app.use(grammarTaskRoutes);
 
 const PORT = process.env.SERVER_PORT || 8091;
 

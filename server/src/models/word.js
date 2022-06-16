@@ -51,5 +51,7 @@ const WordSchema = new mongoose.Schema(
   },
 );
 
+// Biên dịch mô hình từ schema ('collection name', schema )
 const Word = mongoose.model('Word', WordSchema);
+
 export default Word;

@@ -14,11 +14,17 @@ export const getAllVol = async (req, res) => {
     let offset = req.query.offset;
 
     let word = await UserService.findWordPaging(limit, offset);
+    let totalPage = await UserService.countTotalPage(limit);
+
+    let dataReturn = {
+      "words": word,
+      "totalPage" : totalPage
+    }
 
     return res.status(httpStatus.OK).send({
       status: apiStatus.SUCCESS,
-      message: 'ok nha ae ',
-      data: word,
+      message: 'Get list word successfuly ',
+      data: dataReturn,
     });
   } catch (err) {
     if (err instanceof CustomError) {

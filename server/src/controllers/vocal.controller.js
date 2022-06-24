@@ -43,6 +43,43 @@ export const getAllVol = async (req, res) => {
 };
 
 /**
+ * Get All Volcabulary by topic
+ * @param {Object} res response API
+ * @returns status API + message + data
+ */
+ export const getVolByTopic = async (req, res) => {
+
+  try {
+
+    let topic = req.query.topicId; 
+
+    let word = await WordService.findByTopic(topic);
+
+    let dataReturn = {
+      "words": word
+    }
+
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: 'Get list word by topic successfuly ',
+      data: dataReturn,
+    });
+
+  } catch (err) {
+    if (err instanceof CustomError) {
+      return res.status(err.httpStatus).send({
+        status: err.apiStatus,
+        message: err.message,
+      });
+    }
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+};
+
+/**
  * Get Process list vol for USER role
  * @param {Header: Authorization} req
  * @param {Object} res response API

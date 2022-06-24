@@ -39,12 +39,21 @@ WordService.findWordPaging = async (limit, offset) => {
   return word;
 };
 
-WordService.countTotalPage  = async (limit) => {
+WordService.findByTopic = async (topic) => {
 
+  let word = await Word.where("topic").equals(topic)
+    
+  if (!word) {
+    throw new CustomError(httpStatus.NOT_FOUND, apiStatus.DATABASE_ERROR, `Find by topic err`);
+  }
+
+  return word;
+};
+
+WordService.countTotalPage  = async (limit) => {
 
   // ví dụ đây k bất đồng bộ thì sao ?
   let count = await Word.countDocuments({
-    
   })
 
   if (!count) {

@@ -21,11 +21,6 @@ WordService.findWordById = async (wordId) => {
   return word;
 };
 
-/**
- * viết này cho chỉ export dc hàm này ra thôi
- * @param {*} wordId
- * @returns
- */
 WordService.findWordPaging = async (limit, offset) => {
   const pageOptions = {
     page: parseInt(offset, 10) || 0,
@@ -41,6 +36,21 @@ WordService.findWordPaging = async (limit, offset) => {
   }
 
   return word;
+};
+
+WordService.countTotalPage  = async (limit) => {
+
+
+  // ví dụ đây k bất đồng bộ thì sao ?
+  let count = await Word.countDocuments({
+    
+  })
+
+  if (!count) {
+    throw new CustomError(httpStatus.NOT_FOUND, apiStatus.DATABASE_ERROR, `Count all word err`);
+  }
+
+  return count/limit;
 };
 
 export default WordService;

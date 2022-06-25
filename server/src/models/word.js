@@ -35,6 +35,9 @@ const WordSchema = new mongoose.Schema(
     fullVietnamese: {
       type: String,
     },
+    topic: {
+      type: Number,
+    },
     createdAt: {
       type: Date,
       default: Date.now(),

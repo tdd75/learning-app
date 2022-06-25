@@ -5,6 +5,7 @@ import { User } from '../models/index.js';
 const UserService = {};
 
 UserService.findUserById = async (userId) => {
+
   let user = await User.findById(userId);
   if (!user) {
     throw new CustomError(
@@ -14,6 +15,7 @@ UserService.findUserById = async (userId) => {
     );
   }
   return user;
+
 };
 
 UserService.findUserByEmail = async (email) => {

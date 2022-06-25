@@ -22,7 +22,6 @@ WordService.findWordById = async (wordId) => {
 };
 
 WordService.findWordPaging = async (limit, offset) => {
-
   const pageOptions = {
     page: parseInt(offset, 10) || 0,
     limit: parseInt(limit, 10) || 10,

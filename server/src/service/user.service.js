@@ -17,7 +17,7 @@ UserService.findUserById = async (userId) => {
 };
 
 UserService.findUserByEmail = async (email) => {
-  let user = await User.findOne({ email: email }).populate('role');
+  let user = await User.findOne({ email: email }).populate('roleId');
   if (!user) {
     throw new CustomError(
       httpStatus.NOT_FOUND,
@@ -36,7 +36,18 @@ UserService.addUSer = async (user) => {
         apiStatus.DATABASE_ERROR,
         `Error when save user: ${err.message}`,
       );
-    } else return user;
+    } else {
+      user.password = '';
+      return user;
+    }
   });
+};
+
+UserService.updateUser = async (user) => {
+  let rsUser = await User.findOneAndUpdate({ _id: user._id }, user, {
+    returnOriginal: false,
+  });
+  rsUser.password = '';
+  return rsUser;
 };
 export default UserService;

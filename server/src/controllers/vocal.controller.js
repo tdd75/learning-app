@@ -11,7 +11,6 @@ import UserService from '../service/user.service.js';
  */
 export const getAllVol = async (req, res) => {
   try {
-
     let limit = req.query.limit;
     let offset = req.query.offset;
 

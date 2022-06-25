@@ -4,6 +4,7 @@ import 'dotenv/config';
 import userRoutes from './routes/user.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import vocalRouter from './routes/vocal.routes.js';
+import homeRouter from './routes/home.routes.js';
 const app = express();
 
 app.use(express.json());
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use(userRoutes);
 app.use(adminRoutes);
 app.use(vocalRouter)
+app.use(homeRouter)
 
 const PORT = process.env.SERVER_PORT || 8091;
 

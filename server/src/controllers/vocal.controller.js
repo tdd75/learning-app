@@ -84,18 +84,23 @@ export const getAllVol = async (req, res) => {
  * @param {Object} res response API
  * @returns status API + message + page index process (600 word -> /10 topic. 60 word by topic)
  */
-export const getVolProcess = async (req, res) => {
+export const getDoneTopic = async (req, res) => {
   try {
+
+
     let userId = req.userId;
+    let topicDone = req.query.topicId
     let user = await UserService.findUserById(userId);
 
-    console.log(user.getVolProcess)
+    // drop duplicate
+    let currentProcess = Array.from(user.progressVocabulary)
 
     return res.status(httpStatus.OK).send({
       status: apiStatus.SUCCESS,
-      message: 'get user information successfully!',
-      data: user,
+      message: 'get vol process successfully!',
+      data: currentProcess,
     });
+
   } catch (err) {
     if (err instanceof CustomError) {
       return res.status(err.httpStatus).send({
@@ -109,3 +114,102 @@ export const getVolProcess = async (req, res) => {
   });
   }
 };
+
+
+/**
+ * mark a topic done
+ * @param {Header: Authorization} req
+ * @param {Object} res response API
+ * @returns status API + message
+ */
+ export const markDoneTopic = async (req, res) => {
+  try {
+
+    // get info 
+    let userId = req.userId;
+    let topicDone = req.query.topicId
+    let user = await UserService.findUserById(userId);
+
+    // drop duplicate
+    let currentProcess = Array.from(user.progressVocabulary)  // user.progressVocabulary is object
+    var setcurrentProcess = new Set(currentProcess);
+    setcurrentProcess.add(parseInt(topicDone))
+   
+
+    // update
+    user.progressVocabulary =  Array.from(setcurrentProcess)
+    let userUpdate = await UserService.updateUser(user)
+
+    // return
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: 'update vol process successfully!',
+      data: userUpdate,
+    });
+
+  } catch (err) {
+
+    console.log(err)
+
+    if (err instanceof CustomError) {
+      return res.status(err.httpStatus).send({
+        status: err.apiStatus,
+        message: err.message,
+      });
+    }
+
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      // message: err.message,
+    });
+  }
+};
+
+
+/**
+ * unmark a topic done
+ * @param {Header: Authorization} req
+ * @param {Object} res response API
+ * @returns status API + message
+ */
+ export const unMarkTopic = async (req, res) => {
+  try {
+
+    let userId = req.userId;
+    let topicDone = req.query.topicId
+    let user = await UserService.findUserById(userId);
+
+    // drop duplicate
+    let currentProcess = Array.from(user.progressVocabulary)
+    var setcurrentProcess = new Set(currentProcess);
+    setcurrentProcess.delete(parseInt(topicDone)) 
+
+
+    // update
+    user.progressVocabulary =  Array.from(setcurrentProcess)
+    let userUpdate = await UserService.updateUser(user) 
+
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: 'update vol process successfully!',
+      data: userUpdate,
+    });
+
+  } catch (err) {
+
+    console.log(err)
+
+    if (err instanceof CustomError) {
+      return res.status(err.httpStatus).send({
+        status: err.apiStatus,
+        message: err.message,
+      });
+    }
+
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+};
+

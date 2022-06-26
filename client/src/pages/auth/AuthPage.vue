@@ -1,10 +1,8 @@
 <template>
-  <HomeBanner />
+  <div class="auth-page"></div>
 </template>
 
 <script lang="ts" setup>
-import HomeBanner from './components/HomeBanner.vue';
-
 
 </script>
 

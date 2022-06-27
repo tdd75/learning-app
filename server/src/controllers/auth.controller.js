@@ -166,7 +166,7 @@ export const signinAdmin = async (req, res) => {
         message: 'Incorrect password!',
       });
     }
-    if (user.role.name === Roles.USER) {
+    if (user.roleId.name === Roles.USER) {
       return res.status(httpStatus.FORBIDDEN).send({
         status: apiStatus.AUTH_ERROR,
         message: 'ADMIN role is allowed only!',
@@ -201,6 +201,9 @@ export const signinAdmin = async (req, res) => {
       },
     });
   } catch (err) {
+
+    console.log(err)
+
     if (err instanceof CustomError) {
       return res.status(err.httpStatus).send({
         status: err.apiStatus,
@@ -250,7 +253,7 @@ export const forgotPassword = async (req, res) => {
   try {
     const to = req.body.to;
     let user = await UserService.findUserByEmail(to);
-    if (!user || user.role.name === Roles.ADMIN) {
+    if (!user || user.roleId.name === Roles.ADMIN) {
       return res.status(httpStatus.NOT_FOUND).send({
         status: apiStatus.INVALID_PARAM,
         message: 'Email is not existed!',

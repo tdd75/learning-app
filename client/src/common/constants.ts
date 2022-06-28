@@ -2,6 +2,9 @@ export const enum PageName {
   HOME_PAGE = 'HomePage',
   LOGIN_PAGE = 'LoginPage',
   REGISTER_PAGE = 'RegisterPage',
+  VOCABULARY_PAGE = 'VocabularyPage',
+  GRAMMAR_PAGE = 'GrammarPage',
+  DIALOGUE_PAGE = 'DialoguePage',
 }
 
 export const enum SUPPORT_LANGUAGE {

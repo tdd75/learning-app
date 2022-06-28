@@ -57,9 +57,9 @@ const { t } = useI18n()
   .description {
     width: 50vw;
     margin-bottom: 6vh;
-    color: $color-white;
     font-size: 32px;
     font-weight: 500;
+    color: $color-white;
   }
 
   .button-start-now {

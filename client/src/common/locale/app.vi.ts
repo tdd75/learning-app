@@ -1,5 +1,13 @@
 export const app = {
-  title: 'learn4U',
+  title: {
+    default: 'Học tiếng Anh cùng Chatbot - learn4U',
+    home: 'Trang chủ - learn4U',
+    login: 'Đăng nhập - learn4U',
+    register: 'Đăng ký - learn4U',
+    vocabulary: 'Từ vựng - learn4U',
+    garmmar: 'Ngữ pháp - learn4U',
+    dialogue: 'Hội thoại - learn4U',
+  },
   header: {
     navigations: {
       home: 'Trang chủ',

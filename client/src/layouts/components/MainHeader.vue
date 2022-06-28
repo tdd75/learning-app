@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div class="main-header d-flex justify-content-between align-items-center">
+  <div class="container-fluid">
+    <div class="main-header container d-flex justify-content-between align-items-center">
       <div class="logo d-flex align-items-center">
         <router-link class="router-link" :to="{
           name: PageName.HOME_PAGE
@@ -20,14 +20,14 @@
           <router-link class="router-link" :to="{
             name: PageName.LOGIN_PAGE
           }">
-            <el-button class="button-login d-flex justify-content-center align-items-center">
+            <el-button class="button-login">
               {{ t('app.header.auth.login') }}
             </el-button>
           </router-link>
           <router-link class="router-link" :to="{
             name: PageName.REGISTER_PAGE
           }">
-            <el-button class="button-register d-flex justify-content-center align-items-center">
+            <el-button class="button-register">
               {{ t('app.header.auth.register') }}
             </el-button>
           </router-link>
@@ -53,25 +53,29 @@ const navigationList = [
   {
     title: t('app.header.navigations.vocabulary'),
     to: {
-      name: PageName.HOME_PAGE
+      name: PageName.VOCABULARY_PAGE
     }
   },
   {
     title: t('app.header.navigations.grammar'),
     to: {
-      name: PageName.HOME_PAGE
+      name: PageName.GRAMMAR_PAGE
     }
   },
   {
     title: t('app.header.navigations.dialogue'),
     to: {
-      name: PageName.HOME_PAGE
+      name: PageName.DIALOGUE_PAGE
     }
   }
 ];
 </script>
 
 <style lang="scss" scoped>
+.container-fluid {
+  border-bottom: 2px solid $color-grey;
+}
+
 .main-header {
   height: fit-content;
   padding-top: 12px;
@@ -83,7 +87,7 @@ const navigationList = [
 
   img {
     width: auto;
-    height: 20px;
+    height: 28px;
   }
 }
 

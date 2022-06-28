@@ -19,6 +19,7 @@ intents:
 - agent_good
 - agent_happy
 - agent_hungry
+- agent_knowledge
 - agent_marry_user
 - agent_my_friend
 - agent_occupation
@@ -30,6 +31,7 @@ intents:
 - agent_sure
 - agent_talk_to_me
 - agent_there
+- agent_translate
 - appraisal_bad
 - appraisal_good
 - appraisal_no_problem
@@ -48,6 +50,7 @@ intents:
 - emotions_ha_ha
 - emotions_wow
 - greetings_bye
+- greetings_capable_of
 - greetings_goodevening
 - greetings_goodmorning
 - greetings_goodnight
@@ -57,6 +60,7 @@ intents:
 - greetings_nice_to_see_you
 - greetings_nice_to_talk_to_you
 - greetings_whatsup
+- nlu_fallback
 - user_angry
 - user_back
 - user_bored
@@ -84,8 +88,11 @@ intents:
 - user_wants_to_see_agent_again
 - user_wants_to_talk
 - user_will_be_back
-
 responses:
+  utter_error:
+  - text: sorry, please try again, sorry if i can't understand you, i will keep improving
+  utter_greetings_capable_of:
+  - text: "i can talk with you, and translate any thing you ask me, like: what is the meaning of: 'your sentence'"
   utter_agent_acquaintance:
   - text: I'm a conversational app.
   - text: I'm a virtual being, not a real person.
@@ -439,12 +446,30 @@ responses:
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
-
 actions:
-- action_hello_world
+- action_knowledge
+- action_translate
+- action_translate_user
+- utter_agent_acquaintance
+- utter_agent_age
+- utter_agent_annoying
+- utter_agent_bad
+- utter_agent_beautiful
+- utter_agent_clever
+- utter_appraisal_thank_you
 - utter_emotions_ha_ha
+- utter_emotions_wow
+- utter_error
 - utter_greetings_bye
+- utter_greetings_capable_of
 - utter_greetings_hello
 - utter_greetings_how_are_you
+- utter_greetings_nice_to_meet_you
 - utter_user_happy
+- utter_user_has_birthday
+- utter_user_loves_agent
+- utter_user_testing_agent
 - utter_user_wants_to_talk
+entities:
+- question
+- sent

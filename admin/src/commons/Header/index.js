@@ -15,7 +15,7 @@ const Header = () => {
 		<div className={cx("header")}>
 			<div className={cx("top")}>
 				<img src={logo} alt="logo" width={100} onClick={() => history.push("/")}/>
-				<div>Go to user page</div>
+				<div>Hello</div>
 			</div>
 			{location.pathname === "/login" || !token ? (<></>) : (
 				<div className={cx("container")}>

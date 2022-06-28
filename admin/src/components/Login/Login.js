@@ -4,6 +4,9 @@ import cn from "classnames/bind";
 import logo from "../../images/logo_no_bgr.png";
 import { Form, Input, Checkbox, Button, Divider, message } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
+
+// react-router-dom là thư viện giúp cho việc điều hướng url tới các component
+// useHisrtory được sử dụng để thay đổi url, ví dụ như khi bạn đang ở mà hình login chẳng hạn, \users\login, sau khi đã authen xong thì cần redirect tới màn dashboard
 import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import { URL } from '../../consts';
@@ -17,7 +20,7 @@ const Login = () => {
 	const onFinish = async (values) => {
 		console.log('Success:', values);
 		const data = {
-			"username": values.username,
+			"email": values.username,
 			"password": values.password,
 		}
 
@@ -26,7 +29,7 @@ const Login = () => {
 			if (res.status === 200) {
 				window.localStorage.setItem("token-lingo-admin", res.data.token);
 				window.localStorage.setItem("username-admin", res.data.username);
-				history.push("/");
+				history.push("/manage-vocab");
 				window.location.reload();
 			}
 		} catch (err) {

@@ -18,46 +18,29 @@ import { useParams } from "react-router-dom";
 
 const cx = cn.bind(styles);
 
-const VocabLessonDetail = () => {
-	const location = useLocation();
+const VocabLessonDetail = () => { 
+
+	// [tên, function]
 	const [lessonDetail, setLessonDetail] = useState();
 	const history = useHistory();
-	const [word, setWord] = useState();
-	const [isModalCreate, setIsModalCreate] = useState(false);
-	const [isModalEdit, setIsModalEdit] = useState(false);
+	const [word, setWord] = useState(); 
 	const [form] = Form.useForm();
-	const [isModalDelete, setIsModalDelete] = useState(false);
-	const [lessonInfo, setLessonInfo] = useState();
-	const { id } = useParams();
+	const [isModalDelete, setIsModalDelete] = useState(false); 
 	const [loading, setLoading] = useState(true);
 
+	// hàm sẽ được gọi mỗi khi có gì đó ảnh hưởng đến components của bạn.
 	useEffect(() => form.resetFields(), [word]);
 
 	useEffect(() => {
-		getLessonById();
-	}, [id]);
-
-	useEffect(() => {
 		getLessonDetail();
-	}, [lessonInfo]);
-
-	const getLessonById = async () => {
-		try {
-			const res = await axios.get(`${URL}/api/Admin/GetLesson/${id}`, { headers });
-			if (res.status === 200) {
-				setLessonInfo(res.data);
-			}
-		} catch (err) {
-			console.log(err);
-		}
-	}
+	}, [word]); // only return when lessonInfo change 
 
 	const getLessonDetail = async () => {
 		setLoading(true);
 		try {
-			const res = await axios.get(`${URL}/api/Lesson/GetLessonContent/2/${lessonInfo?.lessonCode}`, { headers });
-			if (res.status === 200) {
-				setLessonDetail(res.data);
+			let res = await axios.get(`${URL}/user/vocal/topic?topicId=2`);
+			if (res.status === 200) { 
+				setLessonDetail(res.data.data.words);
 				setLoading(false);
 			}
 		} catch (err) {
@@ -83,12 +66,9 @@ const VocabLessonDetail = () => {
 	return (
 		<Layout>
 			<div className={cx("detail-page")}>
-				<div className={cx("top")}>
-					<div className={cx("title")}>{lessonInfo?.name}</div>
-					<Search />
-				</div>
+				 
 
-				<div className={cx("create")} onClick={() => history.push(`/manage-vocab/${lessonInfo?.lessonId}/add-vocab`)}>
+				<div className={cx("create")} onClick={() => history.push(`/manage-vocab/ /add-vocab`)}>
 					<PlusCircleOutlined /> Add new Vocabulary
 				</div>
 
@@ -101,20 +81,26 @@ const VocabLessonDetail = () => {
 						<Col span={4}>Suggestion</Col>
 						<Col span={4}></Col>
 					</Row>
+ 
 					{!loading ? lessonDetail?.map((item, id) => (
+						
+						
 						<div key={id}>
 							{
 								!lessonDetail?.length && (<div style={{ padding: '20px', textAlign: 'center' }}>No data</div>)
 							}
+
+							
+
 							<Row
 								className={cx("table-body")}
 							>
 								<Col span={2} style={{ textAlign: 'center' }}>{id + 1}</Col>
 								<Col span={4}>
-									<span dangerouslySetInnerHTML={{ __html: item.name }} />
+									<span dangerouslySetInnerHTML={{ __html: item.keyword }} />
 								</Col>
 								<Col span={6}>
-									<audio id={`audio${id}`} src={item.audioUrl}>
+									<audio id={`audio${id}`} src={item.sound}>
 									</audio>
 									<img
 										src={sound}
@@ -128,10 +114,10 @@ const VocabLessonDetail = () => {
 									<span dangerouslySetInnerHTML={{ __html: item.transcription }} />
 								</Col>
 								<Col span={4}>
-									<span dangerouslySetInnerHTML={{ __html: item.meaning }} />
+									<span dangerouslySetInnerHTML={{ __html: item.shortDesc }} />
 								</Col>
 								<Col span={4}>
-									<span dangerouslySetInnerHTML={{ __html: item.suggestion }} />
+									<span dangerouslySetInnerHTML={{ __html: item.suggest }} />
 								</Col>
 								<Col span={4}>
 									<div className={cx("group-button")}>
@@ -140,7 +126,7 @@ const VocabLessonDetail = () => {
 											onClick={() => {
 												setWord(item)
 												history.push({
-													pathname: `/manage-vocab/${item.lessonId}/edit-vocab`,
+													pathname: `/manage-vocab/${item.topic}/edit-vocab`,
 													state: {word: item}
 												})
 											}}>

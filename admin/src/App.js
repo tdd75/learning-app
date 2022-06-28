@@ -6,8 +6,7 @@ import {
 	Switch,
 	Route,
 	Link
-} from "react-router-dom"; 
-import Vocab from './components/Vocab'; 
+} from "react-router-dom";  
 import Login from './components/Login/Login';
 import VocabLessonDetail from './components/Vocab/VocabLessonDetail/VocabLessonDetail';
 import AddVocab from './components/Vocab/AddVocab/AddVocab';
@@ -17,13 +16,13 @@ function App() {
 	return (
 		<Router>
 			<Switch>
-				<Route exact path="/manage-vocab">
+				{/* <Route exact path="/manage-vocab">
 					<Vocab />
-				</Route>
+				</Route> */}
 				<Route path="/login">
 					<Login />
 				</Route>
-				<Route exact path="/manage-vocab/:id">
+				<Route exact path="/manage-vocab">
 					<VocabLessonDetail />
 				</Route>
 				<Route path="/manage-vocab/:id/add-vocab">

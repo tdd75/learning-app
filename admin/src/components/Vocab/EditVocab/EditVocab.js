@@ -22,16 +22,15 @@ const EditVocab = () => {
 
 	const [formData, setFormData] = useState({
 		"id": word._id,
-		"name": word.name,
-		"suggestion": word.suggestion,
+		"keyword": word.keyword,
+		"suggest": word.suggest,
 		"transcription": word.transcription,
-		"meaning": word.meaning,
-		"fullMeaning": word.fullMeaning,
+		"shortDesc": word.shortDesc,
+		"fullVietnamese": word.fullVietnamese,
 		"explanation": word.explanation,
-		"imageUrl": word.imageUrl,
-		"audioUrl": word.audioUrl,
-		"lessonCode": word.lessonCode,
-		"lessonId": word.lessonId,
+		"image": word.image,
+		"audio": word.audio, 
+		"topic": word.topic,
 	});
 
 	const handleEditVocab = async () => {
@@ -41,11 +40,11 @@ const EditVocab = () => {
 			const token = window.localStorage.getItem("token-lingo-admin");
 			const headers = { Authorization: `Bearer ${token}` };
 
-			const res = await axios.put(`${URL}admin/vocal?volId=${formData.id}`, formData, { headers });
+			const res = await axios.put(`${URL}/admin/vocal?volId=${formData.id}`, formData, { headers });
 			if (res.status === 200) {
 				console.log(res);
-				history.push(`/manage-vocab`);
-				window.location.reload();
+				history.push(`/manage-vocab/show`);
+				// window.location.reload();
 			}
 		} catch (err) {
 			console.log(err);
@@ -69,7 +68,7 @@ const EditVocab = () => {
 		}).then((response) => {
 
 			console.log('push anh nhe ', response);
-			setFormData({ ...formData, imageUrl: response.data.url });
+			setFormData({ ...formData, imageUrl: response.data.cdn_url });
 			setLoading({ ...loading, image: false });
 
 		}).catch((error) => {
@@ -93,7 +92,7 @@ const EditVocab = () => {
 			headers
 		}).then((response) => {
 			console.log(response);
-			setFormData({ ...formData, audioUrl: response.data.url });
+			setFormData({ ...formData, audioUrl: response.data.cdn_url });
 			setLoading({ ...loading, audio: false });
 		}).catch((error) => {
 			console.log(error);
@@ -114,7 +113,7 @@ const EditVocab = () => {
 								<input
 									defaultValue={word.keyword}
 									className={cx("input")}
-									onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+									onChange={(e) => setFormData({ ...formData, keyword: e.target.value })}
 								/>
 							</div>
 
@@ -134,7 +133,7 @@ const EditVocab = () => {
 									defaultValue={word.shortDesc}
 									placeholder='e.g. Công nghệ'
 									className={cx("input")}
-									onChange={(e) => setFormData({ ...formData, meaning: e.target.value })}
+									onChange={(e) => setFormData({ ...formData, shortDesc: e.target.value })}
 								/>
 							</div>
 
@@ -145,7 +144,7 @@ const EditVocab = () => {
 									defaultValue={word.fullVietnamese}
 									placeholder='e.g.Công nghệ'
 									className={cx("input")}
-									onChange={(e) => setFormData({ ...formData, fullMeaning: e.target.value })}
+									onChange={(e) => setFormData({ ...formData, fullVietnamese: e.target.value })}
 									rows={10}
 								/>
 							</div>
@@ -159,7 +158,7 @@ const EditVocab = () => {
 									defaultValue={word.suggest}
 									placeholder='e.g. T_ _h_ ol_ _y'
 									className={cx("input")}
-									onChange={(e) => setFormData({ ...formData, suggestion: e.target.value })}
+									onChange={(e) => setFormData({ ...formData, suggest: e.target.value })}
 								/>
 							</div>
 
@@ -189,7 +188,7 @@ const EditVocab = () => {
 								/>
 								<div>
 									{loading.image ? <Spin style={{ marginTop: '20px' }} /> : (
-										<img src={formData.imageUrl} alt="vocab" width={80} className={cx("box-img")} />
+										<img src={formData.image} alt="vocab" width={80} className={cx("box-img")} />
 									)}
 								</div>
 							</div>
@@ -204,7 +203,7 @@ const EditVocab = () => {
 								/>
 								<div style={{ marginTop: '20px' }}>
 									{loading.audio ? <Spin /> : (
-									<audio controls src={formData.audioUrl}>
+									<audio controls src={formData.audio}>
 									</audio>
 								)}
 								</div>

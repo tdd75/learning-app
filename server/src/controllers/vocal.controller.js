@@ -296,8 +296,8 @@ export const getAllTopicWithProcess = async (req, res) => {
 
     let userId = req.userId;
 
-    let limit =  parseInt(req.query.limit)
-    let offset = req.query.offset
+    let offset=  parseInt(req.query.offset, 10) || 0
+    let limit=  parseInt(req.query.limit, 10) || 10
 
     let topicProcessObj = await WordService.getAllTopicWithProcess(userId);
 

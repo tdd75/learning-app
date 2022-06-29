@@ -17,45 +17,47 @@ GrammarTaskService.findGrammarTaskById = async (grammarTaskId) => {
 };
 
 GrammarTaskService.getListTaskTopic = async () => {
-  let listTopic = await GrammarTask.find().select({topic: 1}).distinct('topic');
+  let listTopic = await GrammarTask.find().select({ topic: 1 }).distinct('topic');
   return listTopic;
-}
+};
 
 GrammarTaskService.addGrammarTask = async (grammarTaskRequest) => {
   await grammarTaskRequest.save((err, grammarTask) => {
-    if(err){
+    if (err) {
       throw new CustomError(
         httpStatus.INTERNAL_SERVER_ERROR,
         apiStatus.DATABASE_ERROR,
-        `Error when save grammar task: ${err.message}`
-      )
+        `Error when save grammar task: ${err.message}`,
+      );
     }
     return grammarTask;
   });
   return grammarTaskRequest;
-}
+};
 
 GrammarTaskService.updateGrammarTask = async (request, grammarTaskId) => {
-  let updateTask = await GrammarTask.findByIdAndUpdate(grammarTaskId, request, {new: true});
-  if(!updateTask){
+  let updateTask = await GrammarTask.findByIdAndUpdate(grammarTaskId, request, {
+    new: true,
+  });
+  if (!updateTask) {
     throw new CustomError(
       httpStatus.INTERNAL_SERVER_ERROR,
       apiStatus.DATABASE_ERROR,
-      `Did not find task with id: ${grammarTaskId}`
-    )
+      `Did not find task with id: ${grammarTaskId}`,
+    );
   }
   return updateTask;
-}
+};
 
 GrammarTaskService.deleteGrammarTask = async (grammarTaskId) => {
   let deleteTask = await GrammarTask.findByIdAndDelete(grammarTaskId);
-  if(!deleteTask){
+  if (!deleteTask) {
     throw new CustomError(
       httpStatus.INTERNAL_SERVER_ERROR,
       apiStatus.DATABASE_ERROR,
-      `Did not find task with id: ${grammarTaskId}`
-    )
+      `Did not find task with id: ${grammarTaskId}`,
+    );
   }
   return deleteTask;
-}
+};
 export default GrammarTaskService;

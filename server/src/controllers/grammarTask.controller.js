@@ -1,5 +1,6 @@
 import { apiStatus, httpStatus } from '../constants/index.js';
 import CustomError from '../error/custom.error.js';
+import GrammarTask from '../models/grammarTask.js';
 import GrammarTaskService from '../service/grammarTask.service.js';
 import UserService from '../service/user.service.js';
 
@@ -44,6 +45,92 @@ export const submitFinishTask = async (req, res) => {
       status: apiStatus.SUCCESS,
       message: 'submit finished grammar task successfully',
       data: updateUser,
+    });
+  } catch (err) {
+    if (err instanceof CustomError) {
+      return res.status(err.httpStatus).send({
+        status: err.apiStatus,
+        message: err.message,
+      });
+    }
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+};
+
+export const addGrammarTask = async (req, res) => {
+  try {
+    const addGrammarTaskRequest = new GrammarTask({
+      task: req.body.task,
+      trueAnswer: req.body.trueAnswer,
+      listAnswer: req.body.listAnswer,
+      comment: req.body.comment,
+      topic: req.body.topic,
+      level: req.body.level,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    });
+    let newTask = await GrammarTaskService.addGrammarTask(addGrammarTaskRequest);
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: 'add grammar task successfully',
+      data: newTask,
+    });
+  } catch (err) {
+    if (err instanceof CustomError) {
+      return res.status(err.httpStatus).send({
+        status: err.apiStatus,
+        message: err.message,
+      });
+    }
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+};
+export const updateGrammarTask = async (req, res) => {
+  try {
+    let taskId = req.params.taskId;
+    let request = {};
+    let listProps = ['task', 'trueAnswer', 'listAnswer', 'comment', 'topic', 'level'];
+    for (let i = 0; i < listProps.length; i++) {
+      let props = listProps[i];
+      if (req.body[props] !== undefined) {
+        request[props] = req.body[props];
+      }
+    }
+    request['updatedAt'] = Date.now();
+    let updateTask = await GrammarTaskService.updateGrammarTask(request, taskId);
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: 'update grammar task successfully',
+      data: updateTask,
+    });
+  } catch (err) {
+    if (err instanceof CustomError) {
+      return res.status(err.httpStatus).send({
+        status: err.apiStatus,
+        message: err.message,
+      });
+    }
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+};
+
+export const deleteGrammarTask = async (req, res) => {
+  try {
+    let taskId = req.params.taskId;
+    let deleteTask = await GrammarTaskService.deleteGrammarTask(taskId);
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: 'delete grammar task successfully',
+      data: deleteTask,
     });
   } catch (err) {
     if (err instanceof CustomError) {

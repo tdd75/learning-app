@@ -57,3 +57,19 @@ export const submitFinishedGrammar = async (req, res) => {
     });
   }
 };
+
+export const getListChapter = async (req, res) => {
+  try{
+    let listChapter = await GrammarService.getListChapter();
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: "get list chapter successfully",
+      data: listChapter
+    });
+  }catch(err){
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+}

@@ -68,7 +68,7 @@ const VocabLessonDetail = () => {
 			<div className={cx("detail-page")}>
 				 
 
-				<div className={cx("create")} onClick={() => history.push(`/manage-vocab/ /add-vocab`)}>
+				<div className={cx("create")} onClick={() => history.push(`/manage-vocab/add-vocab`)}>
 					<PlusCircleOutlined /> Add new Vocabulary
 				</div>
 

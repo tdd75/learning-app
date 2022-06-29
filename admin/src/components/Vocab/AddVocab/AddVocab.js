@@ -11,8 +11,7 @@ import { useParams } from 'react-router-dom';
 const cx = cn.bind(styles);
 
 const AddVocab = () => {
-	const history = useHistory();
-	const { id } = useParams();
+	const history = useHistory(); 
 	const [formData, setFormData] = useState({
 		"id": "",
 		"name": "",
@@ -27,24 +26,8 @@ const AddVocab = () => {
 		"lessonId": ""
 	});
 	
-	const [loading, setLoading] = useState({ image: false, audio: false });
-	const [lessonInfo, setLessonInfo] = useState();
+	const [loading, setLoading] = useState({ image: false, audio: false }); 
 
-	useEffect(() => {
-		getLessonById();
-	}, [id]);
-
-	const getLessonById = async () => {
-		try {
-			const res = await axios.get(`${URL}/api/Admin/GetLesson/${id}`, { headers });
-			if (res.status === 200) {
-				setLessonInfo(res.data);
-				setFormData({ ...formData, lessonCode: res.data.lessonCode, lessonId: id });
-			}
-		} catch (err) {
-			console.log(err);
-		}
-	}
 
 	const handleAddNewWord = async () => {
 		console.log("formData", formData);
@@ -52,7 +35,7 @@ const AddVocab = () => {
 			const res = await axios.post(`${URL}/api/Admin/add-vocabulary`, formData, { headers });
 			if (res.status === 200) {
 				console.log(res);
-				history.push(`/manage-vocab/${id}`);
+				history.push(`/manage-vocab`);
 				window.location.reload();
 			}
 		} catch (err) {

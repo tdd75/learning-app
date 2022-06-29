@@ -2,6 +2,7 @@ import { httpStatus, apiStatus } from '../constants/index.js';
 import CustomError from '../error/custom.error.js';
 import WordService from '../service/word.service.js';
 import UserService from '../service/user.service.js';
+import Word from '../models/word.js';
 
 
 /**
@@ -15,11 +16,11 @@ export const getAllVol = async (req, res) => {
     let offset = req.query.offset;
 
     let word = await WordService.findWordPaging(limit, offset);
-    let totalPage = await WordService.countTotalPage(limit);
+    let totalPage = await WordService.countTotalPage();
 
     let dataReturn = {
-      "words": word,
-      "totalPage" : totalPage
+      "items": word,
+      "totalItems" : totalPage
     }
 
     return res.status(httpStatus.OK).send({
@@ -55,7 +56,7 @@ export const getAllVol = async (req, res) => {
     let word = await WordService.findByTopic(topic);
 
     let dataReturn = {
-      "words": word
+      "items": word
     }
 
     return res.status(httpStatus.OK).send({
@@ -88,8 +89,7 @@ export const getDoneTopic = async (req, res) => {
   try {
 
 
-    let userId = req.userId;
-    let topicDone = req.query.topicId
+    let userId = req.userId; 
     let user = await UserService.findUserById(userId);
 
     // drop duplicate
@@ -206,6 +206,131 @@ export const getDoneTopic = async (req, res) => {
       });
     }
 
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+};
+
+
+// ========== volcab 
+
+export const getVolById = async (req, res) => {
+
+  try {
+
+    let volId = req.query.volId; 
+
+    console.log(volId)
+    let word = await WordService.findWordById(volId);
+
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: 'get word successfuly ',
+      data: word,
+    });
+
+  } catch (err) {
+    if (err instanceof CustomError) {
+      return res.status(err.httpStatus).send({
+        status: err.apiStatus,
+        message: err.message,
+      });
+    }
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+};
+
+export const putVolById = async (req, res) => {
+
+  try {
+
+    let vol = req.body.volReq; 
+    let volId = req.query.volId
+    let word = await WordService.updateWord(volId, vol);
+
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message:'update word successfuly ',
+      data: word,
+    });
+
+  } catch (err) {
+    if (err instanceof CustomError) {
+      return res.status(err.httpStatus).send({
+        status: err.apiStatus,
+        message: err.message,
+      });
+    }
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+};
+
+export const deleteVolById = async (req, res) => {
+
+  try { 
+
+    let volId = req.query.volId
+    let word = await WordService.deleteWordById(volId);
+
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message:'delete word successfuly ',
+      data: word,
+    });
+
+  } catch (err) {
+    if (err instanceof CustomError) {
+      return res.status(err.httpStatus).send({
+        status: err.apiStatus,
+        message: err.message,
+      });
+    }
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+};
+
+
+export const createVol = async (req, res) => {
+
+  try {
+
+    let vol = req.body;  
+
+    const volModel = new Word({
+      chapter: req.body.chapter,
+      title: req.body.title,
+      sound: req.body.sound,
+      image: req.body.image,
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
+    });
+
+    let word = await WordService.createWord(volModel);
+
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message:'update word successfuly ',
+      data: word,
+    });
+
+  } catch (err) {
+    if (err instanceof CustomError) {
+      return res.status(err.httpStatus).send({
+        status: err.apiStatus,
+        message: err.message,
+      });
+    }
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
       status: apiStatus.OTHER_ERROR,
       message: err.message,

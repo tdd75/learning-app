@@ -392,3 +392,28 @@ export const verifyOtp = async (req, res) => {
     });
   }
 };
+
+export const changeForgotPassword = async (req, res) => {
+  try{
+    let userId = req.body.userId;
+    let user = await UserService.findUserById(userId);
+    user.password = hashSync(req.body.newPassword);
+    let updateUser = await UserService.updateUser(user);
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: "change forgot password successfully",
+      data: updateUser
+    });
+  }catch(err){
+    if (err instanceof CustomError) {
+      return res.status(err.httpStatus).send({
+        status: err.apiStatus,
+        message: err.message,
+      });
+    }
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+}

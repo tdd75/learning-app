@@ -22,13 +22,13 @@ function App() {
 				<Route path="/login">
 					<Login />
 				</Route>
-				<Route exact path="/manage-vocab">
+				<Route exact path="/manage-vocab/show">
 					<VocabLessonDetail />
 				</Route>
-				<Route path="/manage-vocab/:id/add-vocab">
+				<Route path="/manage-vocab/add-vocab">
 					<AddVocab />
 				</Route>
-				<Route path="/manage-vocab/:id/edit-vocab">
+				<Route path="/manage-vocab/edit-vocab">
 					<EditVocab />
 				</Route>
 			</Switch>

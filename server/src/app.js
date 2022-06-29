@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoDBConnect from './config/db.js';
 import 'dotenv/config';
+import morgan from 'morgan';
 import userRoutes from './routes/user.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 import vocalRouter from './routes/vocal.routes.js'; 
@@ -23,7 +24,7 @@ app.use(express.json());
 // }
 
 app.use(cors()); 
-
+app.use(morgan('combined'));
 //routes
 app.use(userRoutes);
 app.use(adminRoutes); 

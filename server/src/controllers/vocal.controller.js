@@ -44,53 +44,15 @@ export const getAllVol = async (req, res) => {
 };
 
 /**
- * Get All Volcabulary by topic
- * @param {Object} res response API
- * @returns status API + message + data
- */
-export const getVolByTopic = async (req, res) => {
-  try {
-    let topic = req.query.topicId;
-
-    let word = await WordService.findByTopic(topic);
-
-    let dataReturn = {
- 
-      "items": word
-    }
- 
-
-    return res.status(httpStatus.OK).send({
-      status: apiStatus.SUCCESS,
-      message: 'Get list word by topic successfuly ',
-      data: dataReturn,
-    });
-  } catch (err) {
-    if (err instanceof CustomError) {
-      return res.status(err.httpStatus).send({
-        status: err.apiStatus,
-        message: err.message,
-      });
-    }
-    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
-      status: apiStatus.OTHER_ERROR,
-      message: err.message,
-    });
-  }
-};
-
-/**
  * Get Process list vol for USER role
  * @param {Header: Authorization} req
  * @param {Object} res response API
  * @returns status API + message + page index process (600 word -> /10 topic. 60 word by topic)
  */
-export const getDoneTopic = async (req, res) => {
+export const getDoneWord = async (req, res) => {
   try {
  
-    let userId = req.userId;
-    let topicDone = req.query.topicId;
- 
+    let userId = req.userId; 
     let user = await UserService.findUserById(userId);
 
     // drop duplicate
@@ -121,17 +83,17 @@ export const getDoneTopic = async (req, res) => {
  * @param {Object} res response API
  * @returns status API + message
  */
-export const markDoneTopic = async (req, res) => {
+export const markDoneWord = async (req, res) => {
   try {
     // get info
     let userId = req.userId;
-    let topicDone = req.query.topicId;
+    let wordDone = req.query.wordId;
     let user = await UserService.findUserById(userId);
 
     // drop duplicate
     let currentProcess = Array.from(user.progressVocabulary); // user.progressVocabulary is object
     var setcurrentProcess = new Set(currentProcess);
-    setcurrentProcess.add(parseInt(topicDone));
+    setcurrentProcess.add(wordDone);
 
     // update
     user.progressVocabulary = Array.from(setcurrentProcess);
@@ -166,16 +128,16 @@ export const markDoneTopic = async (req, res) => {
  * @param {Object} res response API
  * @returns status API + message
  */
-export const unMarkTopic = async (req, res) => {
+export const unMarkWord = async (req, res) => {
   try {
     let userId = req.userId;
-    let topicDone = req.query.topicId;
+    let wordDone = req.query.wordId;
     let user = await UserService.findUserById(userId);
 
     // drop duplicate
     let currentProcess = Array.from(user.progressVocabulary);
     var setcurrentProcess = new Set(currentProcess);
-    setcurrentProcess.delete(parseInt(topicDone));
+    setcurrentProcess.delete(wordDone);
 
     // update
     user.progressVocabulary = Array.from(setcurrentProcess);
@@ -328,4 +290,68 @@ export const createVol = async (req, res) => {
   }
 };
 
+
+export const getAllTopicWithProcess = async (req, res) => {
+  try {
+
+    let userId = req.userId;
+
+    let topicProcess = await WordService.getAllTopicWithProcess(userId);
+
+    let dataReturn = {
+ 
+      "items": topicProcess
+    }
+ 
+
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: 'Get list word by topic successfuly ',
+      data: dataReturn,
+    });
+  } catch (err) {
+    if (err instanceof CustomError) {
+      return res.status(err.httpStatus).send({
+        status: err.apiStatus,
+        message: err.message,
+      });
+    }
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+};
+
+export const getSpecialTopicWithProcess = async (req, res) => {
+  try {
+
+    let userId = req.userId;
+
+    console.log("check user "+ userId)
+    let topicId = req.query.idTopic
+
+    let topicProcess = await WordService.getSpecialTopicWithProcess(userId,topicId);
+
+    let dataReturn = topicProcess
+    dataReturn.total = dataReturn.items.length
+ 
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: 'Get list word by topic successfuly ',
+      data: dataReturn,
+    });
+  } catch (err) {
+    if (err instanceof CustomError) {
+      return res.status(err.httpStatus).send({
+        status: err.apiStatus,
+        message: err.message,
+      });
+    }
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+};
  

@@ -38,6 +38,9 @@ const WordSchema = new mongoose.Schema(
     topic: {
       type: Number,
     },
+    processStatus: {
+      type: Number,
+    },
     createdAt: {
       type: Date,
       default: Date.now(),

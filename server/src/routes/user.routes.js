@@ -7,8 +7,8 @@ import {
   signin,
   verifyOtp,
 } from '../controllers/auth.controller.js';
-import { changePassword, getUserProfile, updateUserProfile } from '../controllers/user.controller.js';
-import { verifyToken } from '../middleware/authJwt.js';
+import { changePassword, getListUser, getUserProfile, searchInListUser, updateUserProfile } from '../controllers/user.controller.js';
+import { isAdmin, verifyToken } from '../middleware/authJwt.js';
 import { validateLogin, validatorRegister } from '../middleware/validator.js';
 
 const userRoutes = express.Router();
@@ -22,4 +22,6 @@ userRoutes.post('/api/v1/user/change-forgot-password', changeForgotPassword);
 userRoutes.post('/api/v1/user/verify-otp', verifyOtp);
 userRoutes.post('/api/v1/user/auth/update-profile', verifyToken, updateUserProfile);
 userRoutes.post('/api/v1/user/auth/change-password', verifyToken, changePassword);
+userRoutes.get('/api/v1/admin/auth/list-users', [verifyToken, isAdmin], getListUser);
+userRoutes.get('/api/v1/admin/auth/search-list-users', [verifyToken, isAdmin], searchInListUser);
 export default userRoutes;

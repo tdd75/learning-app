@@ -12,6 +12,7 @@ import VocabLessonDetail from './components/Vocab/VocabLessonDetail/VocabLessonD
 import AddVocab from './components/Vocab/AddVocab/AddVocab';
 import EditVocab from './components/Vocab/EditVocab/EditVocab'; 
 import ManageUser from './components/ManageUser';
+import AdminAccount from './components/AdminAccount';
 
 function App() {
 	return (
@@ -34,6 +35,9 @@ function App() {
 				</Route>
 				<Route path="/manage-vocab/edit-vocab">
 					<EditVocab />
+				</Route>
+				<Route path="/admin-account">
+					<AdminAccount />
 				</Route>
 			</Switch>
 		</Router>

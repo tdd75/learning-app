@@ -22,19 +22,15 @@ const Header = () => {
 				console.log(err);
 			});
 		}
-	}, [token])
+	}, [])
 
-	const handleBtnProfile = () => {
-		logout();
-		history.push('/login');
-	}
 	return (
 		<div className={cx("header")}>
 			<div className={cx("top")}>
 				<img src={logo} alt="logo" width={100} onClick={() => history.push("/")}/>
 				{token === null
 				? (<></>)
-				: (<div className={cx("btn-profile")} onClick={handleBtnProfile}><UserOutlined className={cx("user-icon")}/>{user?.username}</div>)}
+				: (<div className={cx("btn-profile")} ><UserOutlined className={cx("user-icon")}/>{user?.username}</div>)}
 			</div>
 			{location.pathname === "/login" || !token ? (<></>) : (
 				<div className={cx("container")}>

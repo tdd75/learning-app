@@ -13,3 +13,11 @@ export const getAdminProfile = async () => {
 export const logout = () => {
     window.localStorage.removeItem("token-lingo-admin");
 }
+
+export const changePassword = async (oldPassword, newPassword) => {
+    let response = await api.post('/admin/auth/change-password', {
+            oldPassword: oldPassword,
+            newPassword: newPassword
+        });
+    return response;
+}

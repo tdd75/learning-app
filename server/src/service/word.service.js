@@ -26,7 +26,7 @@ WordService.findWordById = async (wordId) => {
  * @param {*} wordId
  * @returns
  */
- WordService.deleteWordById = async (wordId) => {
+WordService.deleteWordById = async (wordId) => {
   let word = await Word.findByIdAndDelete(wordId);
   if (!word) {
     throw new CustomError(
@@ -56,27 +56,32 @@ WordService.findWordPaging = async (limit, offset) => {
 };
 
 WordService.findByTopic = async (topic) => {
+  let word = await Word.where('topic').equals(topic);
 
-  let word = await Word.where("topic").equals(topic)
-    
   if (!word) {
-    throw new CustomError(httpStatus.NOT_FOUND, apiStatus.DATABASE_ERROR, `Find by topic err`);
+    throw new CustomError(
+      httpStatus.NOT_FOUND,
+      apiStatus.DATABASE_ERROR,
+      `Find by topic err`,
+    );
   }
 
   return word;
 };
 
-WordService.countTotalPage  = async (limit) => {
-
+WordService.countTotalPage = async (limit) => {
   // ví dụ đây k bất đồng bộ thì sao ?
-  let count = await Word.countDocuments({
-  })
+  let count = await Word.countDocuments({});
 
   if (!count) {
-    throw new CustomError(httpStatus.NOT_FOUND, apiStatus.DATABASE_ERROR, `Count all word err`);
+    throw new CustomError(
+      httpStatus.NOT_FOUND,
+      apiStatus.DATABASE_ERROR,
+      `Count all word err`,
+    );
   }
 
-  return count/limit;
+  return count / limit;
 };
 
 export default WordService;

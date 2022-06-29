@@ -129,8 +129,7 @@ export const signin = async (req, res) => {
       },
     });
   } catch (err) {
-
-    console.log(err)
+    console.log(err);
 
     if (err instanceof CustomError) {
       return res.status(err.httpStatus).send({
@@ -201,8 +200,7 @@ export const signinAdmin = async (req, res) => {
       },
     });
   } catch (err) {
-
-    console.log(err)
+    console.log(err);
 
     if (err instanceof CustomError) {
       return res.status(err.httpStatus).send({

@@ -1,5 +1,11 @@
 import express from 'express';
-import { getAllVol,getVolByTopic, markDoneTopic, getDoneTopic,unMarkTopic } from '../controllers/vocal.controller.js';
+import {
+  getAllVol,
+  getVolByTopic,
+  markDoneTopic,
+  getDoneTopic,
+  unMarkTopic,
+} from '../controllers/vocal.controller.js';
 import { verifyToken } from '../middleware/authJwt.js';
 
 const vocalRouter = express.Router();

@@ -39,7 +39,7 @@ WordService.findWordById = async (wordId) => {
 
 WordService.createWord = async (wordModel) => {
 
-  await wordModel.save((err, wordw) => {
+  await wordModel.save((err, word) => {
     if(err){
       throw new CustomError(
         httpStatus.INTERNAL_SERVER_ERROR,
@@ -47,9 +47,9 @@ WordService.createWord = async (wordModel) => {
         `Error when save word: ${err.message}`
       )
     }
-    return wordReq;
+    return word;
   });
-  return wordReq;
+  return wordModel;
 
 };
 

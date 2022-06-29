@@ -249,9 +249,12 @@ export const putVolById = async (req, res) => {
 
   try {
 
-    let vol = req.body.volReq; 
     let volId = req.query.volId
-    let word = await WordService.updateWord(volId, vol);
+    const volModel = req.body
+    
+ 
+    volModel.updatedAt= Date.now();
+    let word = await WordService.updateWord(volId, volModel);
 
     return res.status(httpStatus.OK).send({
       status: apiStatus.SUCCESS,
@@ -304,23 +307,19 @@ export const deleteVolById = async (req, res) => {
 export const createVol = async (req, res) => {
 
   try {
+ 
+    const volModel = new Word(
+      req.body
+    );
 
-    let vol = req.body;  
-
-    const volModel = new Word({
-      chapter: req.body.chapter,
-      title: req.body.title,
-      sound: req.body.sound,
-      image: req.body.image,
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-    });
+    volModel.createdAt= Date.now();
+    volModel.updatedAt= Date.now();
 
     let word = await WordService.createWord(volModel);
 
     return res.status(httpStatus.OK).send({
       status: apiStatus.SUCCESS,
-      message:'update word successfuly ',
+      message:'create word successfuly ',
       data: word,
     });
 

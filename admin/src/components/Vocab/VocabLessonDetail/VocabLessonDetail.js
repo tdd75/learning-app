@@ -5,7 +5,7 @@ import Layout from "../../../commons/Layout";
 import { useHistory, useLocation } from "react-router-dom";
 import Search from "../../../commons/Search/Search";
 import axios from "axios";
-import { URL, headers } from "../../../consts";
+import { URL } from "../../../consts";
 import { Col, Row, Form, message, Input, Modal, Button, Spin } from "antd";
 import {
 	DeleteOutlined,
@@ -40,7 +40,7 @@ const VocabLessonDetail = () => {
 		try {
 			let res = await axios.get(`${URL}/user/vocal/topic?topicId=2`);
 			if (res.status === 200) { 
-				setLessonDetail(res.data.data.words);
+				setLessonDetail(res.data.data.items);
 				setLoading(false);
 			}
 		} catch (err) {
@@ -50,11 +50,19 @@ const VocabLessonDetail = () => {
 
 	const handleDelete = async () => {
 		try {
-			const res = await axios.delete(`${URL}/api/Admin/delete-vocabulary/${word.id}`, { headers });
+
+			console.log('del id word '+ word._id)
+			const token = window.localStorage.getItem("token-lingo-admin");
+			const headers = { Authorization: `Bearer ${token}` };
+
+			console.log('token barrier ', headers)
+			const res = await axios.delete(`${URL}/admin/vocal?volId=${word._id}`, { headers });
+
 			if (res.status === 200) {
 				message.success("Delete successfully!");
 				window.location.reload();
 			}
+
 		} catch (err) {
 			console.log(err);
 			message.error("Error!");

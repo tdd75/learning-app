@@ -3,7 +3,7 @@ import styles from './AddVocab.module.scss';
 import cn from 'classnames/bind';
 import Layout from '../../../commons/Layout';
 import { Row, Input, Card, Spin } from 'antd';
-import { headers, URL } from '../../../consts';
+import {  URL } from '../../../consts';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
@@ -30,6 +30,10 @@ const AddVocab = () => {
 
 
 	const handleAddNewWord = async () => {
+
+		const token = window.localStorage.getItem("token-lingo-admin");
+			const headers = { Authorization: `Bearer ${token}` };
+
 		console.log("formData", formData);
 		try {
 			const res = await axios.post(`${URL}/api/Admin/add-vocabulary`, formData, { headers });
@@ -52,6 +56,9 @@ const AddVocab = () => {
 		let form = new FormData();
 		form.append("file", file);
 
+		const token = window.localStorage.getItem("token-lingo-admin");
+			const headers = { Authorization: `Bearer ${token}` };
+
 		axios.post(url, form, {
 			headers
 		}).then((response) => {
@@ -71,6 +78,9 @@ const AddVocab = () => {
 
 		let form = new FormData();
 		form.append("file", file);
+
+		const token = window.localStorage.getItem("token-lingo-admin");
+			const headers = { Authorization: `Bearer ${token}` };
 
 		axios.post(url, form, {
 			headers

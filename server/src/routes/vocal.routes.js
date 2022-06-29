@@ -11,9 +11,9 @@ vocalRouter.post('/api/v1/user/vocal/topic', verifyToken, getDoneTopic);
 vocalRouter.delete('/api/v1/user/vocal/topic', verifyToken, unMarkTopic);
 
 vocalRouter.get('/api/v1/user/vocal', getVolById);
-vocalRouter.put('/api/v1/user/vocal', verifyToken, putVolById);
-vocalRouter.post('/api/v1/user/vocal', verifyToken, createVol);
-vocalRouter.delete('/api/v1/user/vocal', verifyToken, deleteVolById);
+vocalRouter.put('/api/v1/admin/vocal', verifyToken, putVolById);
+vocalRouter.post('/api/v1/admin/vocal', verifyToken, createVol);
+vocalRouter.delete('/api/v1/admin/vocal', verifyToken, deleteVolById);
 
 
 export default vocalRouter;

@@ -296,11 +296,22 @@ export const getAllTopicWithProcess = async (req, res) => {
 
     let userId = req.userId;
 
+    let limit =  parseInt(req.query.limit)
+    let offset = req.query.offset
+
     let topicProcess = await WordService.getAllTopicWithProcess(userId);
 
+    let arrProcess =  Array.from(topicProcess)
+    let length=  topicProcess.length 
+
+    const begin = parseInt(limit*offset)
+    const end = begin + limit 
+    let returnProcess = arrProcess.slice(begin ,end)
+
     let dataReturn = {
- 
-      "items": topicProcess
+
+      "items": returnProcess,
+      "totalItems": length
     }
  
 

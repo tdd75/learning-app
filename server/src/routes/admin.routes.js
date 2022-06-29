@@ -5,7 +5,7 @@ import {
   signinAdmin,
   verifyOtp,
 } from '../controllers/auth.controller.js';
-import { upload } from '../controllers/upload.controller.js';
+import { upload, uploadSound } from '../controllers/upload.controller.js';
 import { getUserProfile } from '../controllers/user.controller.js';
 import { isAdmin, verifyToken } from '../middleware/authJwt.js';
 import { validateLogin } from '../middleware/validator.js';
@@ -22,6 +22,11 @@ adminRoutes.post(
   '/api/v1/admin/upload',
   [verifyToken, isAdmin, uploadMulter.single('file')],
   upload,
+);
+adminRoutes.post(
+  '/api/v1/admin/upload-sound',
+  [verifyToken, isAdmin, uploadMulter.single('file')],
+  uploadSound,
 );
 
 export default adminRoutes;

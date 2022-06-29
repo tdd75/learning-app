@@ -78,7 +78,7 @@ const EditVocab = () => {
 	const handleUploadAudio = async (e) => {
 		setLoading({ ...loading, audio: true });
 
-		let url = `${URL}/api/Admin/upload-audio`;
+		let url = `${URL}/admin/upload-sound`;
 		let file = e.target.files[0];
 
 		let form = new FormData();
@@ -96,6 +96,8 @@ const EditVocab = () => {
 		}).catch((error) => {
 			console.log(error);
 		});
+
+		console.log('after send audio' + formData)
 	};
 
 	return (

@@ -38,7 +38,7 @@ const VocabLessonDetail = () => {
 	const getLessonDetail = async () => {
 		setLoading(true);
 		try {
-			let res = await axios.get(`${URL}/user/vocal/topic?topicId=2`);
+			let res = await axios.get(`${URL}/user/vocal/list?limit=10&offset=11`);
 			if (res.status === 200) { 
 				setLessonDetail(res.data.data.items);
 				setLoading(false);

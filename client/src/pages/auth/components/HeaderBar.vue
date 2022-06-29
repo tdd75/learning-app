@@ -8,10 +8,10 @@
         <span class="button-back__text">{{ t('auth.header.home') }}</span>
       </router-link>
       <router-link class="router-link" :to="{
-        name: PageName.REGISTER_PAGE
+        name: isLoginPage ? PageName.REGISTER_PAGE : PageName.LOGIN_PAGE
       }">
-        <el-button class="button-register">
-          {{ t('app.header.auth.register') }}
+        <el-button type="primary" class="button-redirect">
+          {{ t(`auth.header.${isLoginPage ? 'register' : 'login'}`) }}
         </el-button>
       </router-link>
     </div>
@@ -20,10 +20,16 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
+import { useRoute } from 'vue-router';
 import { PageName } from '../../../common/constants';
 
 const { t } = useI18n();
-
+const props = defineProps({
+  isLoginPage: {
+    type: Boolean,
+    required: true,
+  }
+})
 </script>
 
 <style lang="scss" scoped>
@@ -45,7 +51,7 @@ const { t } = useI18n();
   }
 }
 
-.button-register {
+.button-redirect {
   color: $color-white;
   background-color: $color-primary;
 }

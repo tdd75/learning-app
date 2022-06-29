@@ -5,7 +5,7 @@
       <img class="image-icon" src="@/assets/images/icon-banner.png" />
       <div class="welcome">{{ t('home.banner.welcome') }}</div>
       <div class="description">{{ t('home.banner.description') }}</div>
-      <el-button class="button-start-now">
+      <el-button type="primary" class="button-start-now">
         <span>{{ t('home.banner.startNow') }}</span>
         <img class="ms-2" src="@/assets/images/icons/next-arrow.svg">
       </el-button>

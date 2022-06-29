@@ -5,6 +5,7 @@ export const app = {
     login: 'Đăng nhập - learn4U',
     register: 'Đăng ký - learn4U',
     vocabulary: 'Từ vựng - learn4U',
+    vocabularyLearn: 'Học từ vựng - learn4U',
     garmmar: 'Ngữ pháp - learn4U',
     dialogue: 'Hội thoại - learn4U',
   },
@@ -19,6 +20,8 @@ export const app = {
       login: 'Đăng nhập',
       register: 'Đăng ký',
     },
+    profile: 'Thông tin cá nhân',
+    logout: 'Đăng xuất',
   },
   footer: {},
 };

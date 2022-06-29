@@ -11,6 +11,7 @@ import MainLayout from '@/layouts/MainLayout.vue';
 import HomePage from '@/pages/home/HomePage.vue';
 import AuthPage from '@/pages/auth/AuthPage.vue';
 import VocabularyPage from '@/pages/vocabulary/VocabularyPage.vue';
+import VocabularyLearnPage from '@/pages/vocabulary-learn/VocabularyLearnPage.vue';
 import GrammarPage from '@/pages/grammar/GrammarPage.vue';
 import DialoguePage from '@/pages/dialogue/DialoguePage.vue';
 
@@ -28,6 +29,10 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           title: i18n.global.t('app.title.default'),
         },
+      },
+      {
+        path: '/home',
+        redirect: '/',
       },
       {
         path: '/vocabulary',
@@ -69,6 +74,14 @@ const routes: Array<RouteRecordRaw> = [
     component: AuthPage,
     meta: {
       title: i18n.global.t('app.title.register'),
+    },
+  },
+  {
+    path: '/vocabulary/learn/:id',
+    name: PageName.VOCABULARY_LEARN_PAGE,
+    component: VocabularyLearnPage,
+    meta: {
+      title: i18n.global.t('app.title.vocabularyLearn'),
     },
   },
 ];

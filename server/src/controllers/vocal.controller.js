@@ -299,7 +299,10 @@ export const getAllTopicWithProcess = async (req, res) => {
     let limit =  parseInt(req.query.limit)
     let offset = req.query.offset
 
-    let topicProcess = await WordService.getAllTopicWithProcess(userId);
+    let topicProcessObj = await WordService.getAllTopicWithProcess(userId);
+
+    let topicProcess = topicProcessObj.items
+    let okTopic = topicProcessObj.topicDone
 
     let arrProcess =  Array.from(topicProcess)
     let length=  topicProcess.length 
@@ -311,13 +314,14 @@ export const getAllTopicWithProcess = async (req, res) => {
     let dataReturn = {
 
       "items": returnProcess,
-      "totalItems": length
+      "totalItems": length,
+      "globalProcess": okTopic +"/"+ length
     }
  
 
     return res.status(httpStatus.OK).send({
       status: apiStatus.SUCCESS,
-      message: 'Get list word by topic successfuly ',
+      message: 'Get topic process successfuly ',
       data: dataReturn,
     });
   } catch (err) {

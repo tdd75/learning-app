@@ -150,6 +150,7 @@ WordService.getAllTopicWithProcess  = async (userId) => {
 
   let topicIdList = await WordService.findAllTopicId();   
   let res = []
+  let numTopicDone = 0;
 
   for (let i =0 ;i< topicIdList.length; i++){
 
@@ -162,8 +163,13 @@ WordService.getAllTopicWithProcess  = async (userId) => {
       let word = wordInTopic[j]
 
       if (userWord.has(word._id.toString())){
+        console.log(countDone)
         countDone++;
       }
+    }
+
+    if(countDone == countAll){
+      numTopicDone++ 
     }
 
     res.push({
@@ -172,7 +178,12 @@ WordService.getAllTopicWithProcess  = async (userId) => {
     })
 
   }
-  return res;
+
+  let returnTopic = {
+    items : res,
+    topicDone : numTopicDone
+  }
+  return returnTopic;
  
 };
 

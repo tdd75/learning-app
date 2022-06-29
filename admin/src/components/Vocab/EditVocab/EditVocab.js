@@ -12,9 +12,9 @@ import { useLocation } from 'react-router-dom';
 const cx = cn.bind(styles);
 
 const EditVocab = () => {
+
 	const history = useHistory();
-	const location = useLocation();
-	const { id } = useParams();
+	const location = useLocation(); 
 	const [loading, setLoading] = useState({ image: false, audio: false }); 
 	const word = location.state.word;
 
@@ -44,7 +44,7 @@ const EditVocab = () => {
 			const res = await axios.put(`${URL}admin/vocal?volId=${formData.id}`, formData, { headers });
 			if (res.status === 200) {
 				console.log(res);
-				history.push(`/manage-vocab/${id}`);
+				history.push(`/manage-vocab`);
 				window.location.reload();
 			}
 		} catch (err) {
@@ -67,9 +67,11 @@ const EditVocab = () => {
 		axios.post(url, form, {
 			headers
 		}).then((response) => {
-			console.log(response);
+
+			console.log('push anh nhe ', response);
 			setFormData({ ...formData, imageUrl: response.data.url });
 			setLoading({ ...loading, image: false });
+
 		}).catch((error) => {
 			console.log(error);
 		});
@@ -96,8 +98,7 @@ const EditVocab = () => {
 		}).catch((error) => {
 			console.log(error);
 		});
-
-		console.log('after send audio' + formData)
+ 
 	};
 
 	return (
@@ -107,10 +108,11 @@ const EditVocab = () => {
 					<div className={cx("pageTitle")}>Edit vocabulary</div>
 					<div className={cx("body")}>
 						<div className={cx("left")}>
+
 							<div className={cx("oneField")}>
 								<div className={cx("title")}>Name</div>
 								<input
-									defaultValue={word.name}
+									defaultValue={word.keyword}
 									className={cx("input")}
 									onChange={(e) => setFormData({ ...formData, name: e.target.value })}
 								/>
@@ -129,7 +131,7 @@ const EditVocab = () => {
 							<div className={cx("oneField")}>
 								<div className={cx("title")}>Meaning</div>
 								<input
-									defaultValue={word.meaning}
+									defaultValue={word.shortDesc}
 									placeholder='e.g. Công nghệ'
 									className={cx("input")}
 									onChange={(e) => setFormData({ ...formData, meaning: e.target.value })}
@@ -140,7 +142,7 @@ const EditVocab = () => {
 								<div className={cx("title")}>Full meaning</div>
 								<div className={cx("description")}>Fully explain the meaning of the word by Vietnamese</div>
 								<textarea
-									defaultValue={word.fullMeaning}
+									defaultValue={word.fullVietnamese}
 									placeholder='e.g.Công nghệ'
 									className={cx("input")}
 									onChange={(e) => setFormData({ ...formData, fullMeaning: e.target.value })}
@@ -154,7 +156,7 @@ const EditVocab = () => {
 									Help learners guess words during flashcard learning
 								</div>
 								<input
-									defaultValue={word.suggestion}
+									defaultValue={word.suggest}
 									placeholder='e.g. T_ _h_ ol_ _y'
 									className={cx("input")}
 									onChange={(e) => setFormData({ ...formData, suggestion: e.target.value })}
@@ -221,7 +223,7 @@ const EditVocab = () => {
 					<span
 						className={cx("button")}
 						style={{ background: "#000000" }}
-						onClick={() => history.push(`/manage-vocab/${word.lessonId}`)}
+						onClick={() => history.push(`/manage-vocab/show`)}
 					>
 						CANCEL
 					</span>

@@ -20,7 +20,7 @@ function App() {
 				{/* <Route exact path="/manage-vocab">
 					<Vocab />
 				</Route> */}
-				<Route exact path="/">
+				<Route exact path="/users">
 					<ManageUser />
 				</Route>
 				<Route path="/login">

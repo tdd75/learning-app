@@ -19,12 +19,12 @@ const Navbar = () => {
 		{
 			id: 1,
 			name: 'Manage users',
-			path: '/',
+			path: '/users',
 		},
 		{
 			id: 2,
 			name: 'Manage vocabulary',
-			path: '/manage-vocab',
+			path: '/manage-vocab/show',
 		},
 		{
 			id: 3,

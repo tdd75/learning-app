@@ -93,3 +93,36 @@ export const changePassword = async (req, res) => {
     });
   }
 }
+
+export const getListUser = async (req, res) => {
+  try{
+    let listUser = await UserService.getAllUser();
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: "get list user successfully",
+      data: listUser
+    });
+  }catch(err){
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+}
+
+export const searchInListUser = async (req, res) => {
+  try{
+    let keyword = req.query.q;
+    let listUser = await UserService.searchUserByKeyword(keyword);
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: "search in list user successfully",
+      data: listUser
+    });
+  }catch(err){
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+}

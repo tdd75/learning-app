@@ -15,11 +15,13 @@ const EditVocab = () => {
 	const history = useHistory();
 	const location = useLocation();
 	const { id } = useParams();
-	const [loading, setLoading] = useState({ image: false, audio: false });
-	const [lessonInfo, setLessonInfo] = useState();
+	const [loading, setLoading] = useState({ image: false, audio: false }); 
 	const word = location.state.word;
+
+	console.log("lay ra word tu local state",word)
+
 	const [formData, setFormData] = useState({
-		"id": word.id,
+		"id": word._id,
 		"name": word.name,
 		"suggestion": word.suggestion,
 		"transcription": word.transcription,
@@ -32,39 +34,6 @@ const EditVocab = () => {
 		"lessonId": word.lessonId,
 	});
 
-	useEffect(() => {
-		getLessonById();
-		// setFormData({
-		// 	"id": word.id,
-		// 	"name": word.name,
-		// 	"suggestion": word.suggestion,
-		// 	"transcription": word.transcription,
-		// 	"meaning": word.meaning,
-		// 	"fullMeaning": word.fullMeaning,
-		// 	"explanation": word.explanation,
-		// 	"imageUrl": word.imageUrl,
-		// 	"audioUrl": word.audioUrl,
-		// 	"lessonCode": word.lessonCode,
-		// 	"lessonId": word.lessonId,
-		// })
-	}, [id]);
-
-	const getLessonById = async () => {
-		try {
-
-			const token = window.localStorage.getItem("token-lingo-admin");
-			const headers = { Authorization: `Bearer ${token}` };
-
-			const res = await axios.get(`${URL}/api/Admin/GetLesson/${id}`, { headers });
-			if (res.status === 200) {
-				setLessonInfo(res.data);
-				setFormData({ ...formData, lessonCode: res.data.lessonCode, lessonId: id });
-			}
-		} catch (err) {
-			console.log(err);
-		}
-	}
-
 	const handleEditVocab = async () => {
 		console.log("formData", formData);
 		try {
@@ -72,7 +41,7 @@ const EditVocab = () => {
 			const token = window.localStorage.getItem("token-lingo-admin");
 			const headers = { Authorization: `Bearer ${token}` };
 
-			const res = await axios.put(`${URL}/api/Admin/update-vocabulary`, formData, { headers });
+			const res = await axios.put(`${URL}admin/vocal?volId=${formData.id}`, formData, { headers });
 			if (res.status === 200) {
 				console.log(res);
 				history.push(`/manage-vocab/${id}`);
@@ -86,7 +55,7 @@ const EditVocab = () => {
 	const handleUploadImage = async (e) => {
 		setLoading({ ...loading, image: true });
 
-		let url = `${URL}/api/Admin/upload-image`;
+		let url = `${URL}/admin/upload`;	
 		let file = e.target.files[0];
 
 		let form = new FormData();

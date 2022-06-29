@@ -1,6 +1,6 @@
 import { httpStatus, apiStatus } from '../constants/index.js';
 import CustomError from '../error/custom.error.js';
-import { Word } from '../models/index.js';
+import { User, Word } from '../models/index.js';
 
 const WordService = {};
 
@@ -85,6 +85,7 @@ WordService.findWordPaging = async (limit, offset) => {
 };
 
 WordService.findByTopic = async (topic) => {
+
   let word = await Word.where('topic').equals(topic);
 
   if (!word) {
@@ -97,6 +98,21 @@ WordService.findByTopic = async (topic) => {
 
   return word;
 };
+
+WordService.findAllTopicId = async () => {
+  let topics = await Word.find().select({ topic: 1 }).distinct('topic');
+
+  if (!topics) {
+    throw new CustomError(
+      httpStatus.NOT_FOUND,
+      apiStatus.DATABASE_ERROR,
+      `Find by topic err`,
+    );
+  }
+
+  return topics;
+};
+
  
 WordService.countTotalPage  = async () => {
 
@@ -114,5 +130,102 @@ WordService.countTotalPage  = async () => {
   return count;
  
 };
+
+
+WordService.getAllTopicWithProcess  = async (userId) => {
+
+  let user = await User.findById(userId);
+
+  if (!user) {
+    throw new CustomError(
+      httpStatus.NOT_FOUND,
+      apiStatus.DATABASE_ERROR,
+      `User not found with id: ${userId}`,
+    );
+  }
+
+  let userWord = new Set(user.progressVocabulary)
+
+  console.log(userWord)
+
+  let topicIdList = await WordService.findAllTopicId();   
+  let res = []
+
+  for (let i =0 ;i< topicIdList.length; i++){
+
+    let wordInTopic = await WordService.findByTopic(topicIdList[i])
+    let countAll = wordInTopic.length;
+    let countDone = 0;
+
+    for(let j = 0; j< wordInTopic.length;j++){
+ 
+      let word = wordInTopic[j]
+
+      if (userWord.has(word._id.toString())){
+        countDone++;
+      }
+    }
+
+    res.push({
+      topicId: topicIdList[i],
+      topicStatus: countDone.toString() + "/"+countAll.toString()
+    })
+
+  }
+  return res;
+ 
+};
+
+WordService.getSpecialTopicWithProcess  = async (userId, topic) => {
+
+  let user = await User.findById(userId);
+  
+  if (!user) {
+    throw new CustomError(
+      httpStatus.NOT_FOUND,
+      apiStatus.DATABASE_ERROR,
+      `User not found with id: ${userId}`,
+    );
+  }
+
+  console.log(user)
+
+  let arrProcess =  Array.from(user.progressVocabulary)
+
+  let userWord = new Set(arrProcess)
+
+  console.log(userWord)
+
+  let wordInTopic = await WordService.findByTopic(topic)
+
+  let countAll = wordInTopic.length;
+  let countDone = 0;
+
+  let wordReturn  = [];
+
+  for(let j = 0; j< wordInTopic.length;j++){
+
+    let word = wordInTopic[j];
+
+    if (userWord.has(word._id.toString())){
+      countDone++;
+      console.log(" bat dc m roi nhe")
+      word.processStatus = '1';
+      wordReturn.push(word);
+     }else{
+      word.processStatus = '0'; 
+      wordReturn.push(word);
+    }
+  }
+
+  let res = {
+    items : wordReturn,
+    process : countDone.toString() + "/"+countAll.toString()
+  }
+
+  return res;
+ 
+};
+
 
 export default WordService;

@@ -134,7 +134,7 @@ const VocabLessonDetail = () => {
 											onClick={() => {
 												setWord(item)
 												history.push({
-													pathname: `/manage-vocab/${item.topic}/edit-vocab`,
+													pathname: `/manage-vocab/edit-vocab`,
 													state: {word: item}
 												})
 											}}>

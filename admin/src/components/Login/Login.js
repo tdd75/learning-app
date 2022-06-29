@@ -26,11 +26,13 @@ const Login = () => {
 
 		try {
 			const res = await axios.post(`${URL}/admin/login`, data);
+
+			console.log("data return ", res.data.data)
 			if (res.status === 200) {
-				window.localStorage.setItem("token-lingo-admin", res.data.token);
-				window.localStorage.setItem("username-admin", res.data.username);
+				window.localStorage.setItem("token-lingo-admin", res?.data.data.token);
+				// window.localStorage.setItem("username-admin", res.data.username);
 				history.push("/manage-vocab/show");
-				window.location.reload();
+				// window.location.reload();
 			}
 		} catch (err) {
 			console.log(err);

@@ -21,8 +21,7 @@ WordService.findWordById = async (wordId) => {
   return word;
 };
 
-/**
- * viết này cho chỉ export dc hàm này ra thôi
+ /** 
  * @param {*} wordId
  * @returns
  */
@@ -36,6 +35,36 @@ WordService.deleteWordById = async (wordId) => {
     );
   }
   return word;
+};
+
+WordService.createWord = async (wordModel) => {
+
+  await wordModel.save((err, word) => {
+    if(err){
+      throw new CustomError(
+        httpStatus.INTERNAL_SERVER_ERROR,
+        apiStatus.DATABASE_ERROR,
+        `Error when save word: ${err.message}`
+      )
+    }
+    return word;
+  });
+  return wordModel;
+
+};
+
+WordService.updateWord = async (wordId,wordReq) => {
+
+  let updateWord = await Word.findByIdAndUpdate(wordId, wordReq, {new: true});
+  if(!updateWord){
+    throw new CustomError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      apiStatus.DATABASE_ERROR,
+      `Did not find word  with id: ${wordId}`
+    )
+  }
+  return updateWord;
+
 };
 
 WordService.findWordPaging = async (limit, offset) => {
@@ -68,10 +97,12 @@ WordService.findByTopic = async (topic) => {
 
   return word;
 };
+ 
+WordService.countTotalPage  = async () => {
 
-WordService.countTotalPage = async (limit) => {
   // ví dụ đây k bất đồng bộ thì sao ?
-  let count = await Word.countDocuments({});
+  let count = await Word.countDocuments({})
+ 
 
   if (!count) {
     throw new CustomError(
@@ -79,9 +110,9 @@ WordService.countTotalPage = async (limit) => {
       apiStatus.DATABASE_ERROR,
       `Count all word err`,
     );
-  }
-
-  return count / limit;
+  } 
+  return count;
+ 
 };
 
 export default WordService;

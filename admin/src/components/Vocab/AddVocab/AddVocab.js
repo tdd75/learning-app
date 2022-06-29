@@ -3,7 +3,7 @@ import styles from './AddVocab.module.scss';
 import cn from 'classnames/bind';
 import Layout from '../../../commons/Layout';
 import { Row, Input, Card, Spin } from 'antd';
-import { headers, URL } from '../../../consts';
+import {  URL } from '../../../consts';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
@@ -11,8 +11,7 @@ import { useParams } from 'react-router-dom';
 const cx = cn.bind(styles);
 
 const AddVocab = () => {
-	const history = useHistory();
-	const { id } = useParams();
+	const history = useHistory(); 
 	const [formData, setFormData] = useState({
 		"id": "",
 		"name": "",
@@ -27,32 +26,20 @@ const AddVocab = () => {
 		"lessonId": ""
 	});
 	
-	const [loading, setLoading] = useState({ image: false, audio: false });
-	const [lessonInfo, setLessonInfo] = useState();
+	const [loading, setLoading] = useState({ image: false, audio: false }); 
 
-	useEffect(() => {
-		getLessonById();
-	}, [id]);
-
-	const getLessonById = async () => {
-		try {
-			const res = await axios.get(`${URL}/api/Admin/GetLesson/${id}`, { headers });
-			if (res.status === 200) {
-				setLessonInfo(res.data);
-				setFormData({ ...formData, lessonCode: res.data.lessonCode, lessonId: id });
-			}
-		} catch (err) {
-			console.log(err);
-		}
-	}
 
 	const handleAddNewWord = async () => {
+
+		const token = window.localStorage.getItem("token-lingo-admin");
+			const headers = { Authorization: `Bearer ${token}` };
+
 		console.log("formData", formData);
 		try {
 			const res = await axios.post(`${URL}/api/Admin/add-vocabulary`, formData, { headers });
 			if (res.status === 200) {
 				console.log(res);
-				history.push(`/manage-vocab/${id}`);
+				history.push(`/manage-vocab`);
 				window.location.reload();
 			}
 		} catch (err) {
@@ -68,6 +55,9 @@ const AddVocab = () => {
 
 		let form = new FormData();
 		form.append("file", file);
+
+		const token = window.localStorage.getItem("token-lingo-admin");
+			const headers = { Authorization: `Bearer ${token}` };
 
 		axios.post(url, form, {
 			headers
@@ -88,6 +78,9 @@ const AddVocab = () => {
 
 		let form = new FormData();
 		form.append("file", file);
+
+		const token = window.localStorage.getItem("token-lingo-admin");
+			const headers = { Authorization: `Bearer ${token}` };
 
 		axios.post(url, form, {
 			headers

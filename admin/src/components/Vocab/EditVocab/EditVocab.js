@@ -3,7 +3,7 @@ import styles from './EditVocab.module.scss';
 import cn from 'classnames/bind';
 import Layout from '../../../commons/Layout';
 import { Row, Input, Card, Spin } from 'antd';
-import { headers, URL } from '../../../consts';
+import { URL } from '../../../consts';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
@@ -51,6 +51,10 @@ const EditVocab = () => {
 
 	const getLessonById = async () => {
 		try {
+
+			const token = window.localStorage.getItem("token-lingo-admin");
+			const headers = { Authorization: `Bearer ${token}` };
+
 			const res = await axios.get(`${URL}/api/Admin/GetLesson/${id}`, { headers });
 			if (res.status === 200) {
 				setLessonInfo(res.data);
@@ -64,6 +68,10 @@ const EditVocab = () => {
 	const handleEditVocab = async () => {
 		console.log("formData", formData);
 		try {
+
+			const token = window.localStorage.getItem("token-lingo-admin");
+			const headers = { Authorization: `Bearer ${token}` };
+
 			const res = await axios.put(`${URL}/api/Admin/update-vocabulary`, formData, { headers });
 			if (res.status === 200) {
 				console.log(res);
@@ -84,6 +92,9 @@ const EditVocab = () => {
 		let form = new FormData();
 		form.append("file", file);
 
+		const token = window.localStorage.getItem("token-lingo-admin");
+			const headers = { Authorization: `Bearer ${token}` };
+
 		axios.post(url, form, {
 			headers
 		}).then((response) => {
@@ -103,6 +114,9 @@ const EditVocab = () => {
 
 		let form = new FormData();
 		form.append("file", file);
+
+		const token = window.localStorage.getItem("token-lingo-admin");
+			const headers = { Authorization: `Bearer ${token}` };
 
 		axios.post(url, form, {
 			headers

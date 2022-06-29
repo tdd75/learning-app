@@ -29,7 +29,7 @@ const Login = () => {
 			if (res.status === 200) {
 				window.localStorage.setItem("token-lingo-admin", res.data.token);
 				window.localStorage.setItem("username-admin", res.data.username);
-				history.push("/manage-vocab");
+				history.push("/manage-vocab/show");
 				window.location.reload();
 			}
 		} catch (err) {

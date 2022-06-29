@@ -21,6 +21,23 @@ WordService.findWordById = async (wordId) => {
   return word;
 };
 
+/**
+ * viết này cho chỉ export dc hàm này ra thôi
+ * @param {*} wordId
+ * @returns
+ */
+ WordService.deleteWordById = async (wordId) => {
+  let word = await Word.findByIdAndDelete(wordId);
+  if (!word) {
+    throw new CustomError(
+      httpStatus.NOT_FOUND,
+      apiStatus.DATABASE_ERROR,
+      `Word not found with id: ${wordId}`,
+    );
+  }
+  return word;
+};
+
 WordService.findWordPaging = async (limit, offset) => {
   const pageOptions = {
     page: parseInt(offset, 10) || 0,

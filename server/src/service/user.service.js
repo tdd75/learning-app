@@ -5,7 +5,6 @@ import { User } from '../models/index.js';
 const UserService = {};
 
 UserService.findUserById = async (userId) => {
-
   let user = await User.findById(userId);
   if (!user) {
     throw new CustomError(
@@ -15,7 +14,6 @@ UserService.findUserById = async (userId) => {
     );
   }
   return user;
-
 };
 
 UserService.findUserByEmail = async (email) => {
@@ -46,10 +44,20 @@ UserService.addUSer = async (user) => {
 };
 
 UserService.updateUser = async (user) => {
-  let rsUser = await User.findOneAndUpdate({ _id: user._id }, user, {
-    returnOriginal: false,
-  });
+  let rsUser = await User.findOneAndUpdate({ _id: user._id }, user, {new: true});
   rsUser.password = '';
   return rsUser;
 };
+
+UserService.updateUserProfile = async (userId, request) => {
+  let updateUser = await User.findByIdAndUpdate(userId, request, {new: true});
+  if(!updateUser){
+    throw new CustomError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      apiStatus.DATABASE_ERROR,
+      `Did not find user with id: ${userId}`
+    )
+  }
+  return updateUser;
+}
 export default UserService;

@@ -21,4 +21,49 @@ GrammarService.findAllGrammarByChapter = async (chapterName) => {
   return listGrammar;
 };
 
+GrammarService.getListChapter = async () => {
+  let chapters = await Grammar.find().select({ chapter: 1 }).distinct('chapter');
+  return chapters;
+};
+
+GrammarService.addGrammar = async (grammarRequest) => {
+  await grammarRequest.save((err, grammar) => {
+    if (err) {
+      throw new CustomError(
+        httpStatus.INTERNAL_SERVER_ERROR,
+        apiStatus.DATABASE_ERROR,
+        `Error when save grammar: ${err.message}`,
+      );
+    }
+    return grammar;
+  });
+  return grammarRequest;
+};
+
+GrammarService.updateGrammar = async (grammarRequest, grammarId) => {
+  let updateGrammar = await Grammar.findByIdAndUpdate(grammarId, grammarRequest, {
+    new: true,
+  });
+  if (!updateGrammar) {
+    throw new CustomError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      apiStatus.DATABASE_ERROR,
+      `Did not find grammar with id: ${grammarId}`,
+    );
+  }
+  return updateGrammar;
+};
+
+GrammarService.deleteGrammar = async (grammarId) => {
+  let deleteGrammar = await Grammar.findByIdAndDelete(grammarId);
+  if (!deleteGrammar) {
+    throw new CustomError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      apiStatus.DATABASE_ERROR,
+      `Did not find grammar with id: ${deleteGrammar}`,
+    );
+  }
+  return deleteGrammar;
+};
+
 export default GrammarService;

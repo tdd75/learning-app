@@ -65,7 +65,7 @@ const ManageUser = () => {
 					</div>
 					<div className={cx("search")}>
 						<input
-							placeholder="Search by email"
+							placeholder="Search ..."
 							className={cx("input")}
 							onChange={(e) => setSearchKey(e.target.value)}
 							onKeyUp={(e) => handleSearch(e)}

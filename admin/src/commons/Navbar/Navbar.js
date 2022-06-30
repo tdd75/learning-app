@@ -18,27 +18,22 @@ const Navbar = () => {
 	const navbar = [
 		{
 			id: 1,
-			name: 'Manage users',
+			name: 'Manage Users',
 			path: '/users',
 		},
 		{
 			id: 2,
-			name: 'Manage vocabulary',
+			name: 'Manage Vocabulary',
 			path: '/manage-vocab/show',
 		},
 		{
 			id: 3,
-			name: 'Manage grammar',
+			name: 'Manage Grammar',
 			path: '/manage-grammar',
 		},
 		{
 			id: 4,
-			name: 'Manage conversation',
-			path: '/manage-dialogue',
-		},
-		{
-			id: 5,
-			name: 'Admin account',
+			name: 'Account Setting',
 			path: '/admin-account',
 		}
 	]

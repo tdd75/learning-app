@@ -14,20 +14,21 @@ const cx = cn.bind(styles);
 
 const AdminAccount = () => {
 	const history = useHistory();
-	const [oldPass, setOldPass] = useState();
-	const [newPass, setNewPass] = useState();
+	const [oldPass, setOldPass] = useState('');
+	const [newPass, setNewPass] = useState('');
 
 	const handleChangePassword = async () => {
 		changePassword(oldPass, newPass).then(
             res => {
                 console.log(res?.data?.data);
                 toast.success('Change password successfully!');
-                setNewPass('');
-                setOldPass('');
-            }).catch((err) => {
-                console.log(err);
-                toast.error(`${err?.response?.data?.message}`);
-            });
+            }
+        ).catch((err) => {
+            console.log(err);
+            toast.error(`${err?.response?.data?.message}`);
+        });
+        setNewPass('');
+        setOldPass('');
 	}
     const handleLogout = () => {
         logout();
@@ -36,8 +37,8 @@ const AdminAccount = () => {
 
 	return (
 		<Layout>
-			<div style={{ fontSize: '28px', fontWeight: '700' }}>
-				Admin account
+			<div style={{ fontSize: '25px', fontWeight: '700' }}>
+				Admin Account
 			</div>
 			<div className={cx("body")}>
                 <ToastContainer position="top-right"/>
@@ -59,6 +60,7 @@ const AdminAccount = () => {
 									>Old password</div>
 									<input
 										type="password"
+                                        value={oldPass}
 										className={cx("value")}
 										placeholder=""
 										onChange={(e) => setOldPass(e.target.value)}
@@ -76,6 +78,7 @@ const AdminAccount = () => {
 									>New password</div>
 									<input
 										type="password"
+                                        value={newPass}
 										className={cx("value")}
 										placeholder=""
 										onChange={(e) => setNewPass(e.target.value)}

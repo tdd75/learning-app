@@ -21,3 +21,7 @@ export const changePassword = async (oldPassword, newPassword) => {
         });
     return response;
 }
+
+export const getAllGrammar = async () => {
+    
+}

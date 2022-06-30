@@ -3,6 +3,7 @@ import CustomError from '../error/custom.error.js';
 import GrammarTask from '../models/grammarTask.js';
 import GrammarTaskService from '../service/grammarTask.service.js';
 import UserService from '../service/user.service.js';
+import mongoose from 'mongoose';
 
 export const getGrammarTaskById = async (req, res) => {
   try {
@@ -189,6 +190,50 @@ export const getListTaskWithPagination = async (req, res) => {
       status: apiStatus.SUCCESS,
       message: "Get list task by topic successfully",
       data: listTask
+    });
+  }catch(err){
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+}
+
+export const markDoneTask = async (req, res) => {
+  try{
+    let userId = req.userId;
+    let taskId = req.body.taskId;
+    let grammarTask = await GrammarTaskService.findGrammarTaskById(taskId);
+    let topic = req.body.topic;
+    let listTask = await GrammarTaskService.getListTaskByTopicAndPagination(1, 10, topic);
+    if(listTask.length === 0) {
+      return res.status(httpStatus.BAD_REQUEST).send({
+        status: apiStatus.INVALID_PARAM,
+        message: "Topic name not exist!"
+      });
+    }
+    let user = await UserService.findUserById(userId);
+    let progressList = user.progressGrammarTask;
+    //check topic is in progress list
+    if(progressList.some(item => (item.topic !== undefined && item.topic === topic))){
+      for(let i = 0; i< progressList.length; i++){
+        if(progressList[i].topic === topic){
+          progressList[i].complete.push(new mongoose.Types.ObjectId(taskId));
+        }
+      }
+      user.progressGrammarTask = progressList;
+    }else{
+      user.progressGrammarTask.push({
+        topic: topic,
+        complete: [
+          grammarTask._id
+        ]
+      })
+    }
+    await UserService.updateUser(user);
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: "Mark done task successfully!"
     });
   }catch(err){
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({

@@ -5,7 +5,8 @@ import {
   getGrammarTaskById,
   getListTaskByTopicWithPagination,
   getListTaskWithPagination,
-  submitFinishTask,
+  markDoneTask,
+  // submitFinishTask,
   updateGrammarTask,
 } from '../controllers/grammarTask.controller.js';
 import { isAdmin, verifyToken } from '../middleware/authJwt.js';
@@ -23,12 +24,12 @@ grammarTaskRoutes.get(
   getListTaskWithPagination
 );
 
-// usersubmit Done task
-grammarTaskRoutes.post(
-  '/api/v1/user/auth/grammar-task/submit',
-  verifyToken,
-  submitFinishTask,
-);
+// // usersubmit Done task
+// grammarTaskRoutes.post(
+//   '/api/v1/user/auth/grammar-task/submit',
+//   verifyToken,
+//   submitFinishTask,
+// );
 
 
 // crud gTask
@@ -52,5 +53,11 @@ grammarTaskRoutes.delete(
 grammarTaskRoutes.get(
   '/api/v1/admin/auth/grammar-task/by-topic', 
   getListTaskByTopicWithPagination
+);
+
+grammarTaskRoutes.post(
+  '/api/v1/user/auth/grammar-task/submit',
+  verifyToken,
+  markDoneTask
 );
 export default grammarTaskRoutes;

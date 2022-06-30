@@ -3,6 +3,7 @@ import CustomError from '../error/custom.error.js';
 import Grammar from '../models/grammar.js';
 import ChapterService from '../service/chapter.service.js';
 import GrammarService from '../service/grammar.service.js';
+import UserService from '../service/user.service.js';
 
 export const getGrammarById = async (req, res) => {
   try {
@@ -115,7 +116,10 @@ export const deleteGrammar = async (req, res) => {
 
 export const getListGrammarByChapter = async (req, res) => {
   try{
+    let userId = req.userId;
     let chapterId = req.query.chapterId;
+    let user = await UserService.findUserById(userId);
+    let status = user.progressGrammar.includes(chapterId) ? 1 : 0;
     let chapter = await ChapterService.findChapterById(chapterId);
     let listGrammar = await GrammarService.findAllGrammarByChapter(chapterId);
     return res.status(httpStatus.OK).send({
@@ -124,7 +128,8 @@ export const getListGrammarByChapter = async (req, res) => {
       data: {
         items: listGrammar,
         totalItems: listGrammar.length,
-        chapterName: chapter.name
+        chapterName: chapter.name,
+        status: status
       }
     });
   }catch(err){

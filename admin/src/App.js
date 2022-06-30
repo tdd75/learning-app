@@ -21,6 +21,7 @@ import Grammar from './components/ManageGrammar';
 import GrammarLessonDetail from './components/ManageGrammar/Lesson/LessonDetail';
 import AddGrammar from './components/ManageGrammar/Lesson/AddLesson';
 import EditGrammarLesson from './components/ManageGrammar/Lesson/EditLesson';
+import TestDetail from './components/GrammarTest/GrammarTestDetail';
 
 function App() {
 	return (
@@ -44,6 +45,7 @@ function App() {
 				<Route path="/manage-vocab/edit-vocab">
 					<EditVocab />
 				</Route>
+
 				<Route path="/admin-account">
 					<AdminAccount />
 				</Route>
@@ -59,6 +61,14 @@ function App() {
 				<Route path="/manage-grammar/lesson/:id/edit-lesson">
 					<EditGrammarLesson />
 				</Route>
+
+
+				{/* grammar Task */}
+
+				<Route exact path="/manage-test">
+					<TestDetail />
+				</Route>
+
 			</Switch>
 		</Router>
 	);

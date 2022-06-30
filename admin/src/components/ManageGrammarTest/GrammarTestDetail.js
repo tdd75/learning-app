@@ -15,36 +15,48 @@ import {
 } from "@ant-design/icons";
 import sound from "../../images/sound.svg";
 import { useParams } from "react-router-dom";
+import ReactPaginate from 'react-paginate'
+
+const PageSize = 10;
+
 
 const cx = cn.bind(styles);
 
-const TestDetail = () => {
-	const location = useLocation();
+const TestDetail = () => { 
 	const [lessonDetail, setLessonDetail] = useState();
 	const history = useHistory();
-	const [word, setWord] = useState();
-	const [isModalCreate, setIsModalCreate] = useState(false);
-	const [isModalEdit, setIsModalEdit] = useState(false);
+	const [word, setWord] = useState(); 
 	const [form] = Form.useForm();
-	const [isModalDelete, setIsModalDelete] = useState(false); 
-	const { id } = useParams();
+	const [isModalDelete, setIsModalDelete] = useState(false);  
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => form.resetFields(), [word]);
 
+
+	const [pageCount, setPageCount] = useState(1);
+	const [currentPage, setcurrentPage] = useState(1);
+
+	const handlePageChange = (selectedObject) => {
+
+		console.log("chosse page "+ selectedObject.selected)
+		setcurrentPage(selectedObject.selected);
+		getLessonById();
+	};
+
 	useEffect(() => {
 		getLessonById();
-	}, [id]);
- 
+	  }, [word]);
+
 
 	const getLessonById = async () => {
-
-		
 		try {
  
-		const res = await axios.get(`${URL}/admin/auth/grammar-task/by-topic?topic=word order&offset=1`);
+		const res = await axios.get(`${URL}/admin/grammar-task?&offset=${currentPage}&limit=${PageSize}`);
 		if (res.status === 200) {
+			console.log("set lesstion", res.data.data.items)
 			setLessonDetail(res.data.data.items);
+
+			setPageCount(res.data.data.totalPages);
 			setLoading(false);
 		}
 		} catch (err) {
@@ -52,17 +64,15 @@ const TestDetail = () => {
 		}
 	}
 
-	 
-
 	const handleDelete = async () => {
 		try {
 
 			const token = window.localStorage.getItem("token-lingo-admin");
 			const headers = { Authorization: `Bearer ${token}` };
-			const res = await axios.delete(`${URL}/api/Admin/delete-grammar-excercise/${word.id}`, { headers });
+			const res = await axios.delete(`${URL}/admin/auth/grammar-task/${word._id}`, { headers });
 			if (res.status === 200) {
 				message.success("Delete successfully!");
-				window.location.reload();
+				getLessonById();
 			}
 		} catch (err) {
 			console.log(err);
@@ -76,7 +86,7 @@ const TestDetail = () => {
 		<Layout>
 			<div className={cx("detail-page")}> 
 
-				<div className={cx("create")} onClick={() => history.push(`/manage-grammar/test/${id}/add-sentence`)}>
+				<div className={cx("create")} onClick={() => history.push(`/manage-grammar/test/add`)}>
 					<PlusCircleOutlined /> Add sentence
 				</div>
 
@@ -101,22 +111,22 @@ const TestDetail = () => {
 							>
 								<Col span={2} style={{ textAlign: 'center' }}>{id + 1}</Col>
 								<Col span={4}>
-									{item.sentence.slice(0, 20)}...
+									{item.task.slice(0,12)}...
 								</Col>
 								<Col span={3}>
-									{item.answerA.slice(0, 12)}...
+									{item.listAnswer[0].slice(0, 12)}...
 								</Col>
 								<Col span={3}>
-									{item.answerB.slice(0, 12)}...
+									{item.listAnswer[1].slice(0, 12)}...
 								</Col>
 								<Col span={3}>
-									{item.answerC.slice(0, 12)}...
+									{item.listAnswer[2].slice(0, 12)}...
 								</Col>
 								<Col span={3}>
-									{item.answerD.slice(0, 12)}...
+									{item.listAnswer[3].slice(0, 12)}...
 								</Col>
 								<Col span={2} style={{ textAlign: 'center' }}>
-									{item.answerRight}
+									{item.trueAnswer}
 								</Col>
 								<Col span={4} style={{ paddingLeft: '20px' }}>
 									<div className={cx("group-button")}>
@@ -125,7 +135,7 @@ const TestDetail = () => {
 											onClick={() => {
 												setWord(item)
 												history.push({
-													pathname: `/manage-grammar/test/${item.lessonId}/edit-sentence`,
+													pathname: `/manage-test/edit`,
 													state: { lesson: item }
 												})
 											}}>
@@ -148,6 +158,37 @@ const TestDetail = () => {
 						</div>
 					)}
 				</div>
+
+
+
+				{!loading ? (
+			<div style={{ position: 'relative', display: 'flex',  justifyContent:'center', alignItems:'center', height: '10vh'}}>
+					<ReactPaginate
+					pageCount={pageCount}
+					pageRange={2}
+					marginPagesDisplayed={2}
+					onPageChange={handlePageChange}
+					forcePage={currentPage}
+
+					breakClassName={'page-item'}
+					breakLinkClassName={'page-link'}
+					containerClassName={'pagination'}
+					pageClassName={'page-item'}
+					pageLinkClassName={'page-link'}
+					previousClassName={'page-item'}
+					previousLinkClassName={'page-link'}
+					nextClassName={'page-item'}
+					nextLinkClassName={'page-link'}
+					activeClassName={'active'}
+
+					/>
+
+			</div>
+			
+          ) : (
+            <div>Nothing to display</div>
+          )}
+
 			</div>
 
 			<Modal

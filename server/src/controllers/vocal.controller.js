@@ -4,6 +4,81 @@ import WordService from '../service/word.service.js';
 import UserService from '../service/user.service.js';
 import Word from '../models/word.js';
 
+
+export const getQuiz = async (req, res) => {
+  try {
+    let topicId  = req.query.topicId; 
+ 
+    let wordInTopic = await WordService.findByTopic(topicId);
+    let randMeaningSet = new Set()
+
+    for(let i = 0; i< wordInTopic.length;i++){
+      let word = wordInTopic[i];
+      randMeaningSet.add(word.shortDesc)
+    }
+
+    let dataReturn = [];
+
+    function getRandomItem(set) {
+      let items = Array.from(set);
+      return items[Math.floor(Math.random() * items.length)];
+    }
+
+    for(let i = 0; i< wordInTopic.length;i++){
+
+      let word = wordInTopic[i];
+      let trueMeaning = word.shortDesc;
+      let wrongMeaning = new Set()
+
+      while(wrongMeaning.size < 3){
+        let rand = getRandomItem(randMeaningSet)
+        if (wrongMeaning.has(rand)){
+            continue;
+        }else{
+          wrongMeaning.add(rand)
+          
+        }
+      }
+
+      console.log(wrongMeaning)
+
+      let quiz = {
+        word: word,
+        trueMeaning: trueMeaning,
+        wrongMeaning: Array.from(wrongMeaning)
+      }
+
+      dataReturn.push(quiz)
+ 
+    }
+
+
+    let dataReturnFinal = {
+
+      "items": dataReturn,
+      "totalItems" : dataReturn.length
+    }
+ 
+
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: 'Get quiz successfuly ',
+      data: dataReturnFinal,
+    });
+  } catch (err) {
+    if (err instanceof CustomError) {
+      return res.status(err.httpStatus).send({
+        status: err.apiStatus,
+        message: err.message,
+      });
+    }
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+};
+
 /**
  * Get All Volcabulary (has paging)
  * @param {Object} res response API
@@ -296,8 +371,8 @@ export const getAllTopicWithProcess = async (req, res) => {
 
     let userId = req.userId;
 
-    let limit =  parseInt(req.query.limit)
-    let offset = req.query.offset
+    let offset=  parseInt(req.query.offset, 10) || 0
+    let limit=  parseInt(req.query.limit, 10) || 10
 
     let topicProcessObj = await WordService.getAllTopicWithProcess(userId);
 

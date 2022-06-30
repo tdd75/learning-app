@@ -6,6 +6,7 @@ import UserService from "../service/user.service.js";
 export const submitFinishChapter = async (req, res) => {
     try{
         let userId = req.userId;
+        let type = req.body.type;
         let chapterId = req.body.chapterId;
 
 
@@ -13,56 +14,35 @@ export const submitFinishChapter = async (req, res) => {
 
         let user = await UserService.findUserById(userId);
 
-        if(user.progressGrammar.includes(chapterId)){
+        if(type === 'SUBMIT'){
+            if(user.progressGrammar.includes(chapterId)){
+                return res.status(httpStatus.BAD_REQUEST).send({
+                    status: apiStatus.INVALID_PARAM,
+                    message: "This chapter has already been finished"
+                });
+            }else{
+                user.progressGrammar.push(chapter._id);
+            }
+        }else if (type === 'UNSUBMIT'){
+            if(!user.progressGrammar.includes(chapterId)){
+                return res.status(httpStatus.BAD_REQUEST).send({
+                    status: apiStatus.INVALID_PARAM,
+                    message: "This chapter hasn't been finished"
+                });
+            }else{
+                user.progressGrammar.splice(user.progressGrammar.indexOf(chapter._id), 1);
+            }
+        }else {
             return res.status(httpStatus.BAD_REQUEST).send({
                 status: apiStatus.INVALID_PARAM,
-                message: "This chapter has already been finished"
+                message: "Invalid request type! Only SUBMIT or UNSUBMIT"
             });
-        }else{
-            user.progressGrammar.push(chapter._id);
         }
+        
         let updateUser = await UserService.updateUser(user);
         return res.status(httpStatus.OK).send({
             status: apiStatus.SUCCESS,
             message: "submit finish chapter successfully",
-            data: updateUser
-        });
-    }catch(err){
-        if (err instanceof CustomError) {
-            return res.status(err.httpStatus).send({
-                status: err.apiStatus,
-                message: err.message,
-            });
-        }
-        return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
-        status: apiStatus.OTHER_ERROR,
-        message: err.message,
-        }); 
-    }
-}
-
-export const unFinishChapter = async (req, res) => {
-    try{
-        let userId = req.userId;
-        let chapterId = req.body.chapterId;
-
-
-        let chapter = await ChapterService.findChapterById(chapterId);
-
-        let user = await UserService.findUserById(userId);
-
-        if(!user.progressGrammar.includes(chapterId)){
-            return res.status(httpStatus.BAD_REQUEST).send({
-                status: apiStatus.INVALID_PARAM,
-                message: "This chapter hasn't been finished"
-            });
-        }else{
-            user.progressGrammar.splice(user.progressGrammar.indexOf(chapter._id), 1);
-        }
-        let updateUser = await UserService.updateUser(user);
-        return res.status(httpStatus.OK).send({
-            status: apiStatus.SUCCESS,
-            message: "Un finish chapter successfully",
             data: updateUser
         });
     }catch(err){
@@ -109,7 +89,7 @@ export const getListChapterWithPagination = async (req, res) => {
             }
             response.items.push(chapterObject);
         }
-        response.globalProgress = `${countFinishGrammarChapter}/${numberOfChapter}`
+        response.globalProcess = `${countFinishGrammarChapter}/${numberOfChapter}`
         
         return res.status(httpStatus.OK).send({
             status: apiStatus.SUCCESS,

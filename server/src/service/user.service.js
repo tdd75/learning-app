@@ -44,10 +44,31 @@ UserService.addUSer = async (user) => {
 };
 
 UserService.updateUser = async (user) => {
-  let rsUser = await User.findOneAndUpdate({ _id: user._id }, user, {
-    returnOriginal: false,
-  });
+  let rsUser = await User.findOneAndUpdate({ _id: user._id }, user, {new: true});
   rsUser.password = '';
   return rsUser;
 };
+
+UserService.updateUserProfile = async (userId, request) => {
+  let updateUser = await User.findByIdAndUpdate(userId, request, {new: true});
+  if(!updateUser){
+    throw new CustomError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      apiStatus.DATABASE_ERROR,
+      `Did not find user with id: ${userId}`
+    )
+  }
+  return updateUser;
+}
+
+UserService.getAllUser = async () => {
+  let listUser = await User.find();
+  return listUser;
+}
+
+UserService.searchUserByKeyword = async (keyword) => {
+  let regex = new RegExp(`.*${keyword}.*`, 'i');
+  let listUser = await User.find({ $or: [{username: regex },{firstName: regex}, {lastName: regex}, {email: regex}] });
+  return listUser;
+}
 export default UserService;

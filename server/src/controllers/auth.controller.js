@@ -129,6 +129,8 @@ export const signin = async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
+
     if (err instanceof CustomError) {
       return res.status(err.httpStatus).send({
         status: err.apiStatus,
@@ -163,7 +165,7 @@ export const signinAdmin = async (req, res) => {
         message: 'Incorrect password!',
       });
     }
-    if (user.role.name === Roles.USER) {
+    if (user.roleId.name === Roles.USER) {
       return res.status(httpStatus.FORBIDDEN).send({
         status: apiStatus.AUTH_ERROR,
         message: 'ADMIN role is allowed only!',
@@ -198,6 +200,8 @@ export const signinAdmin = async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
+
     if (err instanceof CustomError) {
       return res.status(err.httpStatus).send({
         status: err.apiStatus,
@@ -247,7 +251,7 @@ export const forgotPassword = async (req, res) => {
   try {
     const to = req.body.to;
     let user = await UserService.findUserByEmail(to);
-    if (!user || user.role.name === Roles.ADMIN) {
+    if (!user || user.roleId.name === Roles.ADMIN) {
       return res.status(httpStatus.NOT_FOUND).send({
         status: apiStatus.INVALID_PARAM,
         message: 'Email is not existed!',
@@ -388,3 +392,28 @@ export const verifyOtp = async (req, res) => {
     });
   }
 };
+
+export const changeForgotPassword = async (req, res) => {
+  try{
+    let userId = req.body.userId;
+    let user = await UserService.findUserById(userId);
+    user.password = hashSync(req.body.newPassword);
+    let updateUser = await UserService.updateUser(user);
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: "change forgot password successfully",
+      data: updateUser
+    });
+  }catch(err){
+    if (err instanceof CustomError) {
+      return res.status(err.httpStatus).send({
+        status: err.apiStatus,
+        message: err.message,
+      });
+    }
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+}

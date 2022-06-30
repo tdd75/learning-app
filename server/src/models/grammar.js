@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
-
+import mongoosePaginate from 'mongoose-paginate-v2';
 const GrammarSchema = new mongoose.Schema(
   {
-    chapter: {
-      type: String,
+    chapterId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Chapter',
       required: true,
     },
     title: {
@@ -31,6 +32,6 @@ const GrammarSchema = new mongoose.Schema(
     versionKey: false,
   },
 );
-
+GrammarSchema.plugin(mongoosePaginate);
 const Grammar = mongoose.model('Grammar', GrammarSchema);
 export default Grammar;

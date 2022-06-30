@@ -1,11 +1,10 @@
 import { defineStore } from 'pinia';
-import { AxiosError } from 'axios';
-import { IResponseError } from '../../common/interfaces';
+import { IAxiosError, IProfile } from '../../common/interfaces';
 import { userApiService } from '../../common/service/user.api.service';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    userInfo: {},
+    userInfo: {} as IProfile,
   }),
   actions: {
     async getProfile(): Promise<string | void> {
@@ -13,11 +12,11 @@ export const useUserStore = defineStore('user', {
         const response = await userApiService.getProfile();
         this.userInfo = response.data.data;
       } catch (error) {
-        return (error as AxiosError<IResponseError>).response?.data?.message;
+        return (error as IAxiosError).response?.data?.message;
       }
     },
     async removeProfile(): Promise<string | void> {
-      this.userInfo = {};
+      this.userInfo = {} as IProfile;
     },
   },
 });

@@ -2,21 +2,32 @@
   <div class="heading-bar d-flex justify-content-between align-items-center">
     <div class="">
       <span class="title">{{ t('vocabulary.heading.title') }}</span>
-      <span class="count-lesson">{{ t('vocabulary.heading.countLesson', { count: 62 }) }}</span>
+      <span class="count-lesson">{{ t('vocabulary.heading.totalLesson', { totalLesson: totalLesson }) }}</span>
     </div>
-    <div class="learning-progress">
+    <div class="learning-progress d-flex flex-column align-items-end">
       <div class="bar">
-        <el-progress :percentage="25" :stroke-width="10" color="#5cc046" :show-text="false" />
+        <el-progress :percentage="ratioToPercentage(progress)" :stroke-width="10" color="#5cc046" :show-text="false" />
       </div>
-      <div class="learned">{{ t('vocabulary.heading.learned', { ratio: '25 / 62' }) }}</div>
+      <div class="learned">{{ t('vocabulary.heading.learned', { progress: progress }) }}</div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
+import { ratioToPercentage } from '../../../common/helpers';
 
 const { t } = useI18n();
+const props = defineProps({
+  totalLesson: {
+    type: Number,
+    required: true,
+  },
+  progress: {
+    type: String,
+    required: true
+  }
+})
 
 </script>
 
@@ -45,8 +56,12 @@ const { t } = useI18n();
     margin-bottom: 4px;
 
     .el-progress--line {
-      width: 150px;
+      width: 140px;
     }
+  }
+
+  :deep(.el-progress-bar__outer) {
+    background-color: $color-white;
   }
 
   .learned {

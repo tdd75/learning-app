@@ -1,12 +1,14 @@
 <template>
   <div class="container-fluid">
     <div class="vocabulary-page container d-fl">
-      <HeadingBar />
+      <HeadingBar :total-lesson="vocabularyStore.lengthTopicList" :progress="vocabularyStore.progress" />
       <div class="card-lesson-list d-grid justify-content-between">
-        <CardLesson v-for="index in 18" :key="index" />
+        <CardLesson v-for="topic in vocabularyStore.topicList" :key="topic.topicId" :lesson-id="topic.topicId"
+          :count-learned="topic.topicStatus" />
       </div>
       <div class="pagination d-flex justify-content-center">
-        <el-pagination :background="true" :page-size="20" :pager-count="11" layout="prev, pager, next" :total="1000" />
+        <el-pagination :background="true" :page-size="LIMIT_LESSON_LIST" layout="prev, pager, next"
+          :total="vocabularyStore.lengthTopicList" />
       </div>
     </div>
   </div>
@@ -15,7 +17,19 @@
 <script lang="ts" setup>
 import CardLesson from './components/CardLesson.vue';
 import HeadingBar from './components/HeadingBar.vue';
+import { useVocabularyStore } from './store';
+import { ITopic } from '@/common/interfaces';
+import { onMounted } from 'vue';
+import { LIMIT_LESSON_LIST } from './constants';
 
+const vocabularyStore = useVocabularyStore();
+
+onMounted(async () => {
+  await vocabularyStore.getTopicList({
+    limit: LIMIT_LESSON_LIST,
+    offset: 0,
+  });
+})
 
 </script>
 

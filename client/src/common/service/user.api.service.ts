@@ -1,9 +1,9 @@
 import axios from '@/plugins/axios';
 import { AxiosResponse } from 'axios';
-import { IProfile, IResponse } from '../interfaces';
+import { IProfile, IAxiosResponse } from '../interfaces';
 
 class UserApiService {
-  async getProfile(): Promise<AxiosResponse<IResponse<IProfile>>> {
+  async getProfile(): Promise<IAxiosResponse<IProfile>> {
     return await axios.get('/user/auth/profile');
   }
 }

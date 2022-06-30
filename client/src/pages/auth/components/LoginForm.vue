@@ -8,10 +8,10 @@
 
       <div class="login-form d-flex flex-column align-items-center">
         <el-input class="input-email" v-model="email" type="email" :prefix-icon="IconUser"
-          :placeholder="`${t('auth.login.placeholder.email')}`" @keydown.enter="submitLogin">
+          :placeholder="t('auth.login.placeholder.email')" @keydown.enter="submitLogin">
         </el-input>
         <el-input class="input-password" v-model="password" type="password" :prefix-icon="IconLock"
-          :placeholder="`${t('auth.login.placeholder.password')}`" @keydown.enter="submitLogin">
+          :placeholder="t('auth.login.placeholder.password')" @keydown.enter="submitLogin">
         </el-input>
       </div>
 
@@ -76,8 +76,6 @@ const { handleSubmit, errors } = useForm({
 });
 
 const submitLogin = handleSubmit(async ({ email, password }) => {
-  console.log(email, password);
-
   const error = await store.login(email!, password!);
 
   if (error) {

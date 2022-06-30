@@ -1,10 +1,9 @@
 <template>
-  <el-dialog v-model="store.isShowForgotPassword" width="30%" top="25vh"
-    :title="`${t('auth.forgotPasswordDialog.title')}`">
+  <el-dialog v-model="store.isShowForgotPassword" width="30%" top="25vh" :title="t('auth.forgotPasswordDialog.title')">
     <template #default>
       <div class="enter-email">{{ t('auth.forgotPasswordDialog.enterEmail') }}</div>
       <el-input class="input-email" v-model="email" />
-      <el-dialog v-model="isShowEnterOtp" width="30%" top="30vh" :title="`${t('auth.forgotPasswordDialog.enterOtp')}`"
+      <el-dialog v-model="isShowEnterOtp" width="30%" top="30vh" :title="t('auth.forgotPasswordDialog.enterOtp')"
         append-to-body>
         <div class="d-flex d-flex flex-column align-items-center">
           <v-otp-input ref="inputOtp" class="otp-input" separator="" :num-inputs="6" :should-auto-focus="true"

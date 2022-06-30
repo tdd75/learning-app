@@ -1,81 +1,59 @@
 <template>
-  <HeadingBar :button-label="t('vocabularyLearn.heading.testNow')" :title="t('vocabularyLearn.heading.lesson', {
-    lessonId: id
-  })" :to="{
-  name: PageName.VOCABULARY_TEST_PAGE,
-  id: id
-}" />
+  <HeadingBar :button-label="t('vocabularyTest.heading.relearn')"
+    :title="t('vocabularyTest.heading.lesson', { lessonId: id })" :to="{
+      name: PageName.VOCABULARY_LEARN_PAGE,
+      id: id
+    }" />
   <div class="vocabulary-content" v-if="getProgressPercentage < 100">
     <div class="controller d-flex justify-content-between">
       <el-button class="button-previous" type="primary" @click="backWord"
-        :disabled="vocabularyLearnStore.currentIndex === 0">
+        :disabled="vocabularyTestStore.currentIndex === 0">
         <img src="@/assets/images/icons/left-arrow.svg" />
-        <span class="ms-2">
-          {{ t('vocabularyLearn.previous') }}
-        </span>
       </el-button>
       <el-button class="button-next" type="primary" @click="nextWord">
-        <span class="me-2">
-          {{ t('vocabularyLearn.next') }}
-        </span>
         <img src="@/assets/images/icons/right-arrow.svg" />
       </el-button>
     </div>
     <el-progress class="learn-progress" :percentage="getProgressPercentage" width="50%" :stroke-width="12"
       color="#5cc046" :show-text="false" />
-    <div class="d-flex ">
-      <FlashCard />
-    </div>
+    <QuestionCard />
   </div>
-  <LearningComplete v-else :id="id" />
 </template>
 
 <script lang="ts" setup>
 import HeadingBar from '@/components/HeadingBar.vue';
-import FlashCard from './components/FlashCard.vue';
+import QuestionCard from './components/QuestionCard.vue';
 
 import { useI18n } from 'vue-i18n';
-import { useVocabularyLearnStore } from './store';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
-import LearningComplete from './components/LearningComplete.vue';
 import { computed } from '@vue/reactivity';
+import { useVocabularyTestStore } from './store';
 import { PageName } from '../../common/constants';
-
 
 const { t } = useI18n();
 const route = useRoute();
-const vocabularyLearnStore = useVocabularyLearnStore();
-const isDiableController = ref(false);
+const vocabularyTestStore = useVocabularyTestStore();
 
 const id = route.params.id as string;
 
 onMounted(async () => {
-  await vocabularyLearnStore.getWordList(id);
+  await vocabularyTestStore.getWordList(id);
 })
 
 const backWord = () => {
-  if (vocabularyLearnStore.currentIndex === 1) {
-    isDiableController.value = true
-  } else {
-    isDiableController.value = false
-  }
-  vocabularyLearnStore.$patch({
-    currentIndex: vocabularyLearnStore.currentIndex - 1
+  vocabularyTestStore.$patch({
+    currentIndex: vocabularyTestStore.currentIndex - 1
   })
 }
 
 const nextWord = () => {
-  if (vocabularyLearnStore.currentIndex === vocabularyLearnStore.wordList.length - 1) {
-    isDiableController.value = true
-  } else {
-    isDiableController.value = false
-  }
-  vocabularyLearnStore.doneCurrentWord();
+  // vocabularyTestStore.doneCurrentWord();
 }
+
 const getProgressPercentage = computed(() => {
-  console.log(vocabularyLearnStore.currentIndex * 100 / vocabularyLearnStore.wordList.length);
-  return vocabularyLearnStore.currentIndex * 100 / vocabularyLearnStore.wordList.length;
+  console.log(vocabularyTestStore.currentIndex * 100 / vocabularyTestStore.wordList.length);
+  return vocabularyTestStore.currentIndex * 100 / vocabularyTestStore.wordList.length;
 })
 
 </script>
@@ -101,7 +79,6 @@ const getProgressPercentage = computed(() => {
 
 .button-previous,
 .button-next {
-  padding: 18px 20px;
   font-weight: 500;
   border-radius: 4px;
 }

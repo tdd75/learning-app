@@ -35,7 +35,7 @@
         <el-dropdown @command="onClickUser" v-else>
           <div class="d-flex align-items-center">
             <img class="avatar" src="@/assets/images/icons/user.png" />
-            <span class="username">{{ (userStore.userInfo as IProfile).username }}</span>
+            <span class="username">{{ userStore.userInfo.username }}</span>
           </div>
           <template #dropdown>
             <el-dropdown-menu>

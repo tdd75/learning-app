@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { authApiService } from '@/common/service/auth.api.service';
-import { AxiosError } from 'axios';
-import { IResponseError } from '../../common/interfaces';
+import { IAxiosError } from '../../common/interfaces';
 import axios from '@/plugins/axios';
 import { useUserStore } from '../user/store';
 
@@ -33,7 +32,7 @@ export const useAuthStore = defineStore('auth', {
         // get profile
         userStore.getProfile();
       } catch (error) {
-        return (error as AxiosError<IResponseError>).response?.data?.message;
+        return (error as IAxiosError).response?.data?.message;
       }
     },
     async logout() {
@@ -43,7 +42,6 @@ export const useAuthStore = defineStore('auth', {
       await this.removeToken();
       // remove profile
       userStore.removeProfile();
-      console.log(userStore.userInfo);
     },
     // async register(
     //   email: string,

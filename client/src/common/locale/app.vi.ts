@@ -6,6 +6,7 @@ export const app = {
     register: 'Đăng ký - learn4U',
     vocabulary: 'Từ vựng - learn4U',
     vocabularyLearn: 'Học từ vựng - learn4U',
+    vocabularyTest: 'Kiểm tra từ vựng - learn4U',
     garmmar: 'Ngữ pháp - learn4U',
     dialogue: 'Hội thoại - learn4U',
   },

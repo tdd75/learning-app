@@ -2,18 +2,22 @@
   <router-link class="router-link" :to="{
     name: PageName.VOCABULARY_LEARN_PAGE,
     params: {
-      id: 1
+      id: lessonId
     }
   }">
     <div class="card-lesson d-flex flex-column align-items-center">
       <img class="card-lesson__image" src="@/assets/images/img/vocab1.jpg">
       <div class="card-lesson__title">
-        LESSON 1
+        {{ t('vocabulary.card.lesson', {
+            lessonId: lessonId
+          })
+        }}
       </div>
       <div class="mb-2">
-        <el-progress :percentage="25" :stroke-width="14" color="#5cc046" :show-text="false" />
+        <el-progress :percentage="ratioToPercentage(countLearned)" :stroke-width="14" color="#5cc046"
+          :show-text="false" />
       </div>
-      <div class="learned">{{ t('vocabulary.card.learned', { ratio: '2 / 10' }) }}</div>
+      <div class="learned">{{ t('vocabulary.card.learned', { ratio: countLearned }) }}</div>
     </div>
   </router-link>
 </template>
@@ -21,8 +25,21 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
 import { PageName } from '../../../common/constants';
+import { ratioToPercentage } from '../../../common/helpers';
+
 
 const { t } = useI18n();
+
+const props = defineProps({
+  lessonId: {
+    type: Number,
+    required: true,
+  },
+  countLearned: {
+    type: String,
+    required: true,
+  }
+})
 
 </script>
 

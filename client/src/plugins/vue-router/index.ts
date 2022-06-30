@@ -12,6 +12,7 @@ import HomePage from '@/pages/home/HomePage.vue';
 import AuthPage from '@/pages/auth/AuthPage.vue';
 import VocabularyPage from '@/pages/vocabulary/VocabularyPage.vue';
 import VocabularyLearnPage from '@/pages/vocabulary-learn/VocabularyLearnPage.vue';
+import VocabularyTestPage from '@/pages/vocabulary-test/VocabularyTestPage.vue';
 import GrammarPage from '@/pages/grammar/GrammarPage.vue';
 import DialoguePage from '@/pages/dialogue/DialoguePage.vue';
 
@@ -82,6 +83,14 @@ const routes: Array<RouteRecordRaw> = [
     component: VocabularyLearnPage,
     meta: {
       title: i18n.global.t('app.title.vocabularyLearn'),
+    },
+  },
+  {
+    path: '/vocabulary/test/:id',
+    name: PageName.VOCABULARY_TEST_PAGE,
+    component: VocabularyTestPage,
+    meta: {
+      title: i18n.global.t('app.title.vocabularyTest'),
     },
   },
 ];

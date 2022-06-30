@@ -8,10 +8,10 @@
 
       <div class="register-form d-flex flex-column align-items-center">
         <el-input class="input-email" v-model="email" type="email" :prefix-icon="IconUser"
-          :placeholder="`${t('auth.register.placeholder.email')}`" @keydown.enter="submitRegister">
+          :placeholder="t('auth.register.placeholder.email')" @keydown.enter="submitRegister">
         </el-input>
         <el-input class="input-password" v-model="password" type="password" :prefix-icon="IconLock"
-          :placeholder="`${t('auth.register.placeholder.password')}`" @keydown.enter="submitRegister">
+          :placeholder="t('auth.register.placeholder.password')" @keydown.enter="submitRegister">
         </el-input>
       </div>
 
@@ -68,8 +68,6 @@ const { handleSubmit, errors } = useForm({
 });
 
 const submitRegister = handleSubmit(async ({ email, password }) => {
-  console.log(email, password);
-
   // const error = await store.register(email!, password!);
 
   // if (error) {

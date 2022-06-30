@@ -4,6 +4,7 @@ export const enum PageName {
   REGISTER_PAGE = 'RegisterPage',
   VOCABULARY_PAGE = 'VocabularyPage',
   VOCABULARY_LEARN_PAGE = 'VocabularyLearnPage',
+  VOCABULARY_TEST_PAGE = 'VocabularyTestPage',
   GRAMMAR_PAGE = 'GrammarPage',
   DIALOGUE_PAGE = 'DialoguePage',
 }
@@ -46,3 +47,5 @@ export const enum DeviceType {
   MOBILE = 'mobile',
   DESKTOP = 'desktop',
 }
+
+export const DEBOUNCE_TIME = 1000;

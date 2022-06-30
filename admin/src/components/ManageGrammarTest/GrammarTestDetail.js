@@ -42,6 +42,7 @@ const TestDetail = () => {
  
 		const res = await axios.get(`${URL}/admin/auth/grammar-task/by-topic?topic=word order&offset=1`);
 		if (res.status === 200) {
+			console.log("set lesstion", res.data.data.items)
 			setLessonDetail(res.data.data.items);
 			setLoading(false);
 		}
@@ -49,8 +50,6 @@ const TestDetail = () => {
 			console.log(err);
 		}
 	}
-
-	 
 
 	const handleDelete = async () => {
 		try {
@@ -99,22 +98,22 @@ const TestDetail = () => {
 							>
 								<Col span={2} style={{ textAlign: 'center' }}>{id + 1}</Col>
 								<Col span={4}>
-									{item.sentence.slice(0, 20)}...
+									{item.task.slice(0,12)}...
 								</Col>
 								<Col span={3}>
-									{item.answerA.slice(0, 12)}...
+									{item.listAnswer[0].slice(0, 12)}...
 								</Col>
 								<Col span={3}>
-									{item.answerB.slice(0, 12)}...
+									{item.listAnswer[1].slice(0, 12)}...
 								</Col>
 								<Col span={3}>
-									{item.answerC.slice(0, 12)}...
+									{item.listAnswer[2].slice(0, 12)}...
 								</Col>
 								<Col span={3}>
-									{item.answerD.slice(0, 12)}...
+									{item.listAnswer[3].slice(0, 12)}...
 								</Col>
 								<Col span={2} style={{ textAlign: 'center' }}>
-									{item.answerRight}
+									{item.trueAnswer}
 								</Col>
 								<Col span={4} style={{ paddingLeft: '20px' }}>
 									<div className={cx("group-button")}>

@@ -15,10 +15,8 @@ const AddGrammarTest = () => {
 	const { id } = useParams();
 	const [formData, setFormData] = useState({
 		"id": "",
-		"lessonCode": "",
-		"lessonId": "",
-		"sentence": "",
-		"answerRight": "",
+		"task": "",  
+		"trueAnswer": "",
 		"answerA": "",
 		"answerB": "",
 		"answerC": "",

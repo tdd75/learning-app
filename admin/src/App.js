@@ -21,7 +21,7 @@ import Grammar from './components/ManageGrammar';
 import GrammarLessonDetail from './components/ManageGrammar/Lesson/LessonDetail';
 import AddGrammar from './components/ManageGrammar/Lesson/AddLesson';
 import EditGrammarLesson from './components/ManageGrammar/Lesson/EditLesson';
-import TestDetail from './components/GrammarTest/GrammarTestDetail';
+import TestDetail from './components/ManageGrammarTest/GrammarTestDetail';
 
 function App() {
 	return (

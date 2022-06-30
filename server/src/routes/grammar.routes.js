@@ -3,27 +3,16 @@ import {
   addGrammar,
   deleteGrammar,
   getGrammarById,
-  getListChapter,
   getListGrammarByChapter,
   getListGrammarWithPaginationAndKeyword,
-  submitFinishedGrammar,
   updateGrammar,
 } from '../controllers/grammar.controller.js';
 import { isAdmin, verifyToken } from '../middleware/authJwt.js';
 
 const grammarRoutes = express.Router();
 
-grammarRoutes.get('/api/v1/user/auth/grammar/:grammarId', verifyToken, getGrammarById);
-grammarRoutes.post(
-  '/api/v1/user/auth/grammar/submit',
-  verifyToken,
-  submitFinishedGrammar,
-);
-grammarRoutes.get(
-  '/api/v1/admin/auth/grammar/chapter/list',
-  [verifyToken, isAdmin],
-  getListChapter,
-);
+grammarRoutes.get('/api/v1/user/auth/grammar', verifyToken, getGrammarById);
+
 grammarRoutes.post('/api/v1/admin/auth/grammar', [verifyToken, isAdmin], addGrammar);
 grammarRoutes.put(
   '/api/v1/user/auth/grammar/:grammarId',
@@ -37,4 +26,5 @@ grammarRoutes.delete(
 );
 grammarRoutes.get('/api/v1/user/auth/grammar/by-chapter', verifyToken, getListGrammarByChapter);
 grammarRoutes.get('/api/v1/user/grammar', getListGrammarWithPaginationAndKeyword);
+grammarRoutes.get('/api/v1/admin/auth/grammar', [verifyToken, isAdmin] ,getListGrammarWithPaginationAndKeyword);
 export default grammarRoutes;

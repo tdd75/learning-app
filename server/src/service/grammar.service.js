@@ -16,14 +16,9 @@ GrammarService.findGrammarById = async (grammarId) => {
   return grammar;
 };
 
-GrammarService.findAllGrammarByChapter = async (chapterName) => {
-  let listGrammar = await Grammar.find({ chapter: chapterName });
+GrammarService.findAllGrammarByChapter = async (chapterId) => {
+  let listGrammar = await Grammar.find({ chapterId: chapterId });
   return listGrammar;
-};
-
-GrammarService.getListChapter = async () => {
-  let chapters = await Grammar.find().select({ chapter: 1 }).distinct('chapter');
-  return chapters;
 };
 
 GrammarService.addGrammar = async (grammarRequest) => {

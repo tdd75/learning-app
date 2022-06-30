@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-
+import mongoosePaginate from 'mongoose-paginate-v2';
 const GrammarTaskSchema = new mongoose.Schema(
   {
     task: {
@@ -41,6 +41,6 @@ const GrammarTaskSchema = new mongoose.Schema(
     collection: 'grammar_tasks',
   },
 );
-
+GrammarTaskSchema.plugin(mongoosePaginate);
 const GrammarTask = mongoose.model('GrammarTask', GrammarTaskSchema);
 export default GrammarTask;

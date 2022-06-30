@@ -76,6 +76,12 @@ export interface IWord {
   processStatus: number;
 }
 
+export interface IWordTest {
+  word: IWord;
+  trueMeaning: string;
+  wrongMeaning: string[];
+}
+
 export interface IGrammar {
   _id: string;
   chapterId: string;

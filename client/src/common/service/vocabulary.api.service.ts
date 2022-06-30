@@ -1,5 +1,12 @@
 import axios from '@/plugins/axios';
-import { IAxiosResponse, IListResponse, ITopic, IPagination, IWord } from '../interfaces';
+import {
+  IAxiosResponse,
+  IListResponse,
+  ITopic,
+  IPagination,
+  IWord,
+  IWordTest,
+} from '../interfaces';
 import qs from 'qs';
 
 class VocabularyApiService {
@@ -13,6 +20,9 @@ class VocabularyApiService {
   }
   async doneWord(id: string): Promise<IAxiosResponse<null>> {
     return await axios.put(`/user/vocal/process?wordId=${id}`);
+  }
+  async getQuiz(id: string): Promise<IAxiosResponse<IListResponse<IWordTest>>> {
+    return await axios.get(`/user/vocal/quiz?topicId=${id}`);
   }
 }
 

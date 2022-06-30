@@ -3,6 +3,7 @@ import {
   addGrammarTask,
   deleteGrammarTask,
   getGrammarTaskById,
+  getListTaskByTopicWithPagination,
   submitFinishTask,
   updateGrammarTask,
 } from '../controllers/grammarTask.controller.js';
@@ -35,5 +36,10 @@ grammarTaskRoutes.delete(
   '/api/v1/admin/auth/grammar-task/:taskId',
   [verifyToken, isAdmin],
   deleteGrammarTask,
+);
+grammarTaskRoutes.get(
+  '/api/v1/admin/auth/grammar-task/by-topic',
+  [verifyToken, isAdmin],
+  getListTaskByTopicWithPagination
 );
 export default grammarTaskRoutes;

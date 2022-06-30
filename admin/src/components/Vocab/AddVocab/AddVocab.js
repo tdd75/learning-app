@@ -14,16 +14,15 @@ const AddVocab = () => {
 	const history = useHistory(); 
 	const [formData, setFormData] = useState({
 		"id": "",
-		"name": "",
-		"suggestion": "",
+		"keyword": "",
+		"suggest": "",
 		"transcription": "",
-		"meaning": "",
-		"fullMeaning": "",
-		"explanation": "",
-		"imageUrl": "",
-		"audioUrl": "",
-		"lessonCode": "",
-		"lessonId": ""
+		"shortDesc": "",
+		"fullVietnamese": "",
+		"explanation":"",
+		"image": "",
+		"sound": "", 
+		"topic": "",
 	});
 	
 	const [loading, setLoading] = useState({ image: false, audio: false }); 
@@ -36,11 +35,10 @@ const AddVocab = () => {
 
 		console.log("formData", formData);
 		try {
-			const res = await axios.post(`${URL}/api/Admin/add-vocabulary`, formData, { headers });
+			const res = await axios.post(`${URL}/admin/vocal`, formData, { headers });
 			if (res.status === 200) {
 				console.log(res);
-				history.push(`/manage-vocab`);
-				window.location.reload();
+				history.push(`/manage-vocab/show`); 
 			}
 		} catch (err) {
 			console.log(err);
@@ -50,7 +48,7 @@ const AddVocab = () => {
 	const handleUploadImage = async (e) => {
 		setLoading({ ...loading, image: true });
 
-		let url = `${URL}/api/Admin/upload-image`;
+		let url = `${URL}/admin/upload`;
 		let file = e.target.files[0];
 
 		let form = new FormData();
@@ -63,7 +61,7 @@ const AddVocab = () => {
 			headers
 		}).then((response) => {
 			console.log(response);
-			setFormData({ ...formData, imageUrl: response.data.url });
+			setFormData({ ...formData, imageUrl: response.data.cdn_url });
 			setLoading({ ...loading, image: false });
 		}).catch((error) => {
 			console.log(error);
@@ -71,9 +69,9 @@ const AddVocab = () => {
 	};
 
 	const handleUploadAudio = async (e) => {
-		setLoading({ ...loading, audio: true });
+		setLoading({ ...loading, sound: true });
 
-		let url = `${URL}/api/Admin/upload-audio`;
+		let url = `${URL}/admin/upload-sound`;
 		let file = e.target.files[0];
 
 		let form = new FormData();
@@ -86,8 +84,8 @@ const AddVocab = () => {
 			headers
 		}).then((response) => {
 			console.log(response);
-			setFormData({ ...formData, audioUrl: response.data.url });
-			setLoading({ ...loading, audio: false });
+			setFormData({ ...formData, sound: response.data.cdn_url });
+			setLoading({ ...loading, sound: false });
 		}).catch((error) => {
 			console.log(error);
 		});
@@ -105,7 +103,7 @@ const AddVocab = () => {
 								<input
 									placeholder='e.g. Technology'
 									className={cx("input")}
-									onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+									onChange={(e) => setFormData({ ...formData, keyword: e.target.value })}
 								/>
 							</div>
 
@@ -123,7 +121,7 @@ const AddVocab = () => {
 								<input
 									placeholder='e.g. Công nghệ'
 									className={cx("input")}
-									onChange={(e) => setFormData({ ...formData, meaning: e.target.value })}
+									onChange={(e) => setFormData({ ...formData, shortDesc: e.target.value })}
 								/>
 							</div>
 
@@ -133,7 +131,7 @@ const AddVocab = () => {
 								<textarea
 									placeholder='e.g.Công nghệ'
 									className={cx("input")}
-									onChange={(e) => setFormData({ ...formData, fullMeaning: e.target.value })}
+									onChange={(e) => setFormData({ ...formData, fullVietnamese: e.target.value })}
 									rows={10}
 								/>
 							</div>
@@ -146,7 +144,7 @@ const AddVocab = () => {
 								<input
 									placeholder='e.g. T_ _h_ ol_ _y'
 									className={cx("input")}
-									onChange={(e) => setFormData({ ...formData, suggestion: e.target.value })}
+									onChange={(e) => setFormData({ ...formData, suggest: e.target.value })}
 								/>
 							</div>
 
@@ -174,7 +172,7 @@ const AddVocab = () => {
 
 							<div className={cx("oneField")}>
 								<div className={cx("title")}>Add audio</div>
-								{loading.audio && <Spin />}  &nbsp;&nbsp;
+								{loading.sound && <Spin />}  &nbsp;&nbsp;
 								<input type="file" onChange={handleUploadAudio} accept="audio/*" />
 							</div>
 

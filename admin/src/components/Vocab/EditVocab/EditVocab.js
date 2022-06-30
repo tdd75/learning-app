@@ -29,7 +29,7 @@ const EditVocab = () => {
 		"fullVietnamese": word.fullVietnamese,
 		"explanation": word.explanation,
 		"image": word.image,
-		"audio": word.audio, 
+		"sound": word.sound, 
 		"topic": word.topic,
 	});
 
@@ -77,7 +77,7 @@ const EditVocab = () => {
 	};
 
 	const handleUploadAudio = async (e) => {
-		setLoading({ ...loading, audio: true });
+		setLoading({ ...loading, sound: true });
 
 		let url = `${URL}/admin/upload-sound`;
 		let file = e.target.files[0];
@@ -93,7 +93,7 @@ const EditVocab = () => {
 		}).then((response) => {
 			console.log(response);
 			setFormData({ ...formData, audioUrl: response.data.cdn_url });
-			setLoading({ ...loading, audio: false });
+			setLoading({ ...loading, sound: false });
 		}).catch((error) => {
 			console.log(error);
 		});
@@ -202,8 +202,8 @@ const EditVocab = () => {
 									accept="audio/*"
 								/>
 								<div style={{ marginTop: '20px' }}>
-									{loading.audio ? <Spin /> : (
-									<audio controls src={formData.audio}>
+									{loading.sound ? <Spin /> : (
+									<audio controls src={formData.sound}>
 									</audio>
 								)}
 								</div>

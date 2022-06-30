@@ -24,7 +24,7 @@ const Navbar = () => {
 		{
 			id: 2,
 			name: 'Manage vocabulary',
-			path: '/manage-vocab',
+			path: '/manage-vocab/show',
 		},
 		{
 			id: 3,

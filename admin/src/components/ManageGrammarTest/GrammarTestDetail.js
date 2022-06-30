@@ -12,9 +12,7 @@ import {
 	EditOutlined,
 	PlusCircleOutlined,
 	RightOutlined
-} from "@ant-design/icons";
-import sound from "../../images/sound.svg";
-import { useParams } from "react-router-dom";
+} from "@ant-design/icons"; 
 import ReactPaginate from 'react-paginate'
 
 const PageSize = 10;
@@ -86,7 +84,7 @@ const TestDetail = () => {
 		<Layout>
 			<div className={cx("detail-page")}> 
 
-				<div className={cx("create")} onClick={() => history.push(`/manage-grammar/test/add`)}>
+				<div className={cx("create")} onClick={() => history.push(`/manage-test/add`)}>
 					<PlusCircleOutlined /> Add sentence
 				</div>
 
@@ -163,6 +161,7 @@ const TestDetail = () => {
 
 				{!loading ? (
 			<div style={{ position: 'relative', display: 'flex',  justifyContent:'center', alignItems:'center', height: '10vh'}}>
+
 					<ReactPaginate
 					pageCount={pageCount}
 					pageRange={2}

@@ -18,7 +18,7 @@ const EditGrammarTest = () => {
 	const lesson = location.state.lesson;
 
 	const [formData, setFormData] = useState({
-		"id": lesson.id, 
+		"id": lesson._id, 
 		"task": lesson.task, 
 		"trueAnswer": lesson.trueAnswer,
 		"listAnswer": lesson.listAnswer, 
@@ -35,7 +35,7 @@ const EditGrammarTest = () => {
 			if (res.status === 200) {
 				console.log(res);
 				history.push(`/manage-test`);
-				window.location.reload();
+				// window.location.reload();
 			}
 		} catch (err) {
 			console.log(err);
@@ -105,7 +105,7 @@ const EditGrammarTest = () => {
 									defaultValue={lesson.trueAnswer}
 									placeholder='e.g. 3'
 									className={cx("input")}
-									onChange={(e) => setFormData({ ...formData, answerRight: e.target.value })}
+									onChange={(e) => setFormData({ ...formData, trueAnswer: e.target.value })}
 								/>
 							</div>
 

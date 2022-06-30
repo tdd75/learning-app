@@ -145,3 +145,29 @@ export const deleteGrammarTask = async (req, res) => {
     });
   }
 };
+
+export const getListTaskByTopicWithPagination = async (req, res) => {
+  try{
+    let size = req.query.limit;
+    let page = req.query.offset;
+    if(page <= 0 || size <= 0 ) {
+      return res.status(httpStatus.BAD_REQUEST).send({
+        status: apiStatus.INVALID_PARAM,
+        message: "Limit and Offset must be greater than 0"
+      });
+    }
+    let topic = req.query.topic;
+
+    let listTask = await GrammarTaskService.getListTaskByTopicAndPagination(page, size, topic);
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: "Get list task by topic successfully",
+      data: listTask
+    });
+  }catch(err){
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+}

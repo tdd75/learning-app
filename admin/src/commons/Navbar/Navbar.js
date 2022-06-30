@@ -19,7 +19,7 @@ const Navbar = () => {
 		{
 			id: 1,
 			name: 'Manage users',
-			path: '/',
+			path: '/users',
 		},
 		{
 			id: 2,

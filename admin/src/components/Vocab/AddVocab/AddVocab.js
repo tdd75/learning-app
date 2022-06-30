@@ -61,7 +61,7 @@ const AddVocab = () => {
 			headers
 		}).then((response) => {
 			console.log(response);
-			setFormData({ ...formData, imageUrl: response.data.cdn_url });
+			setFormData({ ...formData, image: response.data.cdn_url });
 			setLoading({ ...loading, image: false });
 		}).catch((error) => {
 			console.log(error);
@@ -160,6 +160,19 @@ const AddVocab = () => {
 									rows={4}
 								/>
 							</div>
+
+
+
+							<div className={cx("oneField")}>
+								<div className={cx("title")}>LessionId</div>
+								<input
+									placeholder='e.g. 10'
+									className={cx("input")}
+									onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
+								/>
+							</div>
+
+							 
 
 							<div className={cx("oneField")}>
 								<div className={cx("title")}>Add image</div>

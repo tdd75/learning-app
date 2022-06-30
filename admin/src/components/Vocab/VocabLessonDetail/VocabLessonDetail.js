@@ -59,7 +59,7 @@ const VocabLessonDetail = () => {
       if (res.status === 200) {
         setLessonDetail(res.data.data.items);
 
-        setPageCount(res.data.data.totalItems/ PageSize);
+        setPageCount(Math.ceil(res.data.data.totalItems/ PageSize));
         setLoading(false);
       }
     } catch (err) {

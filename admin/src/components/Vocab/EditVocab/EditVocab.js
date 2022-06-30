@@ -68,7 +68,7 @@ const EditVocab = () => {
 		}).then((response) => {
 
 			console.log('push anh nhe ', response);
-			setFormData({ ...formData, imageUrl: response.data.cdn_url });
+			setFormData({ ...formData, image: response.data.cdn_url });
 			setLoading({ ...loading, image: false });
 
 		}).catch((error) => {
@@ -92,7 +92,7 @@ const EditVocab = () => {
 			headers
 		}).then((response) => {
 			console.log(response);
-			setFormData({ ...formData, audioUrl: response.data.cdn_url });
+			setFormData({ ...formData, sound: response.data.cdn_url });
 			setLoading({ ...loading, sound: false });
 		}).catch((error) => {
 			console.log(error);
@@ -173,6 +173,17 @@ const EditVocab = () => {
 									className={cx("input")}
 									onChange={(e) => setFormData({ ...formData, explanation: e.target.value })}
 									rows={4}
+								/>
+							</div>
+
+
+							<div className={cx("oneField")}>
+								<div className={cx("title")}>LessionId</div>
+								<input
+									defaultValue={word.topic}
+									placeholder='e.g. 10'
+									className={cx("input")}
+									onChange={(e) => setFormData({ ...formData, topic: e.target.value })}
 								/>
 							</div>
 

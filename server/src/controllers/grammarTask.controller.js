@@ -7,7 +7,7 @@ import mongoose from 'mongoose';
 
 export const getGrammarTaskById = async (req, res) => {
   try {
-    let taskId = req.params.taskId;
+    let taskId = req.query.taskId;
     let grammarTask = await GrammarTaskService.findGrammarTaskById(taskId);
 
     return res.status(httpStatus.OK).send({
@@ -234,6 +234,60 @@ export const markDoneTask = async (req, res) => {
     return res.status(httpStatus.OK).send({
       status: apiStatus.SUCCESS,
       message: "Mark done task successfully!"
+    });
+  }catch(err){
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+}
+
+export const getAllTopicWithProcess = async (req, res) => {
+  try{
+    let userId = req.userId;
+    let user = await UserService.findUserById(userId);
+    let offset=  parseInt(req.query.offset, 10) || 1
+    let limit=  parseInt(req.query.limit, 10) || 10
+    
+    let listTopic = await GrammarTaskService.getAllDistinctTopic();
+    let numTopicDone = 0;
+    let items = [];
+    let progressList = user.progressGrammarTask;
+    for(let i = 0; i< listTopic.length; i++){
+      let total = await GrammarTaskService.countNumberTaskInTopic(listTopic[i]);
+      if(progressList.some(item => (item.topic !== undefined && item.topic === listTopic[i]))){
+        for(let j = 0; j< progressList.length; j++){
+          if(progressList[j].topic === listTopic[i]){
+            let currentProcess = progressList[j].complete.length;
+            items.push({
+              topic: listTopic[i],
+              topicProgress: `${currentProcess}/${total}`
+            });
+            if(currentProcess === total){
+              numTopicDone += 1;
+            }
+          }
+        }
+      }else {
+        items.push({
+          topic: listTopic[i],
+          topicProgress: `0/${total}`
+        });
+      }
+    }
+
+    const begin = parseInt(limit*(offset-1))
+    const end = begin + limit 
+    let returnProgress = items.slice(begin ,end);
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: "get list task progress by topic successfully",
+      data: {
+        totalItems: listTopic.length,
+        items: returnProgress,
+        globalProcess: `${numTopicDone}/${listTopic.length}`
+      }
     });
   }catch(err){
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({

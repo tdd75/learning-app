@@ -96,4 +96,25 @@ GrammarTaskService.getListTaskAndPagination = async(page, size) => {
   return response;
 }
 
+GrammarTaskService.getAllTopicWithProgress = async () => {
+  let listTask = await GrammarTask.aggregate(
+    [
+      {
+        $group: {
+          _id: '$topic'
+        }
+      }
+    ]
+  );
+  return listTask;
+}
+GrammarTaskService.countNumberTaskInTopic = async (topic) => {
+  let listTask = await GrammarTask.find({topic: topic});
+  return listTask.length;
+}
+GrammarTaskService.getAllDistinctTopic = async () => {
+  let listTopic = await GrammarTask.find().select({topic: 1}).distinct('topic');
+  return listTopic;
+}
+
 export default GrammarTaskService;

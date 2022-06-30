@@ -11,6 +11,8 @@ import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
 import { URL } from '../../consts';
 import Header from '../../commons/Header';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const cx = cn.bind(styles);
 
@@ -36,6 +38,7 @@ const Login = () => {
 				// window.location.reload();
 			}
 		} catch (err) {
+			toast.error(err?.response?.data?.message);
 			console.log(err);
 			message.error(err.response.data);
 		}
@@ -49,6 +52,7 @@ const Login = () => {
 		<>
 			<Header />
 			<div className={cx("container")}>
+				<ToastContainer position="top-right"/>
 				<div className={cx("login")}>
 					<img src={logo} alt="logo" width="60%" />
 					<Form

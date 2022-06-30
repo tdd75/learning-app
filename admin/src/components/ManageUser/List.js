@@ -9,7 +9,6 @@ const List = ({ data }) => {
 	return (
 		<div className={cx("list")}>
 			<div className={cx("top")}>
-
 			</div>
 			<div className={cx("table")}>
 				<Row className={cx("table-header")}>

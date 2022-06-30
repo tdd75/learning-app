@@ -60,4 +60,21 @@ GrammarTaskService.deleteGrammarTask = async (grammarTaskId) => {
   }
   return deleteTask;
 };
+
+GrammarTaskService.getListTaskByTopicAndPagination = async(page, size, topic) => {
+  const limit = size ? size : 10;
+  const offset = page ? (page - 1) * limit : 1;
+  console.log(offset);
+  let condition = topic ? {topic: topic} : {}
+
+  let response = await GrammarTask.paginate(condition, {offset, limit}).then((data) => {
+    return {
+      totalItems: data.totalDocs,
+      items: data.docs,
+      totalPages: data.totalPages,
+      currentPage: parseInt(page ? page : offset)
+    }
+  });
+  return response;
+}
 export default GrammarTaskService;

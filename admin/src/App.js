@@ -16,6 +16,8 @@ import Login from './components/Login/Login';
 import VocabLessonDetail from './components/Vocab/VocabLessonDetail/VocabLessonDetail';
 import AddVocab from './components/Vocab/AddVocab/AddVocab';
 import EditVocab from './components/Vocab/EditVocab/EditVocab'; 
+import ManageUser from './components/ManageUser';
+import AdminAccount from './components/AdminAccount';
 
 function App() {
 	return (
@@ -24,6 +26,9 @@ function App() {
 				{/* <Route exact path="/manage-vocab">
 					<Vocab />
 				</Route> */}
+				<Route exact path="/users">
+					<ManageUser />
+				</Route>
 				<Route path="/login">
 					<Login />
 				</Route>
@@ -35,6 +40,9 @@ function App() {
 				</Route>
 				<Route path="/manage-vocab/edit-vocab">
 					<EditVocab />
+				</Route>
+				<Route path="/admin-account">
+					<AdminAccount />
 				</Route>
 			</Switch>
 		</Router>

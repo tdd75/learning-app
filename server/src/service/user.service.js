@@ -60,4 +60,15 @@ UserService.updateUserProfile = async (userId, request) => {
   }
   return updateUser;
 }
+
+UserService.getAllUser = async () => {
+  let listUser = await User.find();
+  return listUser;
+}
+
+UserService.searchUserByKeyword = async (keyword) => {
+  let regex = new RegExp(`.*${keyword}.*`, 'i');
+  let listUser = await User.find({ $or: [{username: regex },{firstName: regex}, {lastName: regex}, {email: regex}] });
+  return listUser;
+}
 export default UserService;

@@ -160,3 +160,20 @@ export const deleteGrammar = async (req, res) => {
     });
   }
 };
+
+export const getListGrammarByChapter = async (req, res) => {
+  try{
+    let chapter = req.query.chapter;
+    let listGrammar = await GrammarService.findAllGrammarByChapter(chapter);
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: "Get list grammar successfully",
+      data: listGrammar
+    });
+  }catch(err){
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+}

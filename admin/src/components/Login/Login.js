@@ -30,6 +30,7 @@ const Login = () => {
 			console.log("data return ", res.data.data)
 			if (res.status === 200) {
 				window.localStorage.setItem("token-lingo-admin", res?.data.data.token);
+				window.localStorage.setItem("refresh-token", res?.data.data.refreshToken);
 				// window.localStorage.setItem("username-admin", res.data.username);
 				history.push("/manage-vocab/show");
 				// window.location.reload();

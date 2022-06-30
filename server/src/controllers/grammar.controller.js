@@ -1,6 +1,7 @@
 import { apiStatus, httpStatus } from '../constants/index.js';
 import CustomError from '../error/custom.error.js';
 import Grammar from '../models/grammar.js';
+import ChapterService from '../service/chapter.service.js';
 import GrammarService from '../service/grammar.service.js';
 
 export const getGrammarById = async (req, res) => {
@@ -115,13 +116,15 @@ export const deleteGrammar = async (req, res) => {
 export const getListGrammarByChapter = async (req, res) => {
   try{
     let chapterId = req.query.chapterId;
+    let chapter = await ChapterService.findChapterById(chapterId);
     let listGrammar = await GrammarService.findAllGrammarByChapter(chapterId);
     return res.status(httpStatus.OK).send({
       status: apiStatus.SUCCESS,
       message: "Get list grammar successfully",
       data: {
         items: listGrammar,
-        totalItems: listGrammar.length
+        totalItems: listGrammar.length,
+        chapterName: chapter.name
       }
     });
   }catch(err){

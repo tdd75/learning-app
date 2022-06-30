@@ -17,7 +17,7 @@ GrammarService.findGrammarById = async (grammarId) => {
 };
 
 GrammarService.findAllGrammarByChapter = async (chapterId) => {
-  let listGrammar = await Grammar.find({ chapterId: chapterId }).populate({path: 'chapterId'});
+  let listGrammar = await Grammar.find({ chapterId: chapterId });
   return listGrammar;
 };
 

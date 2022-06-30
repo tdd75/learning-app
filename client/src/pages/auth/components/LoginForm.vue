@@ -77,7 +77,6 @@ const { handleSubmit, errors } = useForm({
 
 const submitLogin = handleSubmit(async ({ email, password }) => {
   const error = await store.login(email!, password!);
-
   if (error) {
     errorMessage.value = error;
   } else {
@@ -85,7 +84,6 @@ const submitLogin = handleSubmit(async ({ email, password }) => {
       name: PageName.HOME_PAGE
     })
   }
-
 });
 
 const { value: email } = useField('email');
@@ -97,9 +95,9 @@ const { value: password } = useField('password');
 <style lang="scss" scoped>
 .login-card {
   display: block;
-  margin: 10vh auto;
+  margin: 15vh auto;
   width: 450px;
-  height: 450px;
+  height: fit-content;
 
   &__logo {
     margin-bottom: 30px;

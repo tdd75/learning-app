@@ -43,20 +43,19 @@ export const useAuthStore = defineStore('auth', {
       // remove profile
       userStore.removeProfile();
     },
-    // async register(
-    //   email: string,
-    //   username: string,
-    //   password: string,
-    //   firstName: string,
-    //   lastName: string,
-    // ): Promise<string | void> {
-    //   try {
-    //     const response = await authApiService.login(email, password);
-    //     this.token = response.data.token;
-    //   } catch (error) {
-    //     return (error as AxiosError<IResponseError>).response?.data?.message;
-    //   }
-    // },
+    async register(
+      email: string,
+      username: string,
+      password: string,
+      firstName: string,
+      lastName: string,
+    ): Promise<string | void> {
+      try {
+        await authApiService.register(email, username, password, firstName, lastName);
+      } catch (error) {
+        return (error as IAxiosError).response?.data?.message;
+      }
+    },
     async autoLogin(token: string) {
       const userStore = useUserStore();
 

@@ -6,20 +6,28 @@ import {
   IPagination,
   IWord,
   IChapter,
+  IGrammar,
 } from '../interfaces';
 import qs from 'qs';
+import { TYPE_SUBMIT } from '../constants';
 
 class GrammarApiService {
   async getChapterList(
     pagination?: IPagination,
   ): Promise<IAxiosResponse<IListResponse<IChapter>>> {
-    return await axios.get(`/user/grammar?${qs.stringify(pagination)}`);
+    return await axios.get(`/user/auth/chapter-list?${qs.stringify(pagination)}`);
   }
-  async getTopicById(id: string): Promise<IAxiosResponse<IListResponse<IWord>>> {
-    return await axios.get(`/admin/auth/grammar/by-chapter?idTopic=${id}`);
+  async getChapterById(id: string): Promise<IAxiosResponse<IListResponse<IGrammar>>> {
+    return await axios.get(`/user/auth/grammar/by-chapter?chapterId=${id}`);
   }
-  async doneWord(id: string): Promise<IAxiosResponse<null>> {
-    return await axios.put(`/user/vocal/process?wordId=${id}`);
+  async finishChapter(
+    chapterId: string,
+    type: TYPE_SUBMIT,
+  ): Promise<IAxiosResponse<null>> {
+    return await axios.post('/user/auth/finish-chapter', {
+      chapterId,
+      type,
+    });
   }
 }
 

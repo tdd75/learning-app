@@ -1,39 +1,29 @@
 import { defineStore } from 'pinia';
 import { string } from 'yup';
-import { IAxiosError, IWord } from '../../common/interfaces';
+import { TYPE_SUBMIT } from '../../common/constants';
+import { IAxiosError, IGrammar, IWord } from '../../common/interfaces';
 import { grammarApiService } from '../../common/service/grammar.api.service';
 
 export const useGrammarLearnStore = defineStore('grammarLearn', {
   state: () => ({
-    wordList: [] as IWord[],
-    progress: '',
-    currentIndex: 0,
+    grammarList: [] as IGrammar[],
+    chapterName: '',
+    status: false,
   }),
-  getters: {
-    currentWord: (state) => state.wordList[state.currentIndex],
-  },
   actions: {
-    async getWordList(topicId: string): Promise<string | void> {
+    async getGrammarList(chapterId: string): Promise<string | void> {
       try {
-        const response = await grammarApiService.getTopicById(topicId);
-        this.wordList = response.data.data.items;
-        this.progress = response.data.data.process as string;
-        const [num, den] = this.progress?.split('/') as Array<string>;
-        if (num !== den) {
-          this.currentIndex = parseInt(num);
-        }
+        const response = await grammarApiService.getChapterById(chapterId);
+        this.grammarList = response.data.data.items;
+        this.chapterName = response.data.data.chapterName!;
+        this.status = response.data.data.status === 1;
       } catch (error) {
         return (error as IAxiosError).response?.data?.message;
       }
     },
-    async doneCurrentWord() {
+    async finishChapter(chapterId: string): Promise<string | void> {
       try {
-        await grammarApiService.doneWord(this.currentWord._id);
-        if (this.wordList.length === this.currentIndex) {
-          this.currentIndex = 0;
-        } else {
-          this.currentIndex += 1;
-        }
+        await grammarApiService.finishChapter(chapterId, TYPE_SUBMIT.SUBMIT);
       } catch (error) {
         return (error as IAxiosError).response?.data?.message;
       }

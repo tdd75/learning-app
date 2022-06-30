@@ -11,9 +11,9 @@ export interface IError {
   message: string;
 }
 
-export interface IAxiosResponse<T> extends AxiosResponse<IResponse<T>> {}
+export type IAxiosResponse<T> = AxiosResponse<IResponse<T>>;
 
-export interface IAxiosError extends AxiosError<IError> {}
+export type IAxiosError = AxiosError<IError>;
 
 export interface IListResponse<T> {
   items: T[];
@@ -21,6 +21,8 @@ export interface IListResponse<T> {
 
   globalProcess?: string;
   process?: string;
+  chapterName?: string;
+  status?: number;
 }
 
 export interface IPagination {
@@ -74,12 +76,20 @@ export interface IWord {
   processStatus: number;
 }
 
-export interface IChapter {
+export interface IGrammar {
   _id: string;
-  chapter: string;
+  chapterId: string;
   title: string;
   sound: string;
   image: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface IChapter {
+  _id: string;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  status: number;
 }

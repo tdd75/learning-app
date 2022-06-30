@@ -1,33 +1,46 @@
 <template>
   <div class="container-fluid">
     <div class="grammar-page container d-fl">
-      <HeadingBar :total-chapter="grammarStore.lengthChapterList || 2" :progress="'2/3'" />
+      <HeadingBar :total-chapter="grammarStore.lengthChapterList" :progress="grammarStore.progress" />
       <div class="card-lesson-list d-grid justify-content-between">
-        <CardLesson v-for="chapter in grammarStore.chapterList" :key="chapter._id" :chapter-id="chapter._id"
-          :chapter-title="chapter.chapter" :isLearned="true" />
+        <CardChapter v-for="chapter in grammarStore.chapterList" :key="chapter._id" :chapter-id="chapter._id"
+          :chapter-title="chapter.name" :isLearned="chapter.status === 1" />
       </div>
       <div class="pagination d-flex justify-content-center">
-        <el-pagination :background="true" :page-size="LIMIT_LESSON_LIST" layout="prev, pager, next"
-          :total="grammarStore.lengthChapterList || 2" />
+        <el-pagination :background="true" :page-size="LIMIT_CHAPTER_LIST" layout="prev, pager, next"
+          :total="grammarStore.lengthChapterList" :current-page="currentPage" @current-change="updateCurrentPage" />
       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import CardLesson from './components/CardLesson.vue';
+import CardChapter from './components/CardChapter.vue';
 import HeadingBar from './components/HeadingBar.vue';
 import { useGrammarStore } from './store';
-import { onMounted } from 'vue';
-import { LIMIT_LESSON_LIST } from './constants';
+import { onMounted, ref } from 'vue';
+import { LIMIT_CHAPTER_LIST } from './constants';
 
 const grammarStore = useGrammarStore();
 
+const currentPage = ref(1);
+
+const updateCurrentPage = (newPage: number) => {
+  currentPage.value = newPage;
+  const filter = grammarStore.pagination || {};
+  filter.offset = currentPage.value;
+  grammarStore.getChapterList(filter);
+}
+
 onMounted(async () => {
-  await grammarStore.getChapterList({
-    limit: LIMIT_LESSON_LIST,
+  const filter = {
+    limit: LIMIT_CHAPTER_LIST,
     offset: 1,
-  });
+  };
+  grammarStore.$patch({
+    pagination: filter
+  })
+  await grammarStore.getChapterList(filter);
 })
 
 </script>

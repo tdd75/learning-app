@@ -52,6 +52,14 @@ const routes: Array<RouteRecordRaw> = [
           title: i18n.global.t('app.title.grammar'),
         },
       },
+      {
+        path: '/grammar/learn/:id',
+        name: PageName.GRAMMAR_LEARN_PAGE,
+        component: GrammarLearnPage,
+        meta: {
+          title: i18n.global.t('app.title.grammarLearn'),
+        },
+      },
       // {
       //   path: '/dialogue',
       //   name: PageName.DIALOGUE_PAGE,
@@ -92,14 +100,6 @@ const routes: Array<RouteRecordRaw> = [
     component: VocabularyTestPage,
     meta: {
       title: i18n.global.t('app.title.vocabularyTest'),
-    },
-  },
-  {
-    path: '/grammar/learn/:id',
-    name: PageName.GRAMMAR_LEARN_PAGE,
-    component: GrammarLearnPage,
-    meta: {
-      title: i18n.global.t('app.title.grammarLearn'),
     },
   },
   {

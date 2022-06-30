@@ -19,7 +19,11 @@ export const auth = {
   register: {
     placeholder: {
       email: 'Địa chỉ email',
+      username: 'Tên người dùng',
       password: 'Mật khẩu',
+      repeatPassword: 'Nhập lại mật khẩu',
+      firstName: 'Tên',
+      lastName: 'Họ',
     },
     submit: 'Đăng ký',
     forgotPassword: 'Quên mật khẩu?',

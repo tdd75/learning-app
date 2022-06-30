@@ -51,3 +51,8 @@ export const enum DeviceType {
 }
 
 export const DEBOUNCE_TIME = 1000;
+
+export enum TYPE_SUBMIT {
+  SUBMIT = 'SUBMIT',
+  UNSUBMIT = 'UNSUBMIT',
+}

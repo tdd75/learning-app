@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <HeadingBar :button-label="t('grammarTest.heading.relearn')"
     :title="t('grammarTest.heading.chapter', { chapterId: id })" :to="{
       name: PageName.VOCABULARY_LEARN_PAGE,
@@ -52,8 +52,8 @@ const nextWord = () => {
 }
 
 const getProgressPercentage = computed(() => {
-  console.log(grammarTestStore.currentIndex * 100 / grammarTestStore.wordList.length);
-  return grammarTestStore.currentIndex * 100 / grammarTestStore.wordList.length;
+  console.log(grammarTestStore.currentIndex * 100 / grammarTestStore.chapterList.length);
+  return grammarTestStore.currentIndex * 100 / grammarTestStore.chapterList.length;
 })
 
 </script>
@@ -88,4 +88,4 @@ const getProgressPercentage = computed(() => {
   color: $color-primary  !important;
   @include set-background-color($color-white);
 }
-</style>
+</style> -->

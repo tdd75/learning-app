@@ -9,6 +9,21 @@ class AuthApiService {
       password,
     });
   }
+  async register(
+    email: string,
+    username: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+  ): Promise<IAxiosResponse<null>> {
+    return await axios.post('/register', {
+      email,
+      username,
+      password,
+      firstName,
+      lastName,
+    });
+  }
 }
 
 export const authApiService = new AuthApiService();

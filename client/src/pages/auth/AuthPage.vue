@@ -12,7 +12,6 @@ import LoginForm from './components/LoginForm.vue';
 import RegisterForm from './components/RegisterForm.vue';
 import { useAuthStore } from './store';
 
-
 const route = useRoute();
 const isLoginPage = ref(true);
 const store = useAuthStore();

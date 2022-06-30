@@ -16,7 +16,6 @@
               {{ t('auth.forgotPasswordDialog.resendOtp') }}
             </el-button>
           </div>
-
         </div>
       </el-dialog>
     </template>
@@ -28,7 +27,7 @@
         })">
           {{ t('auth.forgotPasswordDialog.cancel') }}
         </el-button>
-        <el-button type="primary" @click="isShowEnterOtp = true">
+        <el-button type="primary" @click="sendOtp">
           {{ t('auth.forgotPasswordDialog.sendOtp') }}
         </el-button>
       </div>
@@ -43,14 +42,16 @@ import { useAuthStore } from '../store';
 import VOtpInput from 'vue3-otp-input';
 import { setInterval } from 'timers/promises';
 import { OTP_TIME_LIVE } from '../constants';
+import * as yup from 'yup';
+
 
 const { t } = useI18n()
 const store = useAuthStore();
-
 const isShowEnterOtp = ref(false);
+
 const email = ref('');
 const inputOtp = ref(null);
-const remainTime = ref(0);
+// const remainTime = ref(0);
 
 const handleOnComplete = (value: string) => {
   console.log('OTP completed: ', value);
@@ -60,7 +61,23 @@ const handleOnChange = (value: string) => {
   console.log('OTP changed: ', value);
 };
 
-remainTime.value = OTP_TIME_LIVE;
+const sendOtp = async () => {
+  const schema = yup.object().shape({
+    email: yup.string().email()
+  });
+  console.log('hehehe');
+
+  const isValidInput = await schema.isValid({
+    email: [inputOtp.value]
+  });
+
+  if (isValidInput) {
+    isShowEnterOtp.value = true;
+  }
+
+}
+
+// remainTime.value = OTP_TIME_LIVE;
 // let countDown = setInterval(function () {
 //   remainTime.value -= 1;
 //   if (remainTime.value = 0) {

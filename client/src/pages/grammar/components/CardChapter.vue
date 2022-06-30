@@ -2,7 +2,7 @@
   <router-link class="router-link" :to="{
     name: PageName.GRAMMAR_LEARN_PAGE,
     params: {
-      id: 5
+      id: chapterId
     }
   }">
     <div class="card-lesson d-flex flex-column align-items-center">
@@ -51,7 +51,7 @@ const props = defineProps({
 <style lang="scss" scoped>
 .card-lesson {
   width: 225px;
-  height: 265px;
+  height: fit-content;
   padding: 20px;
   background-color: $color-grey;
   border-radius: 8px;
@@ -72,14 +72,13 @@ const props = defineProps({
 
   &__title {
     margin-bottom: 8px;
-    font-size: 20px;
+    height: 50px;
+    @include limit-by-n-line(2);
   }
 
   .el-progress--line {
     width: 140px;
   }
-
-
 }
 
 .button-learn-now {

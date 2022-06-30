@@ -1,1 +1,1 @@
-export const LIMIT_LESSON_LIST = 15;
+export const LIMIT_CHAPTER_LIST = 15;

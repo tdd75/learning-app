@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from '../Vocab/AddVocab/AddVocab.module.scss';
 import cn from 'classnames/bind';
 import Layout from '../../commons/Layout';
-import { Spin } from 'antd';
+import { Col, Row, Form, message, Input, Modal, Button, Spin } from "antd";
 import { URL } from '../../consts';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
@@ -13,26 +13,45 @@ const cx = cn.bind(styles);
 const AddGrammarTest = () => {
 	const history = useHistory(); 
 	const [formData, setFormData] = useState({
-		"id": "", 
+
 		"task": "", 
-		trueAnswer: ['','','',''],
-		"listAnswer": "", 
-		"comment": ""
+		// listAnswer: ['','','',''],
+		choiseA :"",
+		choiseB :"",
+		choiseC :"",
+		choiseD :"",
+
+		"trueAnswer": "", 
+		"comment": "",
+		"topic": "" ,
+		"level" :1,
+
 	});
 
  
-
 	const handleAddLesson = async () => {
-		console.log("formData", formData);
+		console.log("formData input ", formData);
+
+		let req = {
+			"task": formData.task, 
+			listAnswer: [formData.choiseA,formData.choiseB,formData.choiseC,formData.choiseD],
+
+			"trueAnswer": formData.trueAnswer ,
+			"comment": formData.comment,
+			"topic": formData.topic ,
+			"level" :formData.level
+
+		}
+
+		console.log("convert ", req)
 		try {
 
 			const token = window.localStorage.getItem("token-lingo-admin");
 			const headers = { Authorization: `Bearer ${token}` };
-			const res = await axios.post(`${URL}/api/Admin/add-grammar-excercise`, formData, { headers });
+			const res = await axios.post(`${URL}/admin/auth/grammar-task`, req, { headers });
 			if (res.status === 200) {
 				console.log(res);
-				history.push(`/manage-grammar/test`);
-				window.location.reload();
+				message.success("create  successfully!");  
 			}
 		} catch (err) {
 			console.log(err);
@@ -60,7 +79,7 @@ const AddGrammarTest = () => {
 								<input
 									placeholder='e.g. Wolfgang Amadeus Mozart was in 1756 in Salzburg born.'
 									className={cx("input")}
-									onChange={(e) => setFormData({ ...formData })}
+									onChange={(e) => setFormData({ ...formData, choiseA : e.target.value })}
 								/>
 							</div>
 
@@ -69,7 +88,7 @@ const AddGrammarTest = () => {
 								<input
 									placeholder='e.g. Wolfgang Amadeus Mozart was born in Salzburg in 1756.'
 									className={cx("input")}
-									onChange={(e) => setFormData({ ...formData, trueAnswer: e.target.value })}
+									onChange={(e) => setFormData({ ...formData, choiseB : e.target.value })}
 								/>
 							</div>
 
@@ -78,7 +97,7 @@ const AddGrammarTest = () => {
 								<input
 									placeholder='e.g. Wolfgang Amadeus Mozart was born in 1756 in Salzburg.'
 									className={cx("input")}
-									onChange={(e) => setFormData({ ...formData })}
+									onChange={(e) => setFormData({ ...formData, choiseC : e.target.value })}
 								/>
 							</div>
 
@@ -87,7 +106,7 @@ const AddGrammarTest = () => {
 								<input
 									placeholder='e.g. Wolfgang Amadeus Mozart in 1756 in Salzburg was born.'
 									className={cx("input")}
-									onChange={(e) => setFormData({ ...formData })}
+									onChange={(e) => setFormData({ ...formData, choiseD : e.target.value })}
 								/>
 							</div>
 
@@ -96,7 +115,7 @@ const AddGrammarTest = () => {
 								<input
 									placeholder='e.g. 3'
 									className={cx("input")}
-									onChange={(e) => setFormData({ ...formData, answerRight: e.target.value })}
+									onChange={(e) => setFormData({ ...formData, trueAnswer : e.target.value })}
 								/>
 							</div>
 
@@ -108,6 +127,24 @@ const AddGrammarTest = () => {
 									className={cx("input")}
 									onChange={(e) => setFormData({ ...formData, comment: e.target.value })}
 									rows={6}
+								/>
+							</div>
+
+							<div className={cx("oneField")}>
+								<div className={cx("title")}>Topic</div>
+								<input
+									placeholder='present term'
+									className={cx("input")}
+									onChange={(e) => setFormData({ ...formData, topic : e.target.value })}
+								/>
+							</div>
+
+							<div className={cx("oneField")}>
+								<div className={cx("title")}>Level</div>
+								<input
+									placeholder='1'
+									className={cx("input")}
+									onChange={(e) => setFormData({ ...formData, level : e.target.value })}
 								/>
 							</div>
 						</div>

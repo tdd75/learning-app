@@ -5,6 +5,7 @@ import {
   getGrammarById,
   getListChapter,
   getListGrammarByChapter,
+  getListGrammarWithPaginationAndKeyword,
   submitFinishedGrammar,
   updateGrammar,
 } from '../controllers/grammar.controller.js';
@@ -35,4 +36,5 @@ grammarRoutes.delete(
   deleteGrammar,
 );
 grammarRoutes.get('/api/v1/admin/auth/grammar/by-chapter', [verifyToken, isAdmin], getListGrammarByChapter);
+grammarRoutes.get('/api/v1/user/grammar', getListGrammarWithPaginationAndKeyword);
 export default grammarRoutes;

@@ -66,4 +66,21 @@ GrammarService.deleteGrammar = async (grammarId) => {
   return deleteGrammar;
 };
 
+GrammarService.findAllGrammarWithPaginationAndKeyword = async (page, size, keyword) => {
+  const limit = size ? size : 10;
+  const offset = page ? (page - 1) * limit : 1;
+  let condition = keyword 
+    ? {title: {$regex: new RegExp(`.*${keyword}.*`), $options: 'i'}}
+    : {};
+  let response = await Grammar.paginate(condition, {offset, limit}).then((data) => {
+    return {
+      totalItems: data.totalDocs,
+      items: data.docs,
+      totalPages: data.totalPages,
+      currentPage: parseInt(page ? page : offset)
+    }
+  });
+  return response;
+}
+
 export default GrammarService;

@@ -38,8 +38,6 @@ const TestDetail = () => {
  
 
 	const getLessonById = async () => {
-
-		
 		try {
  
 		const res = await axios.get(`${URL}/admin/auth/grammar-task/by-topic?topic=word order&offset=1`);

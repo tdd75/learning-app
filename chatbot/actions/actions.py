@@ -35,3 +35,37 @@ class ActionTranslate(Action):
                 dispatcher.utter_message(text=f"{sentence_en} -> {sentence_trans}")
 
         return []
+
+
+class ActionTranslateUser(Action):
+
+    def name(self) -> Text:
+        return "action_translate_user"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        
+        baseUrl = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=vi&dt=t&q="
+        sentences = tracker.latest_message['entities']
+        sentences = sentences[0]['value']
+        
+        if '.' in sentences:
+            sentences = sentences.split('.')
+            for sentence in sentences:
+                if sentence != '':
+                    sentence_en = sentence.strip()
+                    finalurl = baseUrl + urllib.parse.quote(sentence)
+                    with urllib.request.urlopen(finalurl) as url:
+                        data = json.loads(url.read().decode())
+                    sentence_trans = data[0][0][0]
+                    dispatcher.utter_message(text=f"{sentence_en} -> {sentence_trans}")
+        else:
+            sentence_en = sentences
+            finalurl = baseUrl + urllib.parse.quote(sentences)
+            with urllib.request.urlopen(finalurl) as url:
+                data = json.loads(url.read().decode())
+            sentence_trans = data[0][0][0]
+            dispatcher.utter_message(text=f"{sentence_en} -> {sentence_trans}")
+
+        return []

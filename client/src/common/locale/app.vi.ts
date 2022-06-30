@@ -7,7 +7,9 @@ export const app = {
     vocabulary: 'Từ vựng - learn4U',
     vocabularyLearn: 'Học từ vựng - learn4U',
     vocabularyTest: 'Kiểm tra từ vựng - learn4U',
-    garmmar: 'Ngữ pháp - learn4U',
+    grammar: 'Ngữ pháp - learn4U',
+    grammarLearn: 'Học ngữ pháp - learn4U',
+    grammarTest: 'Kiểm tra ngữ pháp - learn4U',
     dialogue: 'Hội thoại - learn4U',
   },
   header: {

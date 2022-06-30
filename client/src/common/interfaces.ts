@@ -73,3 +73,13 @@ export interface IWord {
   updatedAt: string;
   processStatus: number;
 }
+
+export interface IChapter {
+  _id: string;
+  chapter: string;
+  title: string;
+  sound: string;
+  image: string;
+  createdAt: string;
+  updatedAt: string;
+}

@@ -14,6 +14,7 @@ import VocabularyPage from '@/pages/vocabulary/VocabularyPage.vue';
 import VocabularyLearnPage from '@/pages/vocabulary-learn/VocabularyLearnPage.vue';
 import VocabularyTestPage from '@/pages/vocabulary-test/VocabularyTestPage.vue';
 import GrammarPage from '@/pages/grammar/GrammarPage.vue';
+import GrammarLearnPage from '@/pages/grammar-learn/GrammarLearnPage.vue';
 import DialoguePage from '@/pages/dialogue/DialoguePage.vue';
 
 import i18n from '@/plugins/vue-i18n';
@@ -51,14 +52,14 @@ const routes: Array<RouteRecordRaw> = [
           title: i18n.global.t('app.title.grammar'),
         },
       },
-      {
-        path: '/dialogue',
-        name: PageName.DIALOGUE_PAGE,
-        component: DialoguePage,
-        meta: {
-          title: i18n.global.t('app.title.dialogue'),
-        },
-      },
+      // {
+      //   path: '/dialogue',
+      //   name: PageName.DIALOGUE_PAGE,
+      //   component: DialoguePage,
+      //   meta: {
+      //     title: i18n.global.t('app.title.dialogue'),
+      //   },
+      // },
     ],
   },
   {
@@ -91,6 +92,22 @@ const routes: Array<RouteRecordRaw> = [
     component: VocabularyTestPage,
     meta: {
       title: i18n.global.t('app.title.vocabularyTest'),
+    },
+  },
+  {
+    path: '/grammar/learn/:id',
+    name: PageName.GRAMMAR_LEARN_PAGE,
+    component: GrammarLearnPage,
+    meta: {
+      title: i18n.global.t('app.title.grammarLearn'),
+    },
+  },
+  {
+    path: '/grammar/test/:id',
+    name: PageName.GRAMMAR_TEST_PAGE,
+    component: GrammarLearnPage,
+    meta: {
+      title: i18n.global.t('app.title.grammarLearn'),
     },
   },
 ];

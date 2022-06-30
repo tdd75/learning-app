@@ -1,7 +1,7 @@
 export const vocabulary = {
   heading: {
     title: 'BÀI HỌC TỪ VỰNG',
-    totalLesson: '{totalLesson} bài học',
+    totalLesson: '{totalLesson} bài',
     learned: 'Số bài đã học: {progress}',
   },
   card: {

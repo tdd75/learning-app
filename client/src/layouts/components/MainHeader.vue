@@ -88,12 +88,12 @@ const navigationList = [
       name: PageName.GRAMMAR_PAGE
     }
   },
-  {
-    title: t('app.header.navigations.dialogue'),
-    to: {
-      name: PageName.DIALOGUE_PAGE
-    }
-  }
+  // {
+  //   title: t('app.header.navigations.dialogue'),
+  //   to: {
+  //     name: PageName.DIALOGUE_PAGE
+  //   }
+  // }
 ];
 
 const onClickUser = async (command: string) => {

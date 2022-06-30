@@ -5,10 +5,15 @@
       <img class="image-icon" src="@/assets/images/icon-banner.png" />
       <div class="welcome">{{ t('home.banner.welcome') }}</div>
       <div class="description">{{ t('home.banner.description') }}</div>
-      <el-button type="primary" class="button-start-now">
-        <span>{{ t('home.banner.startNow') }}</span>
-        <img class="ms-2" src="@/assets/images/icons/next-arrow.svg">
-      </el-button>
+      <router-link :to="{
+        name: PageName.VOCABULARY_PAGE
+      }" class="router-link">
+        <el-button type="primary" class="button-start-now">
+          <span>{{ t('home.banner.startNow') }}</span>
+          <img class="ms-2" src="@/assets/images/icons/next-arrow.svg">
+        </el-button>
+      </router-link>
+
     </div>
   </div>
 
@@ -16,6 +21,7 @@
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
+import { PageName } from '../../../common/constants';
 
 const { t } = useI18n()
 </script>

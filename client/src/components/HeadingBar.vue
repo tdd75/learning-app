@@ -22,19 +22,19 @@ const props = defineProps({
   buttonLabel: String,
   title: String,
   to: Object,
+  pageName: {
+    type: String,
+    required: true
+  }
 });
 
 const { t } = useI18n();
 const router = useRouter();
 
 const exit = () => {
-  if (router.options.history.state.back === '/vocabulary') {
-    router.go(-1);
-  } else {
-    router.push({
-      name: PageName.VOCABULARY_PAGE,
-    });
-  }
+  router.push({
+    name: props.pageName,
+  });
 }
 </script>
 

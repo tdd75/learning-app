@@ -6,6 +6,8 @@ export const enum PageName {
   VOCABULARY_LEARN_PAGE = 'VocabularyLearnPage',
   VOCABULARY_TEST_PAGE = 'VocabularyTestPage',
   GRAMMAR_PAGE = 'GrammarPage',
+  GRAMMAR_LEARN_PAGE = 'GrammarLearnPage',
+  GRAMMAR_TEST_PAGE = 'GrammarTestPage',
   DIALOGUE_PAGE = 'DialoguePage',
 }
 

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import styles from '../../Vocab/AddVocab/AddVocab.module.scss';
+import styles from '../Vocab/AddVocab/AddVocab.module.scss';
 import cn from 'classnames/bind';
-import Layout from '../../../commons/Layout';
+import Layout from '../../commons/Layout';
 import { Spin } from 'antd';
-import { headers, URL } from '../../../consts';
+import {    URL } from '../../consts';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
@@ -18,44 +18,23 @@ const EditGrammarTest = () => {
 	const lesson = location.state.lesson;
 
 	const [formData, setFormData] = useState({
-		"id": lesson.id,
-		"lessonCode": lesson.lessonCode,
-		"lessonId": lesson.lessonId,
-		"sentence": lesson.sentence,
-		"answerRight": lesson.answerRight,
-		"answerA": lesson.answerA,
-		"answerB": lesson.answerB,
-		"answerC": lesson.answerC,
-		"answerD": lesson.answerD,
+		"id": lesson.id, 
+		"task": lesson.task, 
+		"trueAnswer": lesson.trueAnswer,
+		"listAnswer": lesson.listAnswer, 
 		"comment": lesson.comment
 	});
-
-	const [loading, setLoading] = useState({ image: false, audio: false });
-	const [lessonInfo, setLessonInfo] = useState();
-
-	useEffect(() => {
-		getLessonById();
-	}, [id]);
-
-	const getLessonById = async () => {
-		try {
-			const res = await axios.get(`${URL}/api/Admin/GetLesson/${id}`, { headers });
-			if (res.status === 200) {
-				setLessonInfo(res.data);
-				setFormData({ ...formData, lessonCode: res.data.lessonCode, lessonId: id });
-			}
-		} catch (err) {
-			console.log(err);
-		}
-	}
 
 	const handleEditSentence = async () => {
 		console.log("formData", formData);
 		try {
-			const res = await axios.put(`${URL}/api/Admin/update-grammar-excercise`, formData, { headers });
+
+			const token = window.localStorage.getItem("token-lingo-admin");
+			const headers = { Authorization: `Bearer ${token}` };
+			const res = await axios.put(`${URL}/admin/auth/grammar-task/${formData.id}`, formData, { headers });
 			if (res.status === 200) {
 				console.log(res);
-				history.push(`/manage-grammar/test/${id}`);
+				history.push(`/manage-test`);
 				window.location.reload();
 			}
 		} catch (err) {
@@ -73,7 +52,7 @@ const EditGrammarTest = () => {
 							<div className={cx("oneField")}>
 								<div className={cx("title")}>Question</div>
 								<input
-									defaultValue={lesson.sentence}
+									defaultValue={lesson.task}
 									placeholder='e.g. Choose the sentence with the right word order'
 									className={cx("input")}
 									onChange={(e) => setFormData({ ...formData, sentence: e.target.value })}
@@ -83,7 +62,7 @@ const EditGrammarTest = () => {
 							<div className={cx("oneField")}>
 								<div className={cx("title")}>Answer A</div>
 								<input
-									defaultValue={lesson.answerA}
+									defaultValue={lesson.listAnswer[0]}
 									placeholder='e.g. Wolfgang Amadeus Mozart was in 1756 in Salzburg born.'
 									className={cx("input")}
 									onChange={(e) => setFormData({ ...formData, answerA: e.target.value })}
@@ -93,7 +72,7 @@ const EditGrammarTest = () => {
 							<div className={cx("oneField")}>
 								<div className={cx("title")}>Answer B</div>
 								<input
-									defaultValue={lesson.answerB}
+									defaultValue={lesson.listAnswer[1]}
 									placeholder='e.g. Wolfgang Amadeus Mozart was born in Salzburg in 1756.'
 									className={cx("input")}
 									onChange={(e) => setFormData({ ...formData, answerB: e.target.value })}
@@ -103,7 +82,7 @@ const EditGrammarTest = () => {
 							<div className={cx("oneField")}>
 								<div className={cx("title")}>Answer C</div>
 								<input
-									defaultValue={lesson.answerC}
+									defaultValue={lesson.listAnswer[2]}
 									placeholder='e.g. Wolfgang Amadeus Mozart was born in 1756 in Salzburg.'
 									className={cx("input")}
 									onChange={(e) => setFormData({ ...formData, answerC: e.target.value })}
@@ -113,7 +92,7 @@ const EditGrammarTest = () => {
 							<div className={cx("oneField")}>
 								<div className={cx("title")}>Answer D</div>
 								<input
-									defaultValue={lesson.answerD}
+									defaultValue={lesson.listAnswer[3]}
 									placeholder='e.g. Wolfgang Amadeus Mozart in 1756 in Salzburg was born.'
 									className={cx("input")}
 									onChange={(e) => setFormData({ ...formData, answerD: e.target.value })}
@@ -123,7 +102,7 @@ const EditGrammarTest = () => {
 							<div className={cx("oneField")}>
 								<div className={cx("title")}>Right Answer</div>
 								<input
-									defaultValue={lesson.answerRight}
+									defaultValue={lesson.trueAnswer}
 									placeholder='e.g. 3'
 									className={cx("input")}
 									onChange={(e) => setFormData({ ...formData, answerRight: e.target.value })}
@@ -155,7 +134,7 @@ const EditGrammarTest = () => {
 						<span
 							className={cx("button")}
 							style={{ background: "#000000" }}
-							onClick={() => history.push(`/manage-grammar/test/${id}`)}
+							onClick={() => history.push(`/manage-test`)}
 						>
 							CANCEL
 						</span>

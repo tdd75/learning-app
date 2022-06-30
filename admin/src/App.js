@@ -22,6 +22,8 @@ import GrammarLessonDetail from './components/ManageGrammar/Lesson/LessonDetail'
 import AddGrammar from './components/ManageGrammar/Lesson/AddLesson';
 import EditGrammarLesson from './components/ManageGrammar/Lesson/EditLesson';
 import TestDetail from './components/ManageGrammarTest/GrammarTestDetail';
+import AddGrammarTest from './components/ManageGrammarTest/AddGrammarTest';
+import EditGrammarTest from './components/ManageGrammarTest/EditGrammarTest';
 
 function App() {
 	return (
@@ -64,10 +66,20 @@ function App() {
 
 
 				{/* grammar Task */}
-
+				
 				<Route exact path="/manage-test">
 					<TestDetail />
 				</Route>
+
+				<Route exact path="/manage-test/add">
+					<AddGrammarTest />
+				</Route>
+
+				<Route exact path="/manage-test/edit">
+					<EditGrammarTest />
+				</Route>
+
+				{/* end grammar Task */}
 
 			</Switch>
 		</Router>

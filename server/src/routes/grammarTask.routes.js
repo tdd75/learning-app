@@ -4,6 +4,7 @@ import {
   deleteGrammarTask,
   getGrammarTaskById,
   getListTaskByTopicWithPagination,
+  getListTaskWithPagination,
   submitFinishTask,
   updateGrammarTask,
 } from '../controllers/grammarTask.controller.js';
@@ -15,6 +16,11 @@ const grammarTaskRoutes = express.Router();
 grammarTaskRoutes.get(
   '/api/v1/user/auth/grammar-task/:taskId',
   getGrammarTaskById,
+);
+
+grammarTaskRoutes.get(
+  '/api/v1/admin/grammar-task', 
+  getListTaskWithPagination
 );
 
 // usersubmit Done task

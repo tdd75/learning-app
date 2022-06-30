@@ -77,4 +77,22 @@ GrammarTaskService.getListTaskByTopicAndPagination = async(page, size, topic) =>
   });
   return response;
 }
+
+
+GrammarTaskService.getListTaskAndPagination = async(page, size) => {
+  const limit = size ? size : 10;
+  const offset = page ? (page - 1) * limit : 1;
+  console.log(offset);
+  let condition =  {}
+
+  let response = await GrammarTask.paginate(condition, {offset, limit}).then((data) => {
+    return {
+      totalItems: data.totalDocs,
+      items: data.docs,
+      totalPages: data.totalPages,
+      currentPage: parseInt(page ? page : offset)
+    }
+  });
+  return response;
+}
 export default GrammarTaskService;

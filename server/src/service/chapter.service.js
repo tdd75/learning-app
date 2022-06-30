@@ -19,7 +19,7 @@ ChapterService.findChapterById = async (chapterId) => {
 ChapterService.getListChapter = async (page, size) => {
     const limit = size ? size : 10;
     const offset = page ? (page - 1) * limit : 1;
-    let condition = {}
+    let condition = {sort: {'name': 1}}
 
     let response = await Chapter.paginate(condition, {offset, limit}).then((data) => {
         return {

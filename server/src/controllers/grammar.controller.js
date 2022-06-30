@@ -119,7 +119,10 @@ export const getListGrammarByChapter = async (req, res) => {
     return res.status(httpStatus.OK).send({
       status: apiStatus.SUCCESS,
       message: "Get list grammar successfully",
-      data: listGrammar
+      data: {
+        items: listGrammar,
+        totalItems: listGrammar.length
+      }
     });
   }catch(err){
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({

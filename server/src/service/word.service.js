@@ -99,6 +99,8 @@ WordService.findByTopic = async (topic) => {
   return word;
 };
 
+
+
 WordService.findAllTopicId = async () => {
   let topics = await Word.find().select({ topic: 1 }).distinct('topic');
 

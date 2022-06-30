@@ -11,17 +11,21 @@ import { isAdmin, verifyToken } from '../middleware/authJwt.js';
 
 const grammarTaskRoutes = express.Router();
 
+
 grammarTaskRoutes.get(
   '/api/v1/user/auth/grammar-task/:taskId',
-  verifyToken,
   getGrammarTaskById,
 );
+
+// usersubmit Done task
 grammarTaskRoutes.post(
   '/api/v1/user/auth/grammar-task/submit',
   verifyToken,
   submitFinishTask,
 );
 
+
+// crud gTask
 grammarTaskRoutes.post(
   '/api/v1/admin/auth/grammar-task',
   [verifyToken, isAdmin],
@@ -37,9 +41,10 @@ grammarTaskRoutes.delete(
   [verifyToken, isAdmin],
   deleteGrammarTask,
 );
+
+
 grammarTaskRoutes.get(
-  '/api/v1/admin/auth/grammar-task/by-topic',
-  [verifyToken, isAdmin],
+  '/api/v1/admin/auth/grammar-task/by-topic', 
   getListTaskByTopicWithPagination
 );
 export default grammarTaskRoutes;

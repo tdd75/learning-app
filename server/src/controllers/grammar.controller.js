@@ -177,3 +177,29 @@ export const getListGrammarByChapter = async (req, res) => {
     });
   }
 }
+
+export const getListGrammarWithPaginationAndKeyword = async (req, res) => {
+  try{
+    let size = req.query.limit;
+    let page = req.query.offset;
+    if(page <= 0 || size <= 0 ) {
+      return res.status(httpStatus.BAD_REQUEST).send({
+        status: apiStatus.INVALID_PARAM,
+        message: "Limit and Offset must be greater than 0"
+      });
+    }
+    let keyword = req.query.keyword;
+
+    let listGrammar = await GrammarService.findAllGrammarWithPaginationAndKeyword(page, size, keyword);
+    return res.status(httpStatus.OK).send({
+      status: apiStatus.SUCCESS,
+      message: "Get list grammar successfully",
+      data: listGrammar
+    });
+  }catch(err){
+    return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
+      status: apiStatus.OTHER_ERROR,
+      message: err.message,
+    });
+  }
+}

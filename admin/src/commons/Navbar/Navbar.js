@@ -33,6 +33,11 @@ const Navbar = () => {
 		},
 		{
 			id: 4,
+			name: 'Manage Test',
+			path: '/manage-test',
+		},
+		{
+			id: 5,
 			name: 'Account Setting',
 			path: '/admin-account',
 		}

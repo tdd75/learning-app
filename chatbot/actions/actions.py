@@ -66,6 +66,6 @@ class ActionTranslateUser(Action):
             with urllib.request.urlopen(finalurl) as url:
                 data = json.loads(url.read().decode())
             sentence_trans = data[0][0][0]
-            dispatcher.utter_message(text=f"{sentence_en} -> {sentence_trans}")
+            dispatcher.utter_message(text=f"Nghĩa: {sentence_trans}")
 
         return []

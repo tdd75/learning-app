@@ -2,6 +2,7 @@ import express from 'express';
 import {
   addGrammarTask,
   deleteGrammarTask,
+  getAllTopicWithProcess,
   getGrammarTaskById,
   getListTaskByTopicWithPagination,
   getListTaskWithPagination,
@@ -15,7 +16,7 @@ const grammarTaskRoutes = express.Router();
 
 
 grammarTaskRoutes.get(
-  '/api/v1/user/auth/grammar-task/:taskId',
+  '/api/v1/user/auth/grammar-task',
   getGrammarTaskById,
 );
 
@@ -59,5 +60,11 @@ grammarTaskRoutes.post(
   '/api/v1/user/auth/grammar-task/submit',
   verifyToken,
   markDoneTask
+);
+
+grammarTaskRoutes.get(
+  '/api/v1/user/auth/grammar-task/list',
+  verifyToken,
+  getAllTopicWithProcess
 );
 export default grammarTaskRoutes;

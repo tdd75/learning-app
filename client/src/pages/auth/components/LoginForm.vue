@@ -31,7 +31,7 @@
         {{ t('auth.login.register.noAccount') }}
         <router-link :to="{
           name: PageName.REGISTER_PAGE
-        }">
+        }" class="link">
           {{ t('auth.login.register.redirect') }}
         </router-link>
       </div>
@@ -128,5 +128,11 @@ const { value: password } = useField('password');
   margin-bottom: 10px;
   color: $color-primary;
   cursor: pointer;
+}
+
+.no-account {
+  .link {
+    color: $color-primary;
+  }
 }
 </style>

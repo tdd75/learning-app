@@ -23,7 +23,6 @@ import { computed, onMounted, watch } from 'vue'
 import { useVocabularyLearnStore } from '../store';
 import { parse } from 'marked';
 
-
 const { t } = useI18n();
 const vocabularyLearnStore = useVocabularyLearnStore();
 

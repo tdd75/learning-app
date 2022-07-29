@@ -7,6 +7,8 @@ import {
   IWord,
   IChapter,
   IGrammar,
+  IGrammarTopic,
+  ITask,
 } from '../interfaces';
 import qs from 'qs';
 import { TYPE_SUBMIT } from '../constants';
@@ -28,6 +30,14 @@ class GrammarApiService {
       chapterId,
       type,
     });
+  }
+  async getTopicList(
+    pagination?: IPagination,
+  ): Promise<IAxiosResponse<IListResponse<IGrammarTopic>>> {
+    return await axios.get(`/user/auth/grammar-task/list?${qs.stringify(pagination)}`);
+  }
+  async getTaskList(topic: string): Promise<IAxiosResponse<IListResponse<ITask>>> {
+    return await axios.get(`/admin/auth/grammar-task/by-topic?topic=${topic}`);
   }
 }
 

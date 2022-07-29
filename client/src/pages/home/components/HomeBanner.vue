@@ -47,7 +47,7 @@ const { t } = useI18n()
 
   .image-icon {
     position: absolute;
-    width: 250px;
+    width: 300px;
     top: 12vh;
     right: 0;
     animation: zing 4s infinite;
@@ -82,8 +82,8 @@ const { t } = useI18n()
 
 @keyframes zing {
   0% {
-    transform: rotateX(20deg);
-    transform: translate(20px, 20px);
+    transform: rotateX(16deg);
+    transform: translate(8px, 8px);
   }
 
   50% {
@@ -92,8 +92,8 @@ const { t } = useI18n()
   }
 
   100% {
-    transform: rotateX(-20deg);
-    transform: translate(20px, 20px);
+    transform: rotateX(-16deg);
+    transform: translate(8px, 8px);
   }
 }
 

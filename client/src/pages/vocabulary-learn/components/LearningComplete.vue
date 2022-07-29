@@ -22,6 +22,7 @@
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
 import { PageName } from '../../../common/constants';
+
 const { t } = useI18n();
 
 const props = defineProps({

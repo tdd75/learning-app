@@ -18,7 +18,12 @@ const CatchExpiredTokenError = (err, res) => {
 };
 
 export const verifyToken = (req, res, next) => {
-  let token = req.headers.authorization.split(' ')[1];
+  const tokenHeader = req.headers.authorization;
+  let token;
+
+  if (typeof tokenHeader === 'string' && tokenHeader.startsWith('Bearer ')) {
+    token = tokenHeader.split(' ')[1];
+  }
 
   if (!token) {
     return res.status(httpStatus.FORBIDDEN).send({

@@ -1,16 +1,17 @@
 export const app = {
   title: {
-    default: 'Học tiếng Anh cùng Chatbot - learn4U',
-    home: 'Trang chủ - learn4U',
-    login: 'Đăng nhập - learn4U',
-    register: 'Đăng ký - learn4U',
-    vocabulary: 'Từ vựng - learn4U',
-    vocabularyLearn: 'Học từ vựng - learn4U',
-    vocabularyTest: 'Kiểm tra từ vựng - learn4U',
-    grammar: 'Ngữ pháp - learn4U',
-    grammarLearn: 'Học ngữ pháp - learn4U',
-    grammarTest: 'Kiểm tra ngữ pháp - learn4U',
-    dialogue: 'Hội thoại - learn4U',
+    default: 'Học tiếng Anh cùng Chatbot - Learn English',
+    home: 'Trang chủ - Learn English',
+    login: 'Đăng nhập - Learn English',
+    register: 'Đăng ký - Learn English',
+    vocabulary: 'Từ vựng - Learn English',
+    vocabularyLearn: 'Học từ vựng - Learn English',
+    vocabularyTest: 'Kiểm tra từ vựng - Learn English',
+    grammar: 'Ngữ pháp - Learn English',
+    grammarLearn: 'Học ngữ pháp - Learn English',
+    grammarTest: 'Kiểm tra ngữ pháp - Learn English',
+    grammarProgress: 'Kiểm tra ngữ pháp - Learn English',
+    dialogue: 'Hội thoại - Learn English',
   },
   header: {
     navigations: {

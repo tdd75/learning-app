@@ -84,7 +84,7 @@ const props = defineProps({
 .button-learn-now {
   font-size: 18px;
   padding: 18px 50px;
-  @include set-background-color($color-green);
+  @include set-background-color($color-primary);
   border-radius: 8px;
 }
 </style>

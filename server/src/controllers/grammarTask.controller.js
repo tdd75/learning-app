@@ -148,151 +148,152 @@ export const deleteGrammarTask = async (req, res) => {
 };
 
 export const getListTaskByTopicWithPagination = async (req, res) => {
-  try{
+  try {
     let size = req.query.limit;
     let page = req.query.offset;
-    if(page <= 0 || size <= 0 ) {
+    if (page <= 0 || size <= 0) {
       return res.status(httpStatus.BAD_REQUEST).send({
         status: apiStatus.INVALID_PARAM,
-        message: "Limit and Offset must be greater than 0"
+        message: 'Limit and Offset must be greater than 0',
       });
     }
     let topic = req.query.topic;
 
-    let listTask = await GrammarTaskService.getListTaskByTopicAndPagination(page, size, topic);
+    let listTask = await GrammarTaskService.getAllTaskByTopic(topic);
     return res.status(httpStatus.OK).send({
       status: apiStatus.SUCCESS,
-      message: "Get list task by topic successfully",
-      data: listTask
+      message: 'Get list task by topic successfully',
+      data: listTask,
     });
-  }catch(err){
+  } catch (err) {
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
       status: apiStatus.OTHER_ERROR,
       message: err.message,
     });
   }
-}
-
+};
 
 export const getListTaskWithPagination = async (req, res) => {
-  try{
+  try {
     let size = req.query.limit;
     let page = req.query.offset;
-    if(page <= 0 || size <= 0 ) {
+    if (page <= 0 || size <= 0) {
       return res.status(httpStatus.BAD_REQUEST).send({
         status: apiStatus.INVALID_PARAM,
-        message: "Limit and Offset must be greater than 0"
+        message: 'Limit and Offset must be greater than 0',
       });
     }
 
     let listTask = await GrammarTaskService.getListTaskAndPagination(page, size);
     return res.status(httpStatus.OK).send({
       status: apiStatus.SUCCESS,
-      message: "Get list task by topic successfully",
-      data: listTask
+      message: 'Get list task by topic successfully',
+      data: listTask,
     });
-  }catch(err){
+  } catch (err) {
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
       status: apiStatus.OTHER_ERROR,
       message: err.message,
     });
   }
-}
+};
 
 export const markDoneTask = async (req, res) => {
-  try{
+  try {
     let userId = req.userId;
     let taskId = req.body.taskId;
     let grammarTask = await GrammarTaskService.findGrammarTaskById(taskId);
     let topic = req.body.topic;
     let listTask = await GrammarTaskService.getListTaskByTopicAndPagination(1, 10, topic);
-    if(listTask.length === 0) {
+    if (listTask.length === 0) {
       return res.status(httpStatus.BAD_REQUEST).send({
         status: apiStatus.INVALID_PARAM,
-        message: "Topic name not exist!"
+        message: 'Topic name not exist!',
       });
     }
     let user = await UserService.findUserById(userId);
     let progressList = user.progressGrammarTask;
     //check topic is in progress list
-    if(progressList.some(item => (item.topic !== undefined && item.topic === topic))){
-      for(let i = 0; i< progressList.length; i++){
-        if(progressList[i].topic === topic){
+    if (progressList.some((item) => item.topic !== undefined && item.topic === topic)) {
+      for (let i = 0; i < progressList.length; i++) {
+        if (progressList[i].topic === topic) {
           progressList[i].complete.push(new mongoose.Types.ObjectId(taskId));
         }
       }
       user.progressGrammarTask = progressList;
-    }else{
+    } else {
       user.progressGrammarTask.push({
         topic: topic,
-        complete: [
-          grammarTask._id
-        ]
-      })
+        complete: [grammarTask._id],
+      });
     }
     await UserService.updateUser(user);
     return res.status(httpStatus.OK).send({
       status: apiStatus.SUCCESS,
-      message: "Mark done task successfully!"
+      message: 'Mark done task successfully!',
     });
-  }catch(err){
+  } catch (err) {
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
       status: apiStatus.OTHER_ERROR,
       message: err.message,
     });
   }
-}
+};
 
 export const getAllTopicWithProcess = async (req, res) => {
-  try{
+  try {
     let userId = req.userId;
     let user = await UserService.findUserById(userId);
-    let offset=  parseInt(req.query.offset, 10) || 1
-    let limit=  parseInt(req.query.limit, 10) || 10
-    
+    let offset = parseInt(req.query.offset, 10) || 1;
+    let limit = parseInt(req.query.limit, 10) || 10;
+
     let listTopic = await GrammarTaskService.getAllDistinctTopic();
     let numTopicDone = 0;
     let items = [];
     let progressList = user.progressGrammarTask;
-    for(let i = 0; i< listTopic.length; i++){
+    for (let i = 0; i < listTopic.length; i++) {
       let total = await GrammarTaskService.countNumberTaskInTopic(listTopic[i]);
-      if(progressList.some(item => (item.topic !== undefined && item.topic === listTopic[i]))){
-        for(let j = 0; j< progressList.length; j++){
-          if(progressList[j].topic === listTopic[i]){
+      if (
+        progressList.some(
+          (item) => item.topic !== undefined && item.topic === listTopic[i],
+        )
+      ) {
+        for (let j = 0; j < progressList.length; j++) {
+          if (progressList[j].topic === listTopic[i]) {
             let currentProcess = progressList[j].complete.length;
             items.push({
               topic: listTopic[i],
-              topicProgress: `${currentProcess}/${total}`
+              topicProgress: `${currentProcess}/${total}`,
             });
-            if(currentProcess === total){
+            if (currentProcess === total) {
               numTopicDone += 1;
             }
           }
         }
-      }else {
+      } else {
         items.push({
           topic: listTopic[i],
-          topicProgress: `0/${total}`
+          topicProgress: `0/${total}`,
         });
       }
     }
 
-    const begin = parseInt(limit*(offset-1))
-    const end = begin + limit 
-    let returnProgress = items.slice(begin ,end);
+    const begin = parseInt(limit * (offset - 1));
+    const end = begin + limit;
+    let returnProgress = items.slice(begin, end);
     return res.status(httpStatus.OK).send({
       status: apiStatus.SUCCESS,
-      message: "get list task progress by topic successfully",
+      message: 'get list task progress by topic successfully',
       data: {
         totalItems: listTopic.length,
         items: returnProgress,
-        globalProcess: `${numTopicDone}/${listTopic.length}`
-      }
+        globalProcess: `${numTopicDone}/${listTopic.length}`,
+      },
     });
-  }catch(err){
+  } catch (err) {
     return res.status(httpStatus.INTERNAL_SERVER_ERROR).send({
       status: apiStatus.OTHER_ERROR,
       message: err.message,
     });
   }
-}
+};

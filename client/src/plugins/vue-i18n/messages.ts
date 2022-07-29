@@ -7,7 +7,8 @@ import { vocabularyLearn as vocabularyLearnVi } from '@/pages/vocabulary-learn/l
 import { vocabularyTest as vocabularyTestVi } from '@/pages/vocabulary-test/locale/vocabularyTest.vi';
 import { grammar as grammarVi } from '@/pages/grammar/locale/grammar.vi';
 import { grammarLearn as grammarLearnVi } from '@/pages/grammar-learn/locale/grammarLearn.vi';
-import { grammarTest as grammarTestVi } from '@/pages/grammar-test/locale/grammarTest.vi';
+import { grammarTest as grammarTestVi } from '@/pages/grarmmar-test/locale/grammarTest.vi';
+import { grammarProgress as grammarProgressVi } from '@/pages/grammar-progress/locale/grammarProgress.vi';
 
 const messages = {
   vi: {
@@ -19,7 +20,8 @@ const messages = {
     vocabularyTest: vocabularyTestVi,
     grammar: grammarVi,
     grammarLearn: grammarLearnVi,
-    // grammarTest: grammarTestVi,
+    grammarProgress: grammarProgressVi,
+    grammarTest: grammarTestVi,
   },
 };
 

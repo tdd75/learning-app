@@ -5,14 +5,7 @@
       id: id
     }" :page-name="PageName.VOCABULARY_PAGE" />
   <div class="vocabulary-content" v-if="currentWord">
-    <div class="controller d-flex justify-content-between">
-      <el-button class="button-previous" type="primary" @click="backWord" :disabled="currentIndex === 0">
-        <img src="@/assets/images/icons/left-arrow.svg" />
-      </el-button>
-      <el-button class="button-next" type="primary" @click="nextWord"
-        :disabled="currentIndex === vocabularyTestStore.lengthWordList">
-        <img src="@/assets/images/icons/right-arrow.svg" />
-      </el-button>
+    <div class="controller d-flex justify-content-end">
     </div>
     <el-progress class="learn-progress" :percentage="getProgressPercentage()" width="50%" :stroke-width="12"
       color="#5cc046" :show-text="false" />
@@ -71,7 +64,7 @@ import AnswerCard from './components/AnswerCard.vue';
 
 
 import { useI18n } from 'vue-i18n';
-import { computed, onMounted, ref, watch } from 'vue';
+import { computed, onMounted, ref, watch, reactive } from 'vue';
 import { useRoute } from 'vue-router';
 import { useVocabularyTestStore } from './store';
 import { PageName } from '../../common/constants';
@@ -83,6 +76,7 @@ const route = useRoute();
 const vocabularyTestStore = useVocabularyTestStore();
 const currentIndex = ref(0);
 const isShowLearnDialog = ref(false);
+const answerList = reactive([]);
 
 watch(() => currentIndex, (currentValue, oldValue) => {
   isShowLearnDialog.value = getProgressPercentage() === 100;
@@ -114,10 +108,7 @@ const answer = (isRight: boolean) => {
   } else {
     vocabularyTestStore.score.delete(currentIndex.value);
   }
-}
-
-const backWord = () => {
-  currentIndex.value -= 1;
+  nextWord();
 }
 
 const nextWord = () => {

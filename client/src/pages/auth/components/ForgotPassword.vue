@@ -5,17 +5,28 @@
       <el-input class="input-email" v-model="email" />
       <el-dialog v-model="isShowEnterOtp" width="30%" top="30vh" :title="t('auth.forgotPasswordDialog.enterOtp')"
         append-to-body>
-        <div class="d-flex d-flex flex-column align-items-center">
+        <div class="d-flex flex-column align-items-center">
           <v-otp-input ref="inputOtp" class="otp-input" separator="" :num-inputs="6" :should-auto-focus="true"
-            :is-input-num="true" @on-change="handleOnChange" @on-complete="handleOnComplete" />
+            :is-input-num="true" @on-complete="handleOnComplete" />
         </div>
         <div class="button-resend-otp d-flex justify-content-end">
           <div class="d-flex align-items-center gap-2">
-            <div class="count-down-timer">{{ t('auth.forgotPasswordDialog.countDown', { remain: 120 }) }}</div>
-            <el-button type="primary" @click="isShowEnterOtp = true">
+            <div class="count-down-timer" v-show="countDown > 0">{{ t('auth.forgotPasswordDialog.countDown', {
+                remain:
+                  countDown
+              })
+            }}</div>
+            <el-button type="primary" @click="sendOtp" :disabled="countDown !== 0">
               {{ t('auth.forgotPasswordDialog.resendOtp') }}
             </el-button>
           </div>
+        </div>
+      </el-dialog>
+      <el-dialog v-model="isShowChangePassword" width="30%" top="30vh" title="Nhập mật khẩu mới" append-to-body>
+        <div class="d-flex flex-column gap-3">
+          <el-input v-model="newPassword" placeholder="Mật khẩu mới" type="password"></el-input>
+          <el-input v-model="repeatNewPassword" placeholder="Nhập lại mật khẩu" type="password"></el-input>
+          <el-button type="primary" @click="changeForgotPassword">Đổi mật khẩu</el-button>
         </div>
       </el-dialog>
     </template>
@@ -36,54 +47,86 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useAuthStore } from '../store';
 import VOtpInput from 'vue3-otp-input';
-import { setInterval } from 'timers/promises';
 import { OTP_TIME_LIVE } from '../constants';
 import * as yup from 'yup';
+import { showErrorNotification, showSuccessNotification } from '@/common/helpers';
+import { debounce } from 'lodash';
 
+
+const authStore = useAuthStore();
 
 const { t } = useI18n()
 const store = useAuthStore();
 const isShowEnterOtp = ref(false);
+const isShowChangePassword = ref(false);
 
 const email = ref('');
 const inputOtp = ref(null);
-// const remainTime = ref(0);
+const newPassword = ref('');
+const repeatNewPassword = ref('');
+let countDown = ref(OTP_TIME_LIVE);
 
-const handleOnComplete = (value: string) => {
-  console.log('OTP completed: ', value);
-};
-
-const handleOnChange = (value: string) => {
-  console.log('OTP changed: ', value);
-};
-
-const sendOtp = async () => {
-  const schema = yup.object().shape({
-    email: yup.string().email()
-  });
-  console.log('hehehe');
-
-  const isValidInput = await schema.isValid({
-    email: [inputOtp.value]
-  });
-
-  if (isValidInput) {
-    isShowEnterOtp.value = true;
+const handleOnComplete = async (value: string) => {
+  const error = await authStore.verifyOtp(value);
+  if (!error) {
+    isShowEnterOtp.value = false;
+    isShowChangePassword.value = true;
+  } else {
+    showErrorNotification('Thất bại', 'Mã OTP không hợp lệ.')
   }
+};
 
+const changeForgotPassword = async () => {
+  if (newPassword.value !== repeatNewPassword.value) {
+    showErrorNotification('Thất bại', 'Nhập lại mật khẩu không trùng khớp.');
+    return;
+  }
+  const error = await authStore.changeForgotPassword(newPassword.value);
+  if (!error) {
+    showSuccessNotification('Thành công', 'Thay đổi mật khẩu thành công.');
+    isShowChangePassword.value = false;
+    store.isShowForgotPassword = false;
+  }
+  else {
+    showErrorNotification('Thất bại', 'Địa chỉ email không tại.');
+  }
 }
 
-// remainTime.value = OTP_TIME_LIVE;
-// let countDown = setInterval(function () {
-//   remainTime.value -= 1;
-//   if (remainTime.value = 0) {
-//     clearInterval(this);
+const sendOtp = async () => {
+  const error = await authStore.forgotPassword(email.value);
+  if (!error) {
+    isShowEnterOtp.value = true;
+    setTimeout(() => {
+      showSuccessNotification('Yêu cầu thành công', 'Mã OTP đã được gửi đến hòm thư email của bạn.');
+    }, 200);
+  }
+  else {
+    showErrorNotification('Thất bại', 'Địa chỉ email không tại.')
+  }
+
+  countDown.value = OTP_TIME_LIVE;
+
+  const countDownInterval = setInterval(() => {
+    if (countDown.value === 0) {
+      clearInterval(countDownInterval);
+    } else {
+      countDown.value--;
+    }
+  }, 1000);
+}
+
+
+// watch(() => isShowEnterOtp.value, (currentValue, oldValue) => {
+//   if (currentValue === true) {
 //   }
-// }, 1000);
+// }, {
+//   immediate: true
+// })
+
 </script>
 
 <style lang="scss" scoped>
@@ -123,6 +166,10 @@ const sendOtp = async () => {
     color: $color-dark-grey  !important;
     background-color: $color-white  !important;
     border: 2px solid $color-grey;
+
+    &:disabled {
+      opacity: 0.7;
+    }
   }
 }
 

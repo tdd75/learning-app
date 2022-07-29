@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="grammar-page container d-fl">
       <HeadingBar :total-chapter="grammarStore.lengthChapterList" :progress="grammarStore.progress" />
-      <div class="card-lesson-list d-grid justify-content-between">
+      <div class="card-lesson-list d-grid justify-content-between" v-loading="loading">
         <CardChapter v-for="chapter in grammarStore.chapterList" :key="chapter._id" :chapter-id="chapter._id"
           :chapter-title="chapter.name" :isLearned="chapter.status === 1" />
       </div>
@@ -24,15 +24,19 @@ import { LIMIT_CHAPTER_LIST } from './constants';
 const grammarStore = useGrammarStore();
 
 const currentPage = ref(1);
+const loading = ref(false);
 
 const updateCurrentPage = (newPage: number) => {
+  loading.value = true;
   currentPage.value = newPage;
   const filter = grammarStore.pagination || {};
   filter.offset = currentPage.value;
   grammarStore.getChapterList(filter);
+  loading.value = false;
 }
 
 onMounted(async () => {
+  loading.value = true;
   const filter = {
     limit: LIMIT_CHAPTER_LIST,
     offset: 1,
@@ -41,6 +45,7 @@ onMounted(async () => {
     pagination: filter
   })
   await grammarStore.getChapterList(filter);
+  loading.value = false;
 })
 
 </script>

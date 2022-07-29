@@ -9,6 +9,8 @@ export const useAuthStore = defineStore('auth', {
     isLoginPage: true,
     isShowForgotPassword: false,
     token: '',
+    userId: '',
+    otp: '',
   }),
   actions: {
     async setToken(token: string) {
@@ -61,6 +63,28 @@ export const useAuthStore = defineStore('auth', {
 
       this.setToken(token);
       userStore.getProfile();
+    },
+    async forgotPassword(email: string) {
+      try {
+        const response = await authApiService.forgotPassword(email);
+        this.userId = response.data.data.userId;
+      } catch (error) {
+        return (error as IAxiosError).response?.data?.message;
+      }
+    },
+    async verifyOtp(otp: string) {
+      try {
+        await authApiService.verifyOtp(this.userId, otp);
+      } catch (error) {
+        return (error as IAxiosError).response?.data?.message;
+      }
+    },
+    async changeForgotPassword(newPassword: string) {
+      try {
+        await authApiService.changeForgotPassword(this.userId, newPassword);
+      } catch (error) {
+        return (error as IAxiosError).response?.data?.message;
+      }
     },
   },
 });

@@ -4,17 +4,30 @@
       <span class="title">{{ t('grammar.heading.title') }}</span>
       <span class="count-lesson">{{ t('grammar.heading.totalChapter', { totalChapter: totalChapter }) }}</span>
     </div>
-    <div class="learning-progress d-flex flex-column align-items-end">
-      <div class="bar">
-        <el-progress :percentage="ratioToPercentage(progress)" :stroke-width="10" color="#5cc046" :show-text="false" />
+    <div class="d-flex">
+      <div class="me-5">
+        <router-link :to="{
+          name: PageName.GRAMMAR_PROGRESS_PAGE
+        }" class="router-link">
+          <el-button type="primary">
+            {{ t('grammar.heading.test') }}
+          </el-button>
+        </router-link>
       </div>
-      <div class="learned">{{ t('grammar.heading.learned', { progress: progress }) }}</div>
+      <div class="learning-progress d-flex flex-column align-items-end">
+        <div class="bar">
+          <el-progress :percentage="ratioToPercentage(progress)" :stroke-width="10" color="#5cc046"
+            :show-text="false" />
+        </div>
+        <div class="learned">{{ t('grammar.heading.learned', { progress: progress }) }}</div>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
+import { PageName } from '../../../common/constants';
 import { ratioToPercentage } from '../../../common/helpers';
 
 const { t } = useI18n();

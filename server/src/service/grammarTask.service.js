@@ -61,60 +61,68 @@ GrammarTaskService.deleteGrammarTask = async (grammarTaskId) => {
   return deleteTask;
 };
 
-GrammarTaskService.getListTaskByTopicAndPagination = async(page, size, topic) => {
+GrammarTaskService.getListTaskByTopicAndPagination = async (page, size, topic) => {
   const limit = size ? size : 10;
   const offset = page ? (page - 1) * limit : 1;
   console.log(offset);
-  let condition = topic ? {topic: topic} : {}
+  let condition = topic ? { topic: topic } : {};
 
-  let response = await GrammarTask.paginate(condition, {offset, limit}).then((data) => {
+  let response = await GrammarTask.paginate(condition, { offset, limit }).then((data) => {
     return {
       totalItems: data.totalDocs,
       items: data.docs,
       totalPages: data.totalPages,
-      currentPage: parseInt(page ? page : offset)
-    }
+      currentPage: parseInt(page ? page : offset),
+    };
   });
   return response;
-}
+};
 
+GrammarTaskService.getAllTaskByTopic = async (topic) => {
+  let data = await GrammarTask.find({
+    topic: topic,
+  });
+  const totalItems = await GrammarTask.countDocuments({ topic: topic });
+  return {
+    totalItems,
+    items: data,
+  };
+};
 
-GrammarTaskService.getListTaskAndPagination = async(page, size) => {
+GrammarTaskService.getListTaskAndPagination = async (page, size) => {
   const limit = size ? size : 10;
   const offset = page ? (page - 1) * limit : 1;
   console.log(offset);
-  let condition =  {}
+  let condition = {};
 
-  let response = await GrammarTask.paginate(condition, {offset, limit}).then((data) => {
+  let response = await GrammarTask.paginate(condition, { offset, limit }).then((data) => {
     return {
       totalItems: data.totalDocs,
       items: data.docs,
       totalPages: data.totalPages,
-      currentPage: parseInt(page ? page : offset)
-    }
+      currentPage: parseInt(page ? page : offset),
+    };
   });
   return response;
-}
+};
 
 GrammarTaskService.getAllTopicWithProgress = async () => {
-  let listTask = await GrammarTask.aggregate(
-    [
-      {
-        $group: {
-          _id: '$topic'
-        }
-      }
-    ]
-  );
+  let listTask = await GrammarTask.aggregate([
+    {
+      $group: {
+        _id: '$topic',
+      },
+    },
+  ]);
   return listTask;
-}
+};
 GrammarTaskService.countNumberTaskInTopic = async (topic) => {
-  let listTask = await GrammarTask.find({topic: topic});
+  let listTask = await GrammarTask.find({ topic: topic });
   return listTask.length;
-}
+};
 GrammarTaskService.getAllDistinctTopic = async () => {
-  let listTopic = await GrammarTask.find().select({topic: 1}).distinct('topic');
+  let listTopic = await GrammarTask.find().select({ topic: 1 }).distinct('topic');
   return listTopic;
-}
+};
 
 export default GrammarTaskService;

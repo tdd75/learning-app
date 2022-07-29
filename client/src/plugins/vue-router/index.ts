@@ -15,7 +15,9 @@ import VocabularyLearnPage from '@/pages/vocabulary-learn/VocabularyLearnPage.vu
 import VocabularyTestPage from '@/pages/vocabulary-test/VocabularyTestPage.vue';
 import GrammarPage from '@/pages/grammar/GrammarPage.vue';
 import GrammarLearnPage from '@/pages/grammar-learn/GrammarLearnPage.vue';
+import GrammarProgressPage from '@/pages/grammar-progress/GrammarProgressPage.vue';
 import DialoguePage from '@/pages/dialogue/DialoguePage.vue';
+import GrammarTestPage from '../../pages/grarmmar-test/GrammarTestPage.vue';
 
 import i18n from '@/plugins/vue-i18n';
 
@@ -42,6 +44,7 @@ const routes: Array<RouteRecordRaw> = [
         component: VocabularyPage,
         meta: {
           title: i18n.global.t('app.title.vocabulary'),
+          requiresAuth: true,
         },
       },
       {
@@ -50,6 +53,16 @@ const routes: Array<RouteRecordRaw> = [
         component: GrammarPage,
         meta: {
           title: i18n.global.t('app.title.grammar'),
+          requiresAuth: true,
+        },
+      },
+      {
+        path: '/grammar-progress',
+        name: PageName.GRAMMAR_PROGRESS_PAGE,
+        component: GrammarProgressPage,
+        meta: {
+          title: i18n.global.t('app.title.grammarProgress'),
+          requiresAuth: true,
         },
       },
       {
@@ -58,6 +71,7 @@ const routes: Array<RouteRecordRaw> = [
         component: GrammarLearnPage,
         meta: {
           title: i18n.global.t('app.title.grammarLearn'),
+          requiresAuth: true,
         },
       },
       // {
@@ -92,6 +106,7 @@ const routes: Array<RouteRecordRaw> = [
     component: VocabularyLearnPage,
     meta: {
       title: i18n.global.t('app.title.vocabularyLearn'),
+      requiresAuth: true,
     },
   },
   {
@@ -100,14 +115,16 @@ const routes: Array<RouteRecordRaw> = [
     component: VocabularyTestPage,
     meta: {
       title: i18n.global.t('app.title.vocabularyTest'),
+      requiresAuth: true,
     },
   },
   {
-    path: '/grammar/test/:id',
+    path: '/grammar/test/:topic',
     name: PageName.GRAMMAR_TEST_PAGE,
-    component: GrammarLearnPage,
+    component: GrammarTestPage,
     meta: {
-      title: i18n.global.t('app.title.grammarLearn'),
+      title: i18n.global.t('app.title.grammarTest'),
+      requiresAuth: true,
     },
   },
 ];
@@ -124,8 +141,11 @@ router.beforeEach(
     next: NavigationGuardNext,
   ) => {
     document.title = to.meta.title as string;
+    const loggedIn = localStorage.getItem('token');
+    if (to.matched.some((record) => record.meta.requiresAuth) && !loggedIn) {
+      next('/login');
+    }
     next();
-    return;
   },
 );
 

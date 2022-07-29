@@ -8,6 +8,7 @@ export const enum PageName {
   GRAMMAR_PAGE = 'GrammarPage',
   GRAMMAR_LEARN_PAGE = 'GrammarLearnPage',
   GRAMMAR_TEST_PAGE = 'GrammarTestPage',
+  GRAMMAR_PROGRESS_PAGE = 'GrammarProgressPage',
   DIALOGUE_PAGE = 'DialoguePage',
 }
 

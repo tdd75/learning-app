@@ -58,6 +58,11 @@ export interface ITopic {
   topicStatus: string;
 }
 
+export interface IGrammarTopic {
+  topic: string;
+  topicProgress: string;
+}
+
 export interface IWord {
   _id: string;
   keyword: string;
@@ -98,4 +103,21 @@ export interface IChapter {
   createdAt: string;
   updatedAt: string;
   status: number;
+}
+
+export interface IForgotPassword {
+  userId: string;
+  mailId: string;
+}
+
+export interface ITask {
+  _id: string;
+  task: string;
+  trueAnswer: number;
+  listAnswer: string[];
+  comment: string;
+  topic: string;
+  level: number;
+  createdAt: string;
+  updatedAt: string;
 }

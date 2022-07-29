@@ -46,7 +46,7 @@
         {{ t('auth.register.register.haveAccount') }}
         <router-link :to="{
           name: PageName.LOGIN_PAGE
-        }">
+        }" class="link">
           {{ t('auth.register.register.redirect') }}
         </router-link>
       </div>
@@ -119,7 +119,7 @@ const { value: lastName } = useField('lastName');
 .register-card {
   display: block;
   margin: 5vh auto;
-  width: 450px;
+  width: 550px;
   height: fit-content;
 
   &__logo {
@@ -137,7 +137,7 @@ const { value: lastName } = useField('lastName');
   margin-bottom: 20px;
 
   .el-input {
-    width: 320px;
+    width: 400px;
     height: 40px;
   }
 }
@@ -151,5 +151,11 @@ const { value: lastName } = useField('lastName');
   margin-bottom: 10px;
   color: $color-primary;
   cursor: pointer;
+}
+
+.have-account {
+  .link {
+    color: $color-primary;
+  }
 }
 </style>

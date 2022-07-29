@@ -1,6 +1,6 @@
 import axios from '@/plugins/axios';
 import { AxiosResponse } from 'axios';
-import { IAxiosResponse, ILoginResponse } from '../interfaces';
+import { IAxiosResponse, IForgotPassword, ILoginResponse } from '../interfaces';
 
 class AuthApiService {
   async login(email: string, password: string): Promise<IAxiosResponse<ILoginResponse>> {
@@ -22,6 +22,26 @@ class AuthApiService {
       password,
       firstName,
       lastName,
+    });
+  }
+  async forgotPassword(email: string): Promise<IAxiosResponse<IForgotPassword>> {
+    return await axios.post('/user/forgot-password', {
+      to: email,
+    });
+  }
+  async verifyOtp(userId: string, otp: string): Promise<IAxiosResponse<null>> {
+    return await axios.post('/user/verify-otp', {
+      userId,
+      otpValue: otp,
+    });
+  }
+  async changeForgotPassword(
+    userId: string,
+    newPassword: string,
+  ): Promise<IAxiosResponse<null>> {
+    return await axios.post('/user/change-forgot-password', {
+      userId,
+      newPassword,
     });
   }
 }
